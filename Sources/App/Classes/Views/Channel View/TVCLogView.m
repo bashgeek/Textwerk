@@ -45,10 +45,8 @@
 #import "TVCLogControllerPrivate.h"
 #import "TVCLogScriptEventSinkPrivate.h"
 #import "TVCLogViewPrivate.h"
-#import "TVCLogViewInternalWK1.h"
 #import "TVCLogViewInternalWK2.h"
 #import "TVCMainWindowPrivate.h"
-#import "WebScriptObjectHelperPrivate.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -89,26 +87,11 @@ NSString * const TVCLogViewCommonUserAgentString = @"Textual/1.0 (+https://help.
 	self.webViewBacking = nil;
 }
 
-+ (BOOL)webKit2Enabled
-{
-	if ([TVCLogViewInternalWK2 t_safeToUse] == NO) {
-		return NO;
-	}
-
-	return [TPCPreferences webKit2Enabled];
-}
-
 - (void)constructWebView
 {
-	BOOL isUsingWebKit2 = [self.class webKit2Enabled];
+	self.isUsingWebKit2 = YES;
 
-	self.isUsingWebKit2 = isUsingWebKit2;
-
-	if (isUsingWebKit2) {
-		self.webViewBacking = [[TVCLogViewInternalWK2 alloc] initWithHostView:self];
-	} else {
-		self.webViewBacking = [[TVCLogViewInternalWK1 alloc] initWithHostView:self];
-	}
+	self.webViewBacking = [[TVCLogViewInternalWK2 alloc] initWithHostView:self];
 }
 
 - (void)copyContentString
@@ -205,7 +188,6 @@ NSString * const TVCLogViewCommonUserAgentString = @"Textual/1.0 (+https://help.
 
 + (void)emptyCaches
 {
-	[TVCLogViewInternalWK1 emptyCaches];
 	[TVCLogViewInternalWK2 emptyCaches];
 }
 
@@ -237,16 +219,6 @@ NSString * const TVCLogViewCommonUserAgentString = @"Textual/1.0 (+https://help.
 	NSParameterAssert(string != nil);
 	NSParameterAssert(baseURL != nil);
 
-TEXTUAL_IGNORE_WEBKIT_DEPRECATIONS_BEGIN
-	if (self.isUsingWebKit2 == NO) {
-		WebFrame *webViewFrame = [self.webViewBacking mainFrame];
-
-		[webViewFrame loadHTMLString:string baseURL:baseURL];
-
-		return;
-	}
-TEXTUAL_IGNORE_WEBKIT_DEPRECATIONS_END
-
 	[self recreateTemporaryCopyOfThemeIfNecessary];
 
 	WKWebView *webView = self.webViewBacking;
@@ -269,16 +241,6 @@ TEXTUAL_IGNORE_WEBKIT_DEPRECATIONS_END
 
 - (void)stopLoading
 {
-TEXTUAL_IGNORE_WEBKIT_DEPRECATIONS_BEGIN
-	if (self.isUsingWebKit2 == NO) {
-		WebFrame *webViewFrame = [self.webViewBacking mainFrame];
-
-		[webViewFrame stopLoading];
-
-		return;
-	}
-TEXTUAL_IGNORE_WEBKIT_DEPRECATIONS_END
-
 	WKWebView *webView = self.webViewBacking;
 
 	[webView stopLoading];
@@ -681,22 +643,6 @@ TEXTUAL_IGNORE_WEBKIT_DEPRECATIONS_END
 
 	return [compiledScript copy];
 }
-
-TEXTUAL_IGNORE_WEBKIT_DEPRECATIONS_BEGIN
-- (id)webScriptObjectToCommon:(WebScriptObject *)object
-{
-	NSParameterAssert(object != nil);
-
-	NSAssert((self.isUsingWebKit2 == NO),
-		@"Cannot use feature when WebKit2 is in use");
-
-	WebFrame *webViewFrame = [self.webViewBacking mainFrame];
-
-	JSGlobalContextRef jsContextRef = webViewFrame.globalContext;
-
-	return [object toCommonInContext:jsContextRef];
-}
-TEXTUAL_IGNORE_WEBKIT_DEPRECATIONS_END
 
 @end
 

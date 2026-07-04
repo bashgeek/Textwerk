@@ -671,27 +671,7 @@ return_method:
 
 - (nullable NSString *)prettyLicenseKey
 {
-#if TEXTUAL_BUILT_WITH_LICENSE_MANAGER == 1
-	if (self.length == 0) {
-		return nil;
-	}
-
-	NSRange lastDashRange = [self rangeOfString:@"-" options:NSBackwardsSearch];
-
-	if (lastDashRange.location == NSNotFound) {
-		return nil;
-	}
-
-	/* Go from dash outward by 5 */
-	lastDashRange.length = (lastDashRange.location + 6); // 1 = dash, 5 = numbers (1+5)
-	lastDashRange.location = 0;
-
-	NSString *licenseKey = [self substringWithRange:lastDashRange];
-
-	return [licenseKey stringByAppendingString:@"…"];
-#else
 	return nil;
-#endif
 }
 
 /* Source: https://ircv3.net/specs/core/message-tags-3.2.html */

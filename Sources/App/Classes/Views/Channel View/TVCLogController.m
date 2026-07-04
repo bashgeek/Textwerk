@@ -161,10 +161,6 @@ NSString * const TVCLogControllerViewFinishedLoadingNotification = @"TVCLogContr
 
 - (void)prepareInitialState
 {
-#if TEXTUAL_BUILT_WITH_ADVANCED_ENCRYPTION == 1
-	self.encrypted = self.associatedChannel.encryptionStateIsEncrypted;
-#endif
-
 	self.highlightedLineNumbers	= [NSMutableArray new];
 
 	self.jumpToLineCallbacks = [NSCache new];

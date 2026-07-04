@@ -414,11 +414,7 @@ create_normal_pool:
 		}
 
 		if (result) {
-			if ([result isKindOfClass:[NSNull class]] ||
-TEXTUAL_IGNORE_WEBKIT_DEPRECATIONS_BEGIN
-				[result isKindOfClass:[WebUndefined class]])
-TEXTUAL_IGNORE_WEBKIT_DEPRECATIONS_END
-			{
+			if ([result isKindOfClass:[NSNull class]]) {
 				if (completionHandler) {
 					completionHandler(nil);
 				}

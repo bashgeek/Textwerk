@@ -343,10 +343,6 @@ enum
 
 @property (readonly, strong) NSMenu *dockMenu;
 
-#if TEXTUAL_BUILT_WITH_ADVANCED_ENCRYPTION == 1
-@property (readonly,strong) NSMenu *encryptionManagerStatusMenu;
-#endif
-
 @property (readonly, weak) NSMenu *mainMenuNavigationChannelListMenu;
 @property (readonly, weak) NSMenu *mainMenuChannelMenu;
 @property (readonly, weak) NSMenu *mainMenuQueryMenu;
@@ -499,17 +495,6 @@ enum
 
 - (IBAction)toggleMuteOnNotifications:(id)sender;
 - (IBAction)toggleMuteOnNotificationSounds:(id)sender;
-
-- (IBAction)manageLicense:(id)sender;
-
-#if TEXTUAL_BUILT_WITH_ADVANCED_ENCRYPTION == 1
-- (IBAction)encryptionWhatIsThisInformation:(id)sender;
-- (IBAction)encryptionStartPrivateConversation:(id)sender;
-- (IBAction)encryptionRefreshPrivateConversation:(id)sender;
-- (IBAction)encryptionEndPrivateConversation:(id)sender;
-- (IBAction)encryptionAuthenticateChatPartner:(id)sender;
-- (IBAction)encryptionListFingerprints:(id)sender;
-#endif
 
 - (IBAction)copyUniqueIdentifier:(id)sender;
 

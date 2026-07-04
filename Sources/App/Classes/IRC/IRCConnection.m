@@ -41,7 +41,6 @@
 #import <objc/message.h>
 
 #import "NSObjectHelperPrivate.h"
-#import "GCDAsyncSocketExtensions.h"
 #import "TLOLocalization.h"
 #import "TPCPreferencesLocal.h"
 #import "IRCClient.h"

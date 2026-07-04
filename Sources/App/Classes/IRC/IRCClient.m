@@ -82,7 +82,6 @@
 
 #import "NSObjectHelperPrivate.h"
 #import "NSStringHelper.h"
-#import "GCDAsyncSocketExtensions.h"
 #import "TPCApplicationInfo.h"
 #import "TPCPathInfo.h"
 #import "TPCPreferencesLocalPrivate.h"
@@ -93,7 +92,6 @@
 #import "THOPluginDispatcherPrivate.h"
 #import "THOPluginManagerPrivate.h"
 #import "THOPluginProtocol.h"
-#import "TLOEncryptionManagerPrivate.h"
 #import "TLOFileLoggerPrivate.h"
 #import "TLOInputHistoryPrivate.h"
 #import "TLOLocalization.h"
@@ -154,6 +152,9 @@
 #import "IRCClientPrivate.h"
 
 NS_ASSUME_NONNULL_BEGIN
+
+typedef void (^TLOEncryptionManagerEncodingDecodingCallbackBlock)(NSString *originalString, BOOL wasEncrypted);
+typedef void (^TLOEncryptionManagerInjectCallbackBlock)(NSString *encodedString);
 
 #define _autojoinDelayedWarningInterval		90 // max delay after identification is 10 so keep this above that
 #define _autojoinDelayedWarningMaxCount		3
@@ -878,20 +879,6 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 	return self.config.nickname;
 }
 
-#if TEXTUAL_BUILT_WITH_ADVANCED_ENCRYPTION == 1
-- (NSString *)encryptionAccountNameForLocalUser
-{
-	return [sharedEncryptionManager() accountNameForUser:self.userNickname onClient:self];
-}
-
-- (NSString *)encryptionAccountNameForUser:(NSString *)nickname
-{
-	NSParameterAssert(nickname != nil);
-
-	return [sharedEncryptionManager() accountNameForUser:nickname onClient:self];
-}
-#endif
-
 - (TDCFileTransferDialog *)fileTransferController
 {
 	return [TXSharedApplication sharedFileTransferDialog];
@@ -1461,63 +1448,6 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 #pragma mark -
 #pragma mark Encryption and Decryption
 
-- (NSDictionary<NSString *, NSString *> *)listOfNicknamesToDisallowEncryption
-{
-	return [TPCResourceManager dictionaryFromResources:@"StaticStore" key:@"IRCClient List of Nicknames that Encryption Forbids"];
-}
-
-#if TEXTUAL_BUILT_WITH_ADVANCED_ENCRYPTION == 1
-- (BOOL)encryptionAllowedForTarget:(NSString *)target
-{
-	return [self encryptionAllowedForTarget:target lenient:NO];
-}
-
-- (BOOL)encryptionAllowedForTarget:(NSString *)target lenient:(BOOL)lenient
-{
-	NSParameterAssert(target != nil);
-
-	/* Encryption is disabled */
-	if ([TPCPreferences textEncryptionIsEnabled] == NO) {
-		return NO;
-	}
-
-	/* General rules */
-	if ([self stringIsNickname:target] == NO) { // Do not allow channel names
-		return NO;
-	} else if ([self nicknameIsMyself:target] && lenient == NO) { // Do not allow the local user
-		return NO;
-	} else if ([self nicknameIsZNCUser:target] && lenient == NO) { // Do not allow a ZNC private user
-		return NO;
-	}
-
-	/* Build context information for lookup */
-	NSDictionary *exceptionRules = [self listOfNicknamesToDisallowEncryption];
-
-	NSString *lowercaseNickname = target.lowercaseString;
-
-	/* Check network specific rules (such as "X" on UnderNet) */
-	NSString *networkName = self.supportInfo.networkName;
-
-	if (networkName) {
-		NSArray *networkSpecificData = [exceptionRules arrayForKey:networkName];
-
-		if ([networkSpecificData containsObject:lowercaseNickname]) {
-			return NO;
-		}
-	}
-
-	/* Look up rules for all networks */
-	NSArray *defaultsData = exceptionRules[@"-default-"];
-
-	if ([defaultsData containsObject:lowercaseNickname]) {
-		return NO;
-	}
-
-	/* Allow the nickname through when there are no rules */
-	return YES;
-}
-#endif
-
 - (NSUInteger)lengthOfEncryptedMessageDirectedAt:(NSString *)messageTo thatFitsWithinBounds:(NSUInteger)maximumLength
 {
 	return 0;
@@ -1530,29 +1460,13 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 	NSParameterAssert(encodingCallback != nil);
 	NSParameterAssert(injectionCallback != nil);
 
-#if TEXTUAL_BUILT_WITH_ADVANCED_ENCRYPTION == 1
-	/* Check if we are accepting encryption from this user */
-	if (messageBody.length == 0 || [self encryptionAllowedForTarget:messageTo] == NO) {
-#endif
-		if (encodingCallback) {
-			encodingCallback(messageBody, NO);
-		}
-
-		if (injectionCallback) {
-			injectionCallback(messageBody);
-		}
-
-#if TEXTUAL_BUILT_WITH_ADVANCED_ENCRYPTION == 1
-		return;
+	if (encodingCallback) {
+		encodingCallback(messageBody, NO);
 	}
 
-	/* Continue with normal encryption operations */
-	[sharedEncryptionManager() encryptMessage:messageBody
-										 from:[self encryptionAccountNameForLocalUser]
-										   to:[self encryptionAccountNameForUser:messageTo]
-							 encodingCallback:encodingCallback
-							injectionCallback:injectionCallback];
-#endif
+	if (injectionCallback) {
+		injectionCallback(messageBody);
+	}
 }
 
 - (void)decryptMessage:(NSString *)messageBody from:(NSString *)messageFrom target:(NSString *)target decodingCallback:(TLOEncryptionManagerEncodingDecodingCallbackBlock)decodingCallback
@@ -1562,50 +1476,13 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 	NSParameterAssert(target != nil);
 	NSParameterAssert(decodingCallback != nil);
 
-#if TEXTUAL_BUILT_WITH_ADVANCED_ENCRYPTION == 1
-	/* Check if we are accepting encryption from this user */
-	if (messageBody.length == 0 || [self encryptionAllowedForTarget:target lenient:YES] == NO) {
-#endif
-		if (decodingCallback) {
-			decodingCallback(messageBody, NO);
-		}
-
-#if TEXTUAL_BUILT_WITH_ADVANCED_ENCRYPTION == 1
-		return;
+	if (decodingCallback) {
+		decodingCallback(messageBody, NO);
 	}
-
-	/* Continue with normal encryption operations */
-	[sharedEncryptionManager() decryptMessage:messageBody
-										 from:[self encryptionAccountNameForUser:messageFrom]
-										   to:[self encryptionAccountNameForLocalUser]
-							 decodingCallback:decodingCallback];
-#endif
 }
 
 - (void)encryptionAuthenticateUser:(NSString *)nickname
 {
-	NSParameterAssert(nickname != nil);
-
-#if TEXTUAL_BUILT_WITH_ADVANCED_ENCRYPTION == 1
-	/* Encryption is disabled */
-	if ([TPCPreferences textEncryptionIsEnabled] == NO) {
-		return;
-	}
-
-	/* General rules */
-	if ([self stringIsNickname:nickname] == NO) {
-		return;
-	}
-
-	if ([self nicknameIsMyself:nickname]) {
-		return;
-	}
-
-	/* Authenticate user */
-	[sharedEncryptionManager() authenticateUser:[self encryptionAccountNameForUser:nickname]
-										   from:[self encryptionAccountNameForLocalUser]];
-#endif
-
 }
 
 #pragma mark -

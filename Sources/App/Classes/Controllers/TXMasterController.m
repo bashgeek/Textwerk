@@ -38,15 +38,13 @@
 
 #import "BuildConfig.h"
 
+#import <Network/Network.h>
+
 #import "NSObjectHelperPrivate.h"
-#import "OELReachability.h"
 #import "TDCAlert.h"
-#import "TLOEncryptionManagerPrivate.h"
-#import "TLOLicenseManagerPrivate.h"
 #import "TLOLocalization.h"
 #import "TLOSpeechSynthesizerPrivate.h"
 #import "THOPluginManagerPrivate.h"
-#import "TDCLicenseManagerDialogPrivate.h"
 #import "TVCLogControllerHistoricLogFilePrivate.h"
 #import "TVCLogControllerInlineMediaServicePrivate.h"
 #import "TVCLogControllerOperationQueuePrivate.h"
@@ -86,6 +84,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readwrite) IBOutlet TVCMainWindow *mainWindow;
 @property (nonatomic, weak, readwrite) IBOutlet TXMenuController *menuController;
 @property (nonatomic, assign) NSUInteger applicationLaunchRemainder;
+@property (nonatomic, strong) nw_path_monitor_t pathMonitor;
 
 #if TEXTUAL_BUILT_WITH_SPARKLE_ENABLED == 1
 @property (nonatomic, strong, readwrite) SPUStandardUpdaterController *updateController;
@@ -199,10 +198,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 	self.applicationLaunchRemainder = 1;
 
-#if TEXTUAL_BUILT_WITH_LICENSE_MANAGER == 1
-	[self prepareLicenseManager];
-#endif
-
 	[self prepareThirdPartyServices];
 
 	/* Load plugins last so that -applicationDidFinishLaunching is posted
@@ -262,27 +257,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)prepareNetworkReachabilityNotifier
 {
-	OELReachability *notifier = [TXSharedApplication sharedNetworkReachabilityNotifier];
+	nw_path_monitor_t monitor = nw_path_monitor_create();
 
-	notifier.reachableBlock = ^(OELReachability *reachability) {
-		[self.world noteReachabilityChanged:YES];
-	};
+	nw_path_monitor_set_update_handler(monitor, ^(nw_path_t path) {
+		BOOL reachable = nw_path_get_status(path) == nw_path_status_satisfied;
 
-	notifier.unreachableBlock = ^(OELReachability *reachability) {
-		[self.world noteReachabilityChanged:NO];
-	};
+		[self.world noteReachabilityChanged:reachable];
+	});
 
-	[notifier startNotifier];
+	nw_path_monitor_set_queue(monitor, dispatch_get_main_queue());
+	nw_path_monitor_start(monitor);
+
+	self.pathMonitor = monitor;
 }
-
-#if TEXTUAL_BUILT_WITH_LICENSE_MANAGER == 1
-- (void)prepareLicenseManager
-{
-	TLOLicenseManagerSetup();
-
-	[[TXSharedApplication sharedLicenseManagerDialog] applicationDidFinishLaunching];
-}
-#endif
 
 #pragma mark -
 #pragma mark NSApplication Delegate
@@ -455,19 +442,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 	[RZAppleEventManager() removeEventHandlerForEventClass:kInternetEventClass andEventID:kAEGetURL];
 
-	LogToConsoleTerminationProgress("Stopping reachability notifier");
+	LogToConsoleTerminationProgress("Stopping path monitor");
 
-	[[TXSharedApplication sharedNetworkReachabilityNotifier] stopNotifier];
+	nw_path_monitor_cancel(self.pathMonitor);
 
 	LogToConsoleTerminationProgress("Stopping speech synthesizer");
 
 	[[TXSharedApplication sharedSpeechSynthesizer] setIsStopped:YES];
 
 	[TVCLogControllerInlineMediaSharedInstance() prepareForApplicationTermination];
-
-#if TEXTUAL_BUILT_WITH_ADVANCED_ENCRYPTION == 1
-	[sharedEncryptionManager() prepareForApplicationTermination];
-#endif
 
 	[self.menuController prepareForApplicationTermination];
 
@@ -593,8 +576,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 	[[TXSharedApplication sharedSpeechSynthesizer] setIsStopped:YES];
 	[[TXSharedApplication sharedSpeechSynthesizer] clearQueue];
-
-	[[TXSharedApplication sharedNetworkReachabilityNotifier] stopNotifier];
 }
 
 - (void)computerDidWakeUp:(NSNotification *)note
@@ -602,8 +583,6 @@ NS_ASSUME_NONNULL_BEGIN
 	LogToConsole("Waking from sleep");
 
 	[[TXSharedApplication sharedSpeechSynthesizer] setIsStopped:NO];
-
-	[[TXSharedApplication sharedNetworkReachabilityNotifier] startNotifier];
 
 	[self.world autoConnectAfterWakeup:YES];
 }

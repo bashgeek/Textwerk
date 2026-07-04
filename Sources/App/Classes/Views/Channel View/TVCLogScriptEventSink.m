@@ -38,8 +38,6 @@
 
 #include <objc/message.h>
 
-#import "GTMEncodeHTML.h"
-#import "WebScriptObjectHelperPrivate.h"
 #import "NSObjectHelperPrivate.h"
 #import "TXMasterController.h"
 #import "TPCPreferencesLocal.h"
@@ -57,7 +55,6 @@
 #import "TVCLogPolicyPrivate.h"
 #import "TVCLogRenderer.h"
 #import "TVCLogViewPrivate.h"
-#import "TVCLogViewInternalWK1.h"
 #import "TVCLogViewInternalWK2.h"
 #import "TVCLogScriptEventSinkPrivate.h"
 
@@ -136,12 +133,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 	if (arguments && arguments.count > 0) {
 		argument = arguments[0];
-
-TEXTUAL_IGNORE_WEBKIT_DEPRECATIONS_BEGIN
-		if ([argument isKindOfClass:[WebScriptObject class]]) {
-			argument = [self.webView webScriptObjectToCommon:argument];
-		}
-TEXTUAL_IGNORE_WEBKIT_DEPRECATIONS_END
 	}
 
 	NSMethodSignature *signature = [self methodSignatureForSelector:handlerSelector];
@@ -173,16 +164,8 @@ TEXTUAL_IGNORE_WEBKIT_DEPRECATIONS_END
 
 + (nullable id)objectValueToCommon:(id)object
 {
-	if ([object isKindOfClass:[NSNull class]] ||
-TEXTUAL_IGNORE_WEBKIT_DEPRECATIONS_BEGIN
-		[object isKindOfClass:[WebUndefined class]])
-TEXTUAL_IGNORE_WEBKIT_DEPRECATIONS_END
-	{
+	if ([object isKindOfClass:[NSNull class]]) {
 		return nil;
-	}
-
-	if ([object isKindOfClass:[NSString class]]) {
-		return [object gtm_stringByUnescapingFromHTML];
 	}
 
 	return object;
@@ -267,9 +250,7 @@ TEXTUAL_IGNORE_WEBKIT_DEPRECATIONS_END
 
 	if ([webView isKindOfClass:[TVCLogView class]]) {
 		intWebView = webView;
-	} else if ([webView isKindOfClass:[TVCLogViewInternalWK1 class]] ||
-			   [webView isKindOfClass:[TVCLogViewInternalWK2 class]])
-	{
+	} else if ([webView isKindOfClass:[TVCLogViewInternalWK2 class]]) {
 		intWebView = [webView t_parentView];
 	} else {
 		return;
@@ -340,10 +321,7 @@ TEXTUAL_IGNORE_WEBKIT_DEPRECATIONS_END
 			values = inputData;
 		}
 	}
-	else if ([inputData isKindOfClass:[NSNull class]] ||
-TEXTUAL_IGNORE_WEBKIT_DEPRECATIONS_BEGIN
-			 [inputData isKindOfClass:[WebUndefined class]])
-TEXTUAL_IGNORE_WEBKIT_DEPRECATIONS_END
+	else if ([inputData isKindOfClass:[NSNull class]])
 	{
 		if (minimumArgumentCount > 0) {
 			values = @[[NSNull null]];
@@ -1023,29 +1001,6 @@ TEXTUAL_IGNORE_WEBKIT_DEPRECATIONS_END
 	}
 
 	context.completionBlock( @(NO) );
-}
-
-- (void)_encryptionAuthenticateUser:(TVCLogScriptEventSinkContext *)context
-{
-#if TEXTUAL_BUILT_WITH_ADVANCED_ENCRYPTION == 1
-	IRCClient *client = context.associatedClient;
-
-	if (client.isLoggedIn == NO) {
-		return;
-	}
-
-	IRCChannel *channel = context.associatedChannel;
-
-	if (channel == nil || channel.isPrivateMessage == NO) {
-		[self.class throwJavaScriptException:@"View is not a private message"
-								   forCaller:context.caller
-								   inWebView:context.webView];
-
-		return;
-	}
-
-	[client encryptionAuthenticateUser:channel.name];
-#endif
 }
 
 - (void)_inlineMediaEnabledForView:(TVCLogScriptEventSinkContext *)context

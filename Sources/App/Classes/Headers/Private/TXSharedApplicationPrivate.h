@@ -45,37 +45,18 @@ NS_ASSUME_NONNULL_BEGIN
 
 #define sharedPluginManager()			[TXSharedApplication sharedPluginManager]
 
-@class OELReachability;
 @class THOPluginManager;
 @class TDCFileTransferDialog;
 @class TLONotificationController, TLOSpeechSynthesizer;
 @class TVCLogControllerPrintingOperationQueue;
 @class TXWindowController;
 
-#if TEXTUAL_BUILT_WITH_ADVANCED_ENCRYPTION == 1
-@class TLOEncryptionManager;
-#endif
-
-#if TEXTUAL_BUILT_WITH_LICENSE_MANAGER == 1
-@class TDCLicenseManagerDialog;
-#endif
-
 @interface TXSharedApplication ()
-#if TEXTUAL_BUILT_WITH_ADVANCED_ENCRYPTION == 1
-+ (TLOEncryptionManager *)sharedEncryptionManager;
-#endif
-
-+ (OELReachability *)sharedNetworkReachabilityNotifier;
 + (TLONotificationController *)sharedNotificationController;
 + (THOPluginManager *)sharedPluginManager;
 + (TVCLogControllerPrintingOperationQueue *)sharedPrintingQueue;
 + (TLOSpeechSynthesizer *)sharedSpeechSynthesizer;
 + (TXWindowController *)sharedWindowController;
-
-#if TEXTUAL_BUILT_WITH_LICENSE_MANAGER == 1
-+ (TDCLicenseManagerDialog *)sharedLicenseManagerDialog;
-#endif
-
 + (TDCFileTransferDialog *)sharedFileTransferDialog;
 @end
 

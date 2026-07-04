@@ -67,11 +67,6 @@ NSString * const TXNotificationActionIdentifierFileTransferAccept = @"TXNotifica
 NSString * const TXNotificationCategoryIdentifierPrivateMessage = @"TXNotificationCategoryIdentifierPrivateMessage";
 NSString * const TXNotificationActionIdentifierPrivateMessageReply = @"TXNotificationActionIdentifierPrivateMessageReply";
 
-#if TEXTUAL_BUILT_WITH_LICENSE_MANAGER == 1
-NSString * const TXNotificationCategoryIdentifierLicenseManager = @"TXNotificationCategoryIdentifierLicenseManager";
-NSString * const TXNotificationActionIdentifierLicenseManagerMoreInfo = @"TXNotificationActionIdentifierLicenseManagerMoreInfo";
-#endif
-
 @interface TLONotificationController () <UNUserNotificationCenterDelegate>
 @end
 
@@ -135,22 +130,7 @@ NSString * const TXNotificationActionIdentifierLicenseManagerMoreInfo = @"TXNoti
 								 intentIdentifiers:@[]
 										   options:UNNotificationCategoryOptionCustomDismissAction];
 
-#if TEXTUAL_BUILT_WITH_LICENSE_MANAGER == 1
-	UNNotificationAction *lmMoreInfoAction =
-	[UNNotificationAction actionWithIdentifier:TXNotificationActionIdentifierLicenseManagerMoreInfo
-										 title:TXTLS(@"TLOLicenseManager[b8b-sg]")
-									   options:0];
-
-	UNNotificationCategory *lmCategory =
-	[UNNotificationCategory categoryWithIdentifier:TXNotificationCategoryIdentifierLicenseManager
-										   actions:@[lmMoreInfoAction]
-								 intentIdentifiers:@[]
-										   options:UNNotificationCategoryOptionCustomDismissAction];
-
-	NSSet *categories = [NSSet setWithObjects:ftCategory, pmCategory, lmCategory, nil];
-#else
 	NSSet *categories = [NSSet setWithObjects:ftCategory, pmCategory, nil];
-#endif
 
 	return categories;
 }
@@ -524,22 +504,6 @@ NSString * const TXNotificationActionIdentifierLicenseManagerMoreInfo = @"TXNoti
 	}];
 }
 
-#if TEXTUAL_BUILT_WITH_LICENSE_MANAGER == 1
-- (void)scheduleLicenseManagerNotificationWithTitle:(NSString *)title
-											message:(NSString *)message
-{
-	NSParameterAssert(title != nil);
-	NSParameterAssert(message != nil);
-
-	[self scheduleNotificationWithTitle:title
-								message:message
-							   userInfo:nil
-				 notificationIdentifier:nil
-					   threadIdentifier:nil
-					 categoryIdentifier:TXNotificationCategoryIdentifierLicenseManager];
-}
-#endif
-
 #pragma mark -
 #pragma mark Notification Center Delegate
 
@@ -660,18 +624,10 @@ NSString * const TXNotificationActionIdentifierLicenseManagerMoreInfo = @"TXNoti
 	 This was just the easier solution at the time. */
 	BOOL isFileTransferAction = [actionIdentifier isEqualToString:TXNotificationActionIdentifierFileTransferAccept];
 	BOOL isPrivateMessageAction = [actionIdentifier isEqualToString:TXNotificationActionIdentifierPrivateMessageReply];
-	BOOL isLicenseManagerAction = NO;
-
-#if TEXTUAL_BUILT_WITH_LICENSE_MANAGER == 1
-	if ([actionIdentifier isEqualToString:TXNotificationActionIdentifierLicenseManagerMoreInfo]) {
-		isLicenseManagerAction = YES;
-	}
-#endif
 
 	BOOL activateApp 	= (isPrivateMessageAction == NO);
 	BOOL keyMainWindow 	= (isPrivateMessageAction == NO &&
-						   isFileTransferAction == NO &&
-						   isLicenseManagerAction == NO);
+						   isFileTransferAction == NO);
 
 	if (activateApp) {
 		[NSApp activateIgnoringOtherApps:YES];
@@ -680,16 +636,6 @@ NSString * const TXNotificationActionIdentifierLicenseManagerMoreInfo = @"TXNoti
 	if (keyMainWindow) {
 		[mainWindow() makeKeyAndOrderFront:nil];
 	}
-
-#if TEXTUAL_BUILT_WITH_LICENSE_MANAGER == 1
-	/* Handle a notification that was clicked related to a warnings about
-	 the trial of Textual preparing to expire. */
-	if (isLicenseManagerAction)
-	{
-		[menuController() manageLicense:nil];
-	}
-	else
-#endif
 
 	/* Handle file transfer notifications allowing the user to start a
 	 file transfer directly through the notification's action button. */

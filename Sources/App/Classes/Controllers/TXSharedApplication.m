@@ -37,7 +37,6 @@
 
 #import "BuildConfig.h"
 
-#import "OELReachability.h"
 #import "TXAppearance.h"
 #import "TXMasterController.h"
 #import "TXMenuController.h"
@@ -45,11 +44,9 @@
 #import "TPCThemeController.h"
 #import "THOPluginManagerPrivate.h"
 #import "IRCWorld.h"
-#import "TLOEncryptionManagerPrivate.h"
 #import "TLONotificationController.h"
 #import "TLOSpeechSynthesizerPrivate.h"
 #import "TDCFileTransferDialogPrivate.h"
-#import "TDCLicenseManagerDialogPrivate.h"
 #import "TVCLogControllerOperationQueuePrivate.h"
 #import "TXSharedApplicationPrivate.h"
 
@@ -74,23 +71,12 @@ NSString * const TXErrorDomain = @"TextualErrorDomain";
 @implementation TXSharedApplication
 
 _defineSharedInstance(sharedAppearance, TXAppearance, new)
-
-#if TEXTUAL_BUILT_WITH_ADVANCED_ENCRYPTION == 1
-_defineSharedInstance(sharedEncryptionManager, TLOEncryptionManager, new)
-#endif
-
-_defineSharedInstance(sharedNetworkReachabilityNotifier, OELReachability, reachabilityForInternetConnection)
 _defineSharedInstance(sharedNotificationController, TLONotificationController, new)
 _defineSharedInstance(sharedPluginManager, THOPluginManager, new)
 _defineSharedInstance(sharedPrintingQueue, TVCLogControllerPrintingOperationQueue, new)
 _defineSharedInstance(sharedSpeechSynthesizer, TLOSpeechSynthesizer, new)
 _defineSharedInstance(sharedThemeController, TPCThemeController, new)
 _defineSharedInstance(sharedWindowController, TXWindowController, new)
-
-#if TEXTUAL_BUILT_WITH_LICENSE_MANAGER == 1
-_defineSharedInstance(sharedLicenseManagerDialog, TDCLicenseManagerDialog, new)
-#endif
-
 _defineSharedInstance(sharedFileTransferDialog, TDCFileTransferDialog, new)
 
 os_log_t ApplicationTerminationLogSubsystem(void)

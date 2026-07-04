@@ -36,7 +36,6 @@
  *
  *********************************************************************** */
 
-#import "GTMEncodeHTML.h"
 #import "NSColorHelper.h"
 #import "NSStringHelper.h"
 #import "IRCClientConfig.h"
@@ -1073,13 +1072,13 @@ NSString * const TVCLogRendererResultsOriginalBodyWithoutEffectsAttribute = @"TV
 {
 	NSParameterAssert(html != nil);
 
-	NSString *stringEscaped = html.gtm_stringByEscapingForHTML;
-
-	if (stringEscaped == nil) {
-		stringEscaped = @"";
-	}
-
-	return stringEscaped;
+	NSMutableString *out = [html mutableCopy];
+	[out replaceOccurrencesOfString:@"&"  withString:@"&amp;"  options:0 range:NSMakeRange(0, out.length)];
+	[out replaceOccurrencesOfString:@"<"  withString:@"&lt;"   options:0 range:NSMakeRange(0, out.length)];
+	[out replaceOccurrencesOfString:@">"  withString:@"&gt;"   options:0 range:NSMakeRange(0, out.length)];
+	[out replaceOccurrencesOfString:@"\"" withString:@"&quot;" options:0 range:NSMakeRange(0, out.length)];
+	[out replaceOccurrencesOfString:@"'"  withString:@"&#39;"  options:0 range:NSMakeRange(0, out.length)];
+	return [out copy];
 }
 
 + (NSString *)escapeStringSimple:(NSString *)string

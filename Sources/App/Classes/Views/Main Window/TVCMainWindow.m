@@ -69,15 +69,12 @@
 #import "TXMasterControllerPrivate.h"
 #import "TXMenuControllerPrivate.h"
 #import "THOPluginDispatcherPrivate.h"
-#import "TLOEncryptionManagerPrivate.h"
 #import "TLOKeyEventHandler.h"
 #import "TLOInputHistoryPrivate.h"
 #import "TLOLocalization.h"
-#import "TLOLicenseManagerPrivate.h"
 #import "TLONicknameCompletionStatusPrivate.h"
 #import "TLONotificationControllerPrivate.h"
 #import "TLOSpeechSynthesizerPrivate.h"
-#import "TDCLicenseManagerDialogPrivate.h"
 #import "TVCMainWindowPrivate.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -207,23 +204,6 @@ NSString * const TVCMainWindowSelectionChangedNotification = @"TVCMainWindowSele
 
 - (void)observeNotifications
 {
-#if TEXTUAL_BUILT_WITH_LICENSE_MANAGER == 1
-	[RZNotificationCenter() addObserver:self
-							   selector:@selector(licenseManagerActivatedLicense:)
-								   name:TDCLicenseManagerActivatedLicenseNotification
-								 object:nil];
-
-	[RZNotificationCenter() addObserver:self
-							   selector:@selector(licenseManagerDeactivatedLicense:)
-								   name:TDCLicenseManagerDeactivatedLicenseNotification
-								 object:nil];
-
-	[RZNotificationCenter() addObserver:self
-							   selector:@selector(licenseManagerTrialExpired:)
-								   name:TDCLicenseManagerTrialExpiredNotification
-								 object:nil];
-#endif
-
 	[RZNotificationCenter() addObserver:self
 							   selector:@selector(applicationAppearanceChanged:)
 								   name:TXApplicationAppearanceChangedNotification
@@ -1797,26 +1777,6 @@ NSString * const TVCMainWindowSelectionChangedNotification = @"TVCMainWindowSele
 }
 
 #pragma mark -
-#pragma mark License Manager
-
-#if TEXTUAL_BUILT_WITH_LICENSE_MANAGER == 1
-- (void)licenseManagerActivatedLicense:(NSNotification *)notification
-{
-	[self reloadLoadingScreen];
-}
-
-- (void)licenseManagerDeactivatedLicense:(NSNotification *)notification
-{
-	[self reloadLoadingScreen];
-}
-
-- (void)licenseManagerTrialExpired:(NSNotification *)notification
-{
-	[self reloadLoadingScreen];
-}
-#endif
-
-#pragma mark -
 #pragma mark Loading Screen
 
 - (void)setLoadingScreenProgressViewReason:(NSString *)progressReason
@@ -1839,14 +1799,6 @@ NSString * const TVCMainWindowSelectionChangedNotification = @"TVCMainWindowSele
 
 		return NO;
 	}
-
-#if TEXTUAL_BUILT_WITH_LICENSE_MANAGER == 1
-	if (TLOLicenseManagerTextualIsRegistered() == NO && TLOLicenseManagerIsTrialExpired()) {
-		[self.loadingScreen showTrialExpiredView];
-
-		return NO;
-	}
-#endif
 
 	if (worldController().clientCount <= 0) {
 		[self.loadingScreen showWelcomeAddServerView];
@@ -1871,62 +1823,25 @@ NSString * const TVCMainWindowSelectionChangedNotification = @"TVCMainWindowSele
 	}
 }
 
-#if TEXTUAL_BUILT_WITH_ADVANCED_ENCRYPTION == 1
-- (void)titlebarAccessoryViewLockButtonClicked:(id)sender
-{
-	NSMenu *statusMenu = menuController().encryptionManagerStatusMenu;
-
-	[statusMenu popUpMenuPositioningItem:nil
-							  atLocation:self.titlebarAccessoryViewLockButton.frame.origin
-								  inView:self.titlebarAccessoryViewLockButton];
-}
-#endif
-
 - (void)updateAccessoryViewLockButton
 {
 	IRCClient *u = self.selectedClient;
 
-#if TEXTUAL_BUILT_WITH_ADVANCED_ENCRYPTION == 1
-	IRCChannel *c = self.selectedChannel;
+	self.titlebarAccessoryViewLockButton.action = @selector(presentCertificateTrustInformation:);
 
-	BOOL updateEncryption = (c.isPrivateMessage && [u encryptionAllowedForTarget:c.name]);
+	[self.titlebarAccessoryViewLockButton disableDrawingCustomBackgroundColor];
 
-	if (updateEncryption) {
-		self.titlebarAccessoryViewLockButton.action = @selector(titlebarAccessoryViewLockButtonClicked:);
+	[self.titlebarAccessoryViewLockButton positionImageOverContent];
 
-		[self.titlebarAccessoryViewLockButton enableDrawingCustomBackgroundColor];
+	self.titlebarAccessoryViewLockButton.title = @"";
 
-		[self.titlebarAccessoryViewLockButton positionImageOnLeftSide];
-
-		[sharedEncryptionManager() updateLockIconButton:self.titlebarAccessoryViewLockButton
-											withStateOf:[u encryptionAccountNameForUser:c.name]
-												   from:[u encryptionAccountNameForLocalUser]];
+	if (u.isSecured) {
+		[self.titlebarAccessoryViewLockButton setIconAsLocked];
 
 		self.titlebarAccessoryView.hidden = NO;
+	} else {
+		self.titlebarAccessoryView.hidden = YES;
 	}
-	else
-	{
-#endif
-
-		self.titlebarAccessoryViewLockButton.action = @selector(presentCertificateTrustInformation:);
-
-		[self.titlebarAccessoryViewLockButton disableDrawingCustomBackgroundColor];
-
-		[self.titlebarAccessoryViewLockButton positionImageOverContent];
-
-		self.titlebarAccessoryViewLockButton.title = @"";
-
-		if (u.isSecured) {
-			[self.titlebarAccessoryViewLockButton setIconAsLocked];
-
-			self.titlebarAccessoryView.hidden = NO;
-		} else {
-			self.titlebarAccessoryView.hidden = YES;
-		}
-
-#if TEXTUAL_BUILT_WITH_ADVANCED_ENCRYPTION == 1
-	}
-#endif
 
 	if (self.titlebarAccessoryView.hidden == NO) {
 		[self.titlebarAccessoryViewLockButton sizeToFit];
