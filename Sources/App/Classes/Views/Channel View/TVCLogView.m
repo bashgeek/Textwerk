@@ -235,8 +235,12 @@ NSString * const TVCLogViewCommonUserAgentString = @"Textual/0.1 (+https://githu
 		return;
 	}
 
+	/* Grant read access to the filesystem root so the web content process can load
+	 app-bundle resources (core.js, corePrivate.js, baseLayout.css) that live outside
+	 the theme temp directory.  WKWebView itself is still sandboxed by the app sandbox;
+	 this only expands what the web content process is allowed to read within that. */
 	[webView loadFileURL:filePath
- allowingReadAccessToURL:themeController().temporaryURL];
+ allowingReadAccessToURL:[NSURL fileURLWithPath:@"/"]];
 }
 
 - (void)stopLoading

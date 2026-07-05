@@ -75,13 +75,6 @@ static NSUInteger _numberOfViews = 0;
 	dispatch_once(&onceToken, ^{
 		_sharedWebViewConfiguration = [WKWebViewConfiguration new];
 
-		_sharedWebViewConfiguration._allowUniversalAccessFromFileURLs = YES;
-
-		WKPreferences *preferences = _sharedWebViewConfiguration.preferences;
-
-		preferences._allowFileAccessFromFileURLs = YES;
-		preferences._developerExtrasEnabled = YES;
-
 		_sharedWebViewScriptSink = [[TVCLogScriptEventSink alloc] initWithWebView:nil];
 
 		_sharedUserContentController = [WKUserContentController new];
