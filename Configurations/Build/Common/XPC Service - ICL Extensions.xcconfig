@@ -8,10 +8,10 @@ TEXTUAL_WORKSPACE_DIR = ${PROJECT_DIR}/../../../..
 ICL_WORKSPACE_DIR = ${TEXTUAL_WORKSPACE_DIR}/XPC Services/Inline Content Loader
 
 // ICL_PRODUCT_LOCATION is replaced by the build script
-ICL_PRODUCT_LOCATION = ${TEXTUAL_PRODUCT_LOCATION}/Contents/XPCServices/InlineContentLoader.xpc
+ICL_PRODUCT_LOCATION = ${TEXTUAL_WORKSPACE_TEMP_DIR}/SharedBuildProducts-XPCServices/Inline Content Loader.xpc
 
 // ICL_PRODUCT_BINARY is replaced by the build script
-ICL_PRODUCT_BINARY = ${ICL_PRODUCT_LOCATION}/Contents/MacOS/InlineContentLoader
+ICL_PRODUCT_BINARY = ${ICL_PRODUCT_LOCATION}/Contents/MacOS/Inline Content Loader
 
 CONFIGURATION_BUILD_DIR = ${TEXTUAL_WORKSPACE_TEMP_DIR}/SharedBuildProducts-ICLExtension
 

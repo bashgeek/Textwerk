@@ -37,7 +37,7 @@
 
 import Foundation
 
-@objc
+@objc(ICMInlineHTMLFoundation)
 open class ICMInlineHTMLFoundation: ICLInlineContentModule {
 	override open var styleResources: [URL]? {
 		Bundle.main.url(forResource: "ICMInlineHTML", withExtension: "css", subdirectory: "Components").map { [$0] }
@@ -55,7 +55,7 @@ open class ICMInlineHTMLFoundation: ICLInlineContentModule {
 	override open class var contentUntrusted: Bool { true }
 }
 
-@objc
+@objc(ICMInlineHTML)
 open class ICMInlineHTML: ICMInlineHTMLFoundation {
 
 	@objc(performActionForHTML:)

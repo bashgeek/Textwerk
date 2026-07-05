@@ -38,7 +38,7 @@
 import Foundation
 
 /* ICMInlineVideoFoundation does nothing. It exists for internal use. */
-@objc
+@objc(ICMInlineVideoFoundation)
 open class ICMInlineVideoFoundation: ICLInlineContentModule {
 	@objc open var videoAutoplayEnabled: Bool = false
 	@objc open var videoControlsEnabled: Bool = true  // default = YES
@@ -103,7 +103,7 @@ open class ICMInlineVideoFoundation: ICLInlineContentModule {
 }
 
 /* Proper class to subclass if that is your thing. */
-@objc
+@objc(ICMInlineVideo)
 open class ICMInlineVideo: ICMInlineVideoFoundation {
 	private var videoCheck: ICLMediaAssessor? = nil
 
@@ -225,7 +225,7 @@ open class ICMInlineVideo: ICMInlineVideoFoundation {
 /* Subclass for videos that should be treated as GIFs:
  videoAutoplayEnabled = YES, videoControlsEnabled = NO,
  videoLoopEnabled = YES, videoMuteEnabled = YES */
-@objc
+@objc(ICMInlineGifVideo)
 open class ICMInlineGifVideo: ICMInlineVideo {
 
 	public required init(payload: ICLPayloadMutable, inProcess process: ICLProcessMain) {

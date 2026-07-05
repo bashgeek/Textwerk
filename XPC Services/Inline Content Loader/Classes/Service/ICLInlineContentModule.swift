@@ -39,7 +39,7 @@ import Foundation
 
 public typealias ICLInlineContentModuleActionBlock = (ICLInlineContentModule) -> Void
 
-@objc
+@objc(ICLInlineContentModule)
 open class ICLInlineContentModule: NSObject, @unchecked Sendable {
 
 	// MARK: - Stored Properties

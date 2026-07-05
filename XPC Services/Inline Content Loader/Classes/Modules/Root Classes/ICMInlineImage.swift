@@ -37,7 +37,7 @@
 
 import Foundation
 
-@objc
+@objc(ICMInlineImageFoundation)
 open class ICMInlineImageFoundation: ICLInlineContentModule {
 	override open class var contentImageOrVideo: Bool { true }
 
@@ -60,7 +60,7 @@ open class ICMInlineImageFoundation: ICLInlineContentModule {
 	override open var entrypoint: String? { "_ICMInlineImage" }
 }
 
-@objc
+@objc(ICMInlineImage)
 open class ICMInlineImage: ICMInlineImageFoundation {
 	private var imageCheck: ICLMediaAssessor? = nil
 
