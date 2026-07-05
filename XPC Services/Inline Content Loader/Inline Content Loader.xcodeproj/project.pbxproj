@@ -25,24 +25,24 @@
 		4C469F7B20EC60F100094EA4 /* CoreModulesImportsPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C469F5320EC60F000094EA4 /* CoreModulesImportsPrivate.h */; };
 		4C469F7C20EC60F100094EA4 /* ICLMediaAssessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C469F5420EC60F000094EA4 /* ICLMediaAssessor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4C469F7D20EC60F100094EA4 /* ICLInlineContentModule.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C469F5520EC60F000094EA4 /* ICLInlineContentModule.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4C469F7E20EC60F100094EA4 /* ICLInlineContentModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469F5720EC60F000094EA4 /* ICLInlineContentModule.m */; };
-		4C469F7F20EC60F100094EA4 /* ICLMediaAssessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469F5820EC60F000094EA4 /* ICLMediaAssessor.m */; };
-		4C469F8020EC60F100094EA4 /* ICLPayloadLocal.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469F5920EC60F000094EA4 /* ICLPayloadLocal.m */; };
 		CC000005CCCCCCCCCCCCCC00 /* ICLProcessDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000001CCCCCCCCCCCCCC00 /* ICLProcessDelegate.swift */; };
 		CC000006CCCCCCCCCCCCCC00 /* ICLProcessMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000002CCCCCCCCCCCCCC00 /* ICLProcessMain.swift */; };
 		CC000007CCCCCCCCCCCCCC00 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000003CCCCCCCCCCCCCC00 /* main.swift */; };
-		4C469F8420EC60F100094EA4 /* ICLHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469F5D20EC60F000094EA4 /* ICLHelpers.m */; };
+		CC000008CCCCCCCCCCCCCC00 /* ICLHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000013CCCCCCCCCCCCCC00 /* ICLHelpers.swift */; };
+		4C469F8020EC60F100094EA4 /* ICLPayloadLocal.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469F5920EC60F000094EA4 /* ICLPayloadLocal.m */; };
 		4C469F8520EC60F100094EA4 /* ICLPayloadShared.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469F5E20EC60F000094EA4 /* ICLPayloadShared.m */; };
-		4C469F8620EC60F100094EA4 /* ICLPluginManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469F5F20EC60F000094EA4 /* ICLPluginManager.m */; };
-		4C469F8720EC60F100094EA4 /* ICLMediaAssessment.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469F6020EC60F000094EA4 /* ICLMediaAssessment.m */; };
+		CC00000CCCCCCCCCCCCCCC00 /* ICLMediaAssessment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC00000BCCCCCCCCCCCCCC00 /* ICLMediaAssessment.swift */; };
+		CC00000ECCCCCCCCCCCCCC00 /* ICLMediaAssessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC00000DCCCCCCCCCCCCCC00 /* ICLMediaAssessor.swift */; };
+		CC000010CCCCCCCCCCCCCC00 /* ICLInlineContentModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC00000FCCCCCCCCCCCCCC00 /* ICLInlineContentModule.swift */; };
+		CC000012CCCCCCCCCCCCCC00 /* ICLPluginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000011CCCCCCCCCCCCCC00 /* ICLPluginManager.swift */; };
+		CC000014CCCCCCCCCCCCCC00 /* ICMInlineHTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000015CCCCCCCCCCCCCC00 /* ICMInlineHTML.swift */; };
+		CC000016CCCCCCCCCCCCCC00 /* ICMInlineImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000017CCCCCCCCCCCCCC00 /* ICMInlineImage.swift */; };
+		CC000018CCCCCCCCCCCCCC00 /* ICMInlineVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000019CCCCCCCCCCCCCC00 /* ICMInlineVideo.swift */; };
+		CC00001ACCCCCCCCCCCCCC00 /* ICMAssessedMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC00001BCCCCCCCCCCCCCC00 /* ICMAssessedMedia.swift */; };
 		4C469F8820EC60F100094EA4 /* ICMAssessedMedia.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C469F6320EC60F000094EA4 /* ICMAssessedMedia.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4C469F8920EC60F100094EA4 /* ICMAssessedMedia.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469F6420EC60F000094EA4 /* ICMAssessedMedia.m */; };
 		4C469F8A20EC60F100094EA4 /* ICMInlineVideo.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C469F6620EC60F000094EA4 /* ICMInlineVideo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4C469F8B20EC60F100094EA4 /* ICMInlineHTML.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C469F6720EC60F000094EA4 /* ICMInlineHTML.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4C469F8C20EC60F100094EA4 /* ICMInlineImage.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C469F6820EC60F000094EA4 /* ICMInlineImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4C469F8D20EC60F100094EA4 /* ICMInlineVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469F6920EC60F000094EA4 /* ICMInlineVideo.m */; };
-		4C469F8E20EC60F100094EA4 /* ICMInlineImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469F6A20EC60F000094EA4 /* ICMInlineImage.m */; };
-		4C469F8F20EC60F100094EA4 /* ICMInlineHTML.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469F6B20EC60F000094EA4 /* ICMInlineHTML.m */; };
 		4C469FC220EC610000094EA4 /* TPCPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469F9220EC610000094EA4 /* TPCPreferences.m */; };
 		4C469FC320EC610000094EA4 /* TPCPreferencesUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469F9320EC610000094EA4 /* TPCPreferencesUserDefaults.m */; };
 		4C469FCF20EC610000094EA4 /* TPCPreferencesUserDefaults.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C469FA520EC610000094EA4 /* TPCPreferencesUserDefaults.h */; };
@@ -119,25 +119,25 @@
 		4C469F5320EC60F000094EA4 /* CoreModulesImportsPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreModulesImportsPrivate.h; sourceTree = "<group>"; };
 		4C469F5420EC60F000094EA4 /* ICLMediaAssessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICLMediaAssessor.h; sourceTree = "<group>"; };
 		4C469F5520EC60F000094EA4 /* ICLInlineContentModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICLInlineContentModule.h; sourceTree = "<group>"; };
-		4C469F5720EC60F000094EA4 /* ICLInlineContentModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICLInlineContentModule.m; sourceTree = "<group>"; };
-		4C469F5820EC60F000094EA4 /* ICLMediaAssessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICLMediaAssessor.m; sourceTree = "<group>"; };
-		4C469F5920EC60F000094EA4 /* ICLPayloadLocal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICLPayloadLocal.m; sourceTree = "<group>"; };
 		CC000001CCCCCCCCCCCCCC00 /* ICLProcessDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ICLProcessDelegate.swift; sourceTree = "<group>"; };
 		CC000002CCCCCCCCCCCCCC00 /* ICLProcessMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ICLProcessMain.swift; sourceTree = "<group>"; };
 		CC000003CCCCCCCCCCCCCC00 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		CC000004CCCCCCCCCCCCCC00 /* ICLSwiftBridgingHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICLSwiftBridgingHeader.h; sourceTree = "<group>"; };
-		4C469F5D20EC60F000094EA4 /* ICLHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICLHelpers.m; sourceTree = "<group>"; };
+		CC000013CCCCCCCCCCCCCC00 /* ICLHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ICLHelpers.swift; sourceTree = "<group>"; };
+		4C469F5920EC60F000094EA4 /* ICLPayloadLocal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICLPayloadLocal.m; sourceTree = "<group>"; };
 		4C469F5E20EC60F000094EA4 /* ICLPayloadShared.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICLPayloadShared.m; sourceTree = "<group>"; };
-		4C469F5F20EC60F000094EA4 /* ICLPluginManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICLPluginManager.m; sourceTree = "<group>"; };
-		4C469F6020EC60F000094EA4 /* ICLMediaAssessment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICLMediaAssessment.m; sourceTree = "<group>"; };
+		CC00000BCCCCCCCCCCCCCC00 /* ICLMediaAssessment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ICLMediaAssessment.swift; sourceTree = "<group>"; };
+		CC00000DCCCCCCCCCCCCCC00 /* ICLMediaAssessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ICLMediaAssessor.swift; sourceTree = "<group>"; };
+		CC00000FCCCCCCCCCCCCCC00 /* ICLInlineContentModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ICLInlineContentModule.swift; sourceTree = "<group>"; };
+		CC000011CCCCCCCCCCCCCC00 /* ICLPluginManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ICLPluginManager.swift; sourceTree = "<group>"; };
 		4C469F6320EC60F000094EA4 /* ICMAssessedMedia.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICMAssessedMedia.h; sourceTree = "<group>"; };
-		4C469F6420EC60F000094EA4 /* ICMAssessedMedia.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICMAssessedMedia.m; sourceTree = "<group>"; };
+		CC00001BCCCCCCCCCCCCCC00 /* ICMAssessedMedia.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ICMAssessedMedia.swift; sourceTree = "<group>"; };
 		4C469F6620EC60F000094EA4 /* ICMInlineVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICMInlineVideo.h; sourceTree = "<group>"; };
 		4C469F6720EC60F000094EA4 /* ICMInlineHTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICMInlineHTML.h; sourceTree = "<group>"; };
 		4C469F6820EC60F000094EA4 /* ICMInlineImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICMInlineImage.h; sourceTree = "<group>"; };
-		4C469F6920EC60F000094EA4 /* ICMInlineVideo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICMInlineVideo.m; sourceTree = "<group>"; };
-		4C469F6A20EC60F000094EA4 /* ICMInlineImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICMInlineImage.m; sourceTree = "<group>"; };
-		4C469F6B20EC60F000094EA4 /* ICMInlineHTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICMInlineHTML.m; sourceTree = "<group>"; };
+		CC000019CCCCCCCCCCCCCC00 /* ICMInlineVideo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ICMInlineVideo.swift; sourceTree = "<group>"; };
+		CC000017CCCCCCCCCCCCCC00 /* ICMInlineImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ICMInlineImage.swift; sourceTree = "<group>"; };
+		CC000015CCCCCCCCCCCCCC00 /* ICMInlineHTML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ICMInlineHTML.swift; sourceTree = "<group>"; };
 		4C469F9220EC610000094EA4 /* TPCPreferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPCPreferences.m; sourceTree = "<group>"; };
 		4C469F9320EC610000094EA4 /* TPCPreferencesUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPCPreferencesUserDefaults.m; sourceTree = "<group>"; };
 		4C469FA520EC610000094EA4 /* TPCPreferencesUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPCPreferencesUserDefaults.h; sourceTree = "<group>"; };
@@ -295,13 +295,13 @@
 		4C469F5620EC60F000094EA4 /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				4C469F5D20EC60F000094EA4 /* ICLHelpers.m */,
-				4C469F5720EC60F000094EA4 /* ICLInlineContentModule.m */,
-				4C469F6020EC60F000094EA4 /* ICLMediaAssessment.m */,
-				4C469F5820EC60F000094EA4 /* ICLMediaAssessor.m */,
+				CC000013CCCCCCCCCCCCCC00 /* ICLHelpers.swift */,
+				CC00000FCCCCCCCCCCCCCC00 /* ICLInlineContentModule.swift */,
+				CC00000BCCCCCCCCCCCCCC00 /* ICLMediaAssessment.swift */,
+				CC00000DCCCCCCCCCCCCCC00 /* ICLMediaAssessor.swift */,
 				4C469F5920EC60F000094EA4 /* ICLPayloadLocal.m */,
 				4C469F5E20EC60F000094EA4 /* ICLPayloadShared.m */,
-				4C469F5F20EC60F000094EA4 /* ICLPluginManager.m */,
+				CC000011CCCCCCCCCCCCCC00 /* ICLPluginManager.swift */,
 				CC000001CCCCCCCCCCCCCC00 /* ICLProcessDelegate.swift */,
 				CC000002CCCCCCCCCCCCCC00 /* ICLProcessMain.swift */,
 				CC000003CCCCCCCCCCCCCC00 /* main.swift */,
@@ -322,7 +322,7 @@
 			isa = PBXGroup;
 			children = (
 				4C469F6320EC60F000094EA4 /* ICMAssessedMedia.h */,
-				4C469F6420EC60F000094EA4 /* ICMAssessedMedia.m */,
+				CC00001BCCCCCCCCCCCCCC00 /* ICMAssessedMedia.swift */,
 			);
 			path = "Assessed Media";
 			sourceTree = "<group>";
@@ -333,9 +333,9 @@
 				4C469F6620EC60F000094EA4 /* ICMInlineVideo.h */,
 				4C469F6720EC60F000094EA4 /* ICMInlineHTML.h */,
 				4C469F6820EC60F000094EA4 /* ICMInlineImage.h */,
-				4C469F6920EC60F000094EA4 /* ICMInlineVideo.m */,
-				4C469F6A20EC60F000094EA4 /* ICMInlineImage.m */,
-				4C469F6B20EC60F000094EA4 /* ICMInlineHTML.m */,
+				CC000019CCCCCCCCCCCCCC00 /* ICMInlineVideo.swift */,
+				CC000017CCCCCCCCCCCCCC00 /* ICMInlineImage.swift */,
+				CC000015CCCCCCCCCCCCCC00 /* ICMInlineHTML.swift */,
 			);
 			path = "Root Classes";
 			sourceTree = "<group>";
@@ -624,21 +624,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4C469F7F20EC60F100094EA4 /* ICLMediaAssessor.m in Sources */,
 				4C469FC220EC610000094EA4 /* TPCPreferences.m in Sources */,
 				4C469FC320EC610000094EA4 /* TPCPreferencesUserDefaults.m in Sources */,
-				4C469F8520EC60F100094EA4 /* ICLPayloadShared.m in Sources */,
-				4C469F8420EC60F100094EA4 /* ICLHelpers.m in Sources */,
-				4C469F8D20EC60F100094EA4 /* ICMInlineVideo.m in Sources */,
-				4C469F7E20EC60F100094EA4 /* ICLInlineContentModule.m in Sources */,
+				CC000018CCCCCCCCCCCCCC00 /* ICMInlineVideo.swift in Sources */,
+				CC000008CCCCCCCCCCCCCC00 /* ICLHelpers.swift in Sources */,
 				4C469F8020EC60F100094EA4 /* ICLPayloadLocal.m in Sources */,
-				4C469F8720EC60F100094EA4 /* ICLMediaAssessment.m in Sources */,
-				4C469F8620EC60F100094EA4 /* ICLPluginManager.m in Sources */,
+				4C469F8520EC60F100094EA4 /* ICLPayloadShared.m in Sources */,
+				CC00000CCCCCCCCCCCCCCC00 /* ICLMediaAssessment.swift in Sources */,
+				CC00000ECCCCCCCCCCCCCC00 /* ICLMediaAssessor.swift in Sources */,
+				CC000010CCCCCCCCCCCCCC00 /* ICLInlineContentModule.swift in Sources */,
+				CC000012CCCCCCCCCCCCCC00 /* ICLPluginManager.swift in Sources */,
 				CC000005CCCCCCCCCCCCCC00 /* ICLProcessDelegate.swift in Sources */,
 				CC000006CCCCCCCCCCCCCC00 /* ICLProcessMain.swift in Sources */,
-				4C469F8920EC60F100094EA4 /* ICMAssessedMedia.m in Sources */,
-				4C469F8F20EC60F100094EA4 /* ICMInlineHTML.m in Sources */,
-				4C469F8E20EC60F100094EA4 /* ICMInlineImage.m in Sources */,
+				CC00001ACCCCCCCCCCCCCC00 /* ICMAssessedMedia.swift in Sources */,
+				CC000014CCCCCCCCCCCCCC00 /* ICMInlineHTML.swift in Sources */,
+				CC000016CCCCCCCCCCCCCC00 /* ICMInlineImage.swift in Sources */,
 				CC000007CCCCCCCCCCCCCC00 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

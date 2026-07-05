@@ -42,11 +42,7 @@
 
 #import "ICLInlineContentProtocol.h"
 #import "ICLMediaType.h"
-#import "ICLInlineContentModule.h"
-#import "ICLInlineContentModulePrivate.h"
-#import "ICLPluginManagerPrivate.h"
 #import "ICLPayloadPrivate.h"
-#import "CoreModulesImportsPrivate.h"
 
 #import "TPCPreferences.h"
 #import "TPCPreferencesUserDefaults.h"

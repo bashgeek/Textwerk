@@ -35,107 +35,47 @@
  *
  *********************************************************************** */
 
-#import "ICMInlineHTML.h"
+/* Checks every URL to determine if it is an
+ image or video, then delegates responsibility
+ for the module to an instance of a root class. */
 
-NS_ASSUME_NONNULL_BEGIN
+import Foundation
 
-@implementation ICMInlineHTML
+@objc
+class ICMAssessedMedia: ICLInlineContentModule {
+	private var mediaAssessor: ICLMediaAssessor? = nil
 
-- (void)performActionForHTML:(NSString *)unescapedHTML
-{
-	NSParameterAssert(unescapedHTML != nil);
+	@objc private func _assessMedia() {
+		let assessor = ICLMediaAssessor.assessor(for: payload.url, completionBlock: { [weak self] assessment, error in
+			guard let self = self else { return }
+			let type: ICLMediaType = assessment?.type ?? .unknown
+			let safeToLoad = assessment != nil && error == nil && ICLInlineContentModule.isTypeDeferrable(type)
+			if safeToLoad, let assessment = assessment {
+				self._safeToLoadMedia(ofType: type, at: assessment.url)
+			} else {
+				self._unsafeToLoadMedia()
+			}
+			self.mediaAssessor = nil
+		})
+		self.mediaAssessor = assessor
+		assessor.resume()
+	}
 
-	ICLPayloadMutable *payload = self.payload;
+	private func _unsafeToLoadMedia() {
+		cancel()
+	}
 
-	NSDictionary *templateAttributes =
-	@{
-		@"classAttribute" : payload.classAttribute,
-		@"unescapedHTML" : unescapedHTML,
-		@"uniqueIdentifier" : payload.uniqueIdentifier
-	};
+	private func _safeToLoadMedia(ofType type: ICLMediaType, at url: URL) {
+		payload.urlToInline = url
+		deferAsType(type, performCheck: false)
+	}
 
-	NSError *templateRenderError = nil;
+	@objc(actionForURL:)
+	override class func action(for url: URL) -> Selector? {
+		guard TPCPreferences.inlineMediaCheckEverything() else { return nil }
+		return #selector(_assessMedia)
+	}
 
-	NSString *html = [self.template renderObject:templateAttributes error:&templateRenderError];
-
-	payload.html = html;
-
-	[self finalizeWithError:templateRenderError];
+	override class var contentImageOrVideo: Bool { true }
+	override class var contentIsFile: Bool { true }
 }
-
-- (void)notifyUnableToPresentHTML
-{
-	[self cancel];
-}
-
-#pragma mark -
-#pragma mark Action Block
-
-+ (ICLInlineContentModuleActionBlock)actionBlockForHTML:(NSString *)html
-{
-	NSParameterAssert(html != nil);
-
-	return [^(ICLInlineContentModule *module) {
-		__weak ICMInlineHTML *moduleTyped = (id)module;
-
-		[moduleTyped performActionForHTML:html];
-	} copy];
-}
-
-@end
-
-#pragma mark -
-#pragma mark Foundation
-
-@implementation ICMInlineHTMLFoundation
-
-- (nullable NSArray<NSURL *> *)styleResources
-{
-	static NSArray<NSURL *> *styleResources = nil;
-
-	static dispatch_once_t onceToken;
-
-	dispatch_once(&onceToken, ^{
-		styleResources =
-		@[
-		  [RZMainBundle() URLForResource:@"ICMInlineHTML" withExtension:@"css" subdirectory:@"Components"]
-		];
-	});
-
-	return styleResources;
-}
-
-- (nullable NSArray<NSURL *> *)scriptResources
-{
-	static NSArray<NSURL *> *scriptResources = nil;
-
-	static dispatch_once_t onceToken;
-
-	dispatch_once(&onceToken, ^{
-		scriptResources =
-		@[
-		  [RZMainBundle() URLForResource:@"ICMInlineHTML" withExtension:@"js" subdirectory:@"Components"]
-		];
-	});
-
-	return scriptResources;
-}
-
-- (nullable NSURL *)templateURL
-{
-	return [RZMainBundle() URLForResource:@"ICMInlineHTML" withExtension:@"mustache" subdirectory:@"Components"];
-}
-
-- (nullable NSString *)entrypoint
-{
-	return @"_ICMInlineHTML";
-}
-
-+ (BOOL)contentUntrusted
-{
-	return YES;
-}
-
-@end
-
-NS_ASSUME_NONNULL_END

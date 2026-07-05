@@ -35,80 +35,57 @@
  *
  *********************************************************************** */
 
-#import "TPCPreferences.h"
-#import "ICLMediaAssessor.h"
-#import "ICMAssessedMedia.h"
+import Foundation
 
-NS_ASSUME_NONNULL_BEGIN
-
-@interface ICMAssessedMedia ()
-@property (nonatomic, strong, nullable) ICLMediaAssessor *mediaAssessor;
-@end
-
-@implementation ICMAssessedMedia
-
-- (void)_assessMedia
-{
-	NSURL *url = self.payload.url;
-
-	ICLMediaAssessor *mediaAssessor =
-	[ICLMediaAssessor assessorForURL:url
-					 completionBlock:^(ICLMediaAssessment *assessment, NSError *error) {
-						 ICLMediaType type = ((assessment) ? assessment.type : ICLMediaTypeUnknown);
-						 
-						 BOOL safeToLoad = (assessment != nil && error == nil && [ICLInlineContentModule isTypeDeferrable:type]);
-
-						 if (safeToLoad) {
-							 [self _safeToLoadMediaOfType:type atURL:assessment.url];
-						 } else {
-							 [self _unsafeToLoadMedia];
-						 }
-
-						 self.mediaAssessor = nil;
-					 }];
-
-	self.mediaAssessor = mediaAssessor;
-
-	[mediaAssessor resume];
-}
-
-- (void)_unsafeToLoadMedia
-{
-	[self cancel];
-}
-
-- (void)_safeToLoadMediaOfType:(ICLMediaType)type atURL:(NSURL *)url
-{
-	self.payload.urlToInline = url;
-
-	[self deferAsType:type performCheck:NO];
-}
-
-#pragma mark -
-#pragma mark Action
-
-+ (nullable SEL)actionForURL:(NSURL *)url
-{
-	if ([TPCPreferences inlineMediaCheckEverything] == NO) {
-		return NULL;
+@objc
+open class ICMInlineHTMLFoundation: ICLInlineContentModule {
+	override open var styleResources: [URL]? {
+		Bundle.main.url(forResource: "ICMInlineHTML", withExtension: "css", subdirectory: "Components").map { [$0] }
 	}
 
-	return @selector(_assessMedia);
+	override open var scriptResources: [URL]? {
+		Bundle.main.url(forResource: "ICMInlineHTML", withExtension: "js", subdirectory: "Components").map { [$0] }
+	}
+
+	override open var templateURL: URL? {
+		Bundle.main.url(forResource: "ICMInlineHTML", withExtension: "mustache", subdirectory: "Components")
+	}
+
+	override open var entrypoint: String? { "_ICMInlineHTML" }
+	override open class var contentUntrusted: Bool { true }
 }
 
-#pragma mark -
-#pragma mark Utilities
+@objc
+open class ICMInlineHTML: ICMInlineHTMLFoundation {
 
-+ (BOOL)contentImageOrVideo
-{
-	return YES;
+	@objc(performActionForHTML:)
+	open func performAction(forHTML unescapedHTML: String) {
+		let attrs: NSDictionary = [
+			"classAttribute": payload.classAttribute,
+			"unescapedHTML": unescapedHTML,
+			"uniqueIdentifier": payload.uniqueIdentifier
+		]
+		var renderError: Error? = nil
+		let rendered: String?
+		do {
+			rendered = try template?.renderObject(attrs)
+		} catch {
+			renderError = error
+			rendered = nil
+		}
+		payload.html = rendered ?? ""
+		finalizeWithError(renderError)
+	}
+
+	@objc(notifyUnableToPresentHTML)
+	open func notifyUnableToPresentHTML() {
+		cancel()
+	}
+
+	@objc(actionBlockForHTML:)
+	open class func actionBlock(forHTML html: String) -> ICLInlineContentModuleActionBlock {
+		return { module in
+			(module as? ICMInlineHTML)?.performAction(forHTML: html)
+		}
+	}
 }
-
-+ (BOOL)contentIsFile
-{
-	return YES;
-}
-
-@end
-
-NS_ASSUME_NONNULL_END

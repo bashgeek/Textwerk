@@ -42,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 #pragma mark Immutable Object
 
-@interface ICLMediaAssessment : XRPortablePropertyObject
+@interface ICLMediaAssessment : NSObject <NSSecureCoding, NSCopying, NSMutableCopying>
 - (instancetype)init NS_UNAVAILABLE;
 
 /**

@@ -39,14 +39,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/* Ivar declarations removed — ICLInlineContentModule is now implemented in Swift.
+   Storage is handled by Swift private stored properties. */
 @interface ICLInlineContentModule ()
-{
-@private
-	ICLProcessMain *_process;
-	ICLPayloadMutable *_payload;
-	BOOL _moduleFinalized;
-}
-
 @end
 
 NS_ASSUME_NONNULL_END

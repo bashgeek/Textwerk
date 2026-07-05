@@ -37,15 +37,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/* Ivar declarations removed — ICLMediaAssessment is now implemented in Swift.
+   Storage is handled by Swift fileprivate properties. */
 @interface ICLMediaAssessment ()
-{
-@protected
-	NSURL *_url;
-	ICLMediaType _type;
-	NSString *_contentType;
-	unsigned long long _contentLength;
-}
-
 @end
 
 NS_ASSUME_NONNULL_END

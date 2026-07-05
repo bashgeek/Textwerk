@@ -40,7 +40,7 @@ import os.log
 
 private let ICLInlineContentErrorDomain: String = "ICLInlineContentErrorDomain"
 
-@objc final class ICLProcessMain: NSObject, ICLInlineContentServerProtocol, @unchecked Sendable {
+@objc public final class ICLProcessMain: NSObject, ICLInlineContentServerProtocol, @unchecked Sendable {
 	private let serviceConnection: NSXPCConnection
 
 	@available(*, unavailable) override init() { fatalError() }
@@ -81,7 +81,7 @@ private let ICLInlineContentErrorDomain: String = "ICLInlineContentErrorDomain"
 	private static let pluginLoadLock = NSLock()
 	nonisolated(unsafe) private static var pluginsLoaded = false
 
-	func warmServiceByLoadingPlugins(atLocations pluginLocations: [URL]) {
+	public func warmServiceByLoadingPlugins(atLocations pluginLocations: [URL]) {
 		Self.pluginLoadLock.lock()
 		defer { Self.pluginLoadLock.unlock() }
 		guard !Self.pluginsLoaded else { return }
@@ -92,7 +92,7 @@ private let ICLInlineContentErrorDomain: String = "ICLInlineContentErrorDomain"
 	private static let defaultsLock = NSLock()
 	nonisolated(unsafe) private static var defaultsRegistered = false
 
-	func warmService(byRegisteringDefaults defaults: [String: Any]) {
+	public func warmService(byRegisteringDefaults defaults: [String: Any]) {
 		Self.defaultsLock.lock()
 		defer { Self.defaultsLock.unlock() }
 		guard !Self.defaultsRegistered else { return }
@@ -102,12 +102,12 @@ private let ICLInlineContentErrorDomain: String = "ICLInlineContentErrorDomain"
 
 	// MARK: - XPC Interface
 
-	func processURL(_ url: URL, withUniqueIdentifier uniqueIdentifier: String, atLineNumber lineNumber: String, index: UInt, inView viewIdentifier: String) {
+	public func processURL(_ url: URL, withUniqueIdentifier uniqueIdentifier: String, atLineNumber lineNumber: String, index: UInt, inView viewIdentifier: String) {
 		guard let payload = ICLPayloadMutable(url: url, withUniqueIdentifier: uniqueIdentifier, atLineNumber: lineNumber, index: index, inView: viewIdentifier) else { return }
 		processPayload(payload)
 	}
 
-	func processPayload(_ payload: ICLPayload) {
+	public func processPayload(_ payload: ICLPayload) {
 		guard let scheme = payload.url.scheme,
 			  (scheme == "http" || scheme == "https") else { return }
 
