@@ -1007,10 +1007,6 @@ NSString * const TVCLogControllerViewFinishedLoadingNotification = @"TVCLogContr
 
 	self.historyLoaded = NO;
 
-	if (self.backingView.isUsingWebKit2 != [TVCLogView webKit2Enabled]) {
-		[self rebuildBackingView];
-	}
-
 	[self loadInitialDocument];
 }
 
