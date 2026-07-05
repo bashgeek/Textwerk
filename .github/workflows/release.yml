@@ -7,11 +7,13 @@ on:
 
 jobs:
   build:
-    runs-on: macos-15
+    runs-on: macos-26
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           submodules: recursive
 
@@ -23,11 +25,20 @@ jobs:
           cd build
           zip -r --symlinks "Textual-${{ github.ref_name }}.zip" Textual.app
 
+      - name: Generate changelog
+        run: |
+          PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || true)
+          if [[ -n "$PREV_TAG" ]]; then
+            git log "${PREV_TAG}..HEAD" --pretty=format:"- %s" --no-merges > changelog.txt
+          else
+            git log --pretty=format:"- %s" --no-merges > changelog.txt
+          fi
+
       - name: Create release
         run: |
           gh release create "${{ github.ref_name }}" \
             --title "${{ github.ref_name }}" \
-            --generate-notes \
+            --notes-file changelog.txt \
             "build/Textual-${{ github.ref_name }}.zip"
         env:
           GH_TOKEN: ${{ github.token }}
