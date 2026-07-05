@@ -35,8 +35,26 @@
  *
  *********************************************************************** */
 
-#import <CocoaExtensions/CocoaExtensions.h>
+import Foundation
 
-#import <GRMustache/GRMustache.h>
+final class ICLProcessDelegate: NSObject, NSXPCListenerDelegate {
+	func listener(_ listener: NSXPCListener, shouldAcceptNewConnection newConnection: NSXPCConnection) -> Bool {
+		let exportedInterface = NSXPCInterface(with: ICLInlineContentServerProtocol.self)
 
-#import "StaticDefinitions.h"
+		exportedInterface.setClasses(
+			[NSArray.self, NSURL.self] as NSSet,
+			for: NSSelectorFromString("warmServiceByLoadingPluginsAtLocations:"),
+			argumentIndex: 0,
+			ofReply: false
+		)
+
+		newConnection.exportedInterface = exportedInterface
+		newConnection.exportedObject = ICLProcessMain(xpcConnection: newConnection)
+
+		let remoteInterface = NSXPCInterface(with: ICLInlineContentClientProtocol.self)
+		newConnection.remoteObjectInterface = remoteInterface
+
+		newConnection.resume()
+		return true
+	}
+}

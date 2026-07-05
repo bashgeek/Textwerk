@@ -35,8 +35,71 @@
  *
  *********************************************************************** */
 
-#import <CocoaExtensions/CocoaExtensions.h>
+import Foundation
+import os.log
 
-#import <GRMustache/GRMustache.h>
+final class RCMProcessMain: NSObject, RCMConnectionManagerServerProtocol {
+	private var connection: Connection?
+	private let serviceConnection: NSXPCConnection
 
-#import "StaticDefinitions.h"
+	@available(*, unavailable)
+	override init() { fatalError() }
+
+	init(xpcConnection: NSXPCConnection) {
+		serviceConnection = xpcConnection
+		super.init()
+		Logging.defaultSubsystem = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "General")
+	}
+
+	func open(with config: IRCConnectionConfig) {
+		precondition(connection == nil, "Method invoked with connection already open")
+		let conn = Connection(with: config, on: serviceConnection)
+		conn.open()
+		connection = conn
+	}
+
+	func close() {
+		precondition(connection != nil, "Method invoked without performing setup first")
+		connection?.close()
+	}
+
+	func sendData(_ data: Data) {
+		sendData(data, bypassQueue: false)
+	}
+
+	func sendData(_ data: Data, bypassQueue: Bool) {
+		precondition(connection != nil, "Method invoked without performing setup first")
+		connection?.send(data, bypassQueue: bypassQueue)
+	}
+
+	func exportSecureConnectionInformation(_ completionBlock: RCMSecureConnectionInformationCompletionBlock) {
+		precondition(connection != nil, "Method invoked without performing setup first")
+		try? connection?.exportSecureConnectionInformation(to: completionBlock)
+	}
+
+	func enforceFloodControl() {
+		precondition(connection != nil, "Method invoked without performing setup first")
+		connection?.enforceFloodControl()
+	}
+
+	func clearSendQueue() {
+		precondition(connection != nil, "Method invoked without performing setup first")
+		connection?.clearSendQueue()
+	}
+
+	func enableAppNap() {
+		UserDefaults.standard.register(defaults: ["NSAppSleepDisabled": false])
+	}
+
+	func disableAppNap() {
+		UserDefaults.standard.register(defaults: ["NSAppSleepDisabled": true])
+	}
+
+	func enableSuddenTermination() {
+		ProcessInfo.processInfo.enableSuddenTermination()
+	}
+
+	func disableSuddenTermination() {
+		ProcessInfo.processInfo.disableSuddenTermination()
+	}
+}

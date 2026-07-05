@@ -5,7 +5,7 @@
  *                   | |  __/>  <| |_| |_| | (_| | |
  *                   |_|\___/_/\_\\__|\__,_|\__,_|_|
  *
- * Copyright (c) 2017, 2018 Codeux Software, LLC & respective contributors.
+ * Copyright (c) 2016 - 2018 Codeux Software, LLC & respective contributors.
  *       Please see Acknowledgements.pdf for additional information.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,41 +35,18 @@
  *
  *********************************************************************** */
 
-#import "ICLInlineContentProtocol.h"
-#import "ICLProcessMainPrivate.h"
-#import "ICLProcessDelegatePrivate.h"
+import CoreData
 
-NS_ASSUME_NONNULL_BEGIN
+@objc(HLSHistoricLogLineEntityMigration)
+final class HLSHistoricLogLineEntityMigration: NSEntityMigrationPolicy {
+	@objc func newLogLineUniqueIdentifier() -> String {
+		let uuid = UUID().uuidString // e.g. 68753A44-4D6F-1226-9C60-0050E4C00067
+		return String(uuid.dropFirst(19))  // e.g. 9C60-0050E4C00067
+	}
 
-@implementation ICLProcessDelegate
+	private static let sessionIdentifier: UInt32 = UInt32.random(in: 0..<999999)
 
-#pragma mark -
-#pragma mark XPC Delegate
-
-- (BOOL)listener:(NSXPCListener *)listener shouldAcceptNewConnection:(NSXPCConnection *)newConnection
-{
-	NSXPCInterface *exportedInterface = [NSXPCInterface interfaceWithProtocol:@protocol(ICLInlineContentServerProtocol)];
-
-	[exportedInterface setClasses:[NSSet setWithObjects:[NSArray class], [NSURL class], nil]
-					  forSelector:@selector(warmServiceByLoadingPluginsAtLocations:)
-					argumentIndex:0
-						  ofReply:NO];
-
-	newConnection.exportedInterface = exportedInterface;
-
-	ICLProcessMain *exportedObject = [[ICLProcessMain alloc] initWithXPCConnection:newConnection];
-
-	newConnection.exportedObject = exportedObject;
-
-	NSXPCInterface *remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:@protocol(ICLInlineContentClientProtocol)];
-
-	newConnection.remoteObjectInterface = remoteObjectInterface;
-
-	[newConnection resume];
-
-	return YES;
+	@objc func newSessionIdentifier() -> NSNumber {
+		return NSNumber(value: HLSHistoricLogLineEntityMigration.sessionIdentifier)
+	}
 }
-
-@end
-
-NS_ASSUME_NONNULL_END

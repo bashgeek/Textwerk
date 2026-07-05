@@ -28,9 +28,9 @@
 		4C469F7E20EC60F100094EA4 /* ICLInlineContentModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469F5720EC60F000094EA4 /* ICLInlineContentModule.m */; };
 		4C469F7F20EC60F100094EA4 /* ICLMediaAssessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469F5820EC60F000094EA4 /* ICLMediaAssessor.m */; };
 		4C469F8020EC60F100094EA4 /* ICLPayloadLocal.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469F5920EC60F000094EA4 /* ICLPayloadLocal.m */; };
-		4C469F8120EC60F100094EA4 /* ICLProcessMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469F5A20EC60F000094EA4 /* ICLProcessMain.m */; };
-		4C469F8220EC60F100094EA4 /* ICLProcessDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469F5B20EC60F000094EA4 /* ICLProcessDelegate.m */; };
-		4C469F8320EC60F100094EA4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469F5C20EC60F000094EA4 /* main.m */; };
+		CC000005CCCCCCCCCCCCCC00 /* ICLProcessDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000001CCCCCCCCCCCCCC00 /* ICLProcessDelegate.swift */; };
+		CC000006CCCCCCCCCCCCCC00 /* ICLProcessMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000002CCCCCCCCCCCCCC00 /* ICLProcessMain.swift */; };
+		CC000007CCCCCCCCCCCCCC00 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000003CCCCCCCCCCCCCC00 /* main.swift */; };
 		4C469F8420EC60F100094EA4 /* ICLHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469F5D20EC60F000094EA4 /* ICLHelpers.m */; };
 		4C469F8520EC60F100094EA4 /* ICLPayloadShared.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469F5E20EC60F000094EA4 /* ICLPayloadShared.m */; };
 		4C469F8620EC60F100094EA4 /* ICLPluginManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469F5F20EC60F000094EA4 /* ICLPluginManager.m */; };
@@ -122,9 +122,10 @@
 		4C469F5720EC60F000094EA4 /* ICLInlineContentModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICLInlineContentModule.m; sourceTree = "<group>"; };
 		4C469F5820EC60F000094EA4 /* ICLMediaAssessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICLMediaAssessor.m; sourceTree = "<group>"; };
 		4C469F5920EC60F000094EA4 /* ICLPayloadLocal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICLPayloadLocal.m; sourceTree = "<group>"; };
-		4C469F5A20EC60F000094EA4 /* ICLProcessMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICLProcessMain.m; sourceTree = "<group>"; };
-		4C469F5B20EC60F000094EA4 /* ICLProcessDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICLProcessDelegate.m; sourceTree = "<group>"; };
-		4C469F5C20EC60F000094EA4 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		CC000001CCCCCCCCCCCCCC00 /* ICLProcessDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ICLProcessDelegate.swift; sourceTree = "<group>"; };
+		CC000002CCCCCCCCCCCCCC00 /* ICLProcessMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ICLProcessMain.swift; sourceTree = "<group>"; };
+		CC000003CCCCCCCCCCCCCC00 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		CC000004CCCCCCCCCCCCCC00 /* ICLSwiftBridgingHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICLSwiftBridgingHeader.h; sourceTree = "<group>"; };
 		4C469F5D20EC60F000094EA4 /* ICLHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICLHelpers.m; sourceTree = "<group>"; };
 		4C469F5E20EC60F000094EA4 /* ICLPayloadShared.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICLPayloadShared.m; sourceTree = "<group>"; };
 		4C469F5F20EC60F000094EA4 /* ICLPluginManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICLPluginManager.m; sourceTree = "<group>"; };
@@ -286,6 +287,7 @@
 				4C469F5120EC60F000094EA4 /* ICLPluginManagerPrivate.h */,
 				4C469F5220EC60F000094EA4 /* ICLInlineContentModulePrivate.h */,
 				4C469F5320EC60F000094EA4 /* CoreModulesImportsPrivate.h */,
+				CC000004CCCCCCCCCCCCCC00 /* ICLSwiftBridgingHeader.h */,
 			);
 			path = Private;
 			sourceTree = "<group>";
@@ -300,9 +302,9 @@
 				4C469F5920EC60F000094EA4 /* ICLPayloadLocal.m */,
 				4C469F5E20EC60F000094EA4 /* ICLPayloadShared.m */,
 				4C469F5F20EC60F000094EA4 /* ICLPluginManager.m */,
-				4C469F5B20EC60F000094EA4 /* ICLProcessDelegate.m */,
-				4C469F5A20EC60F000094EA4 /* ICLProcessMain.m */,
-				4C469F5C20EC60F000094EA4 /* main.m */,
+				CC000001CCCCCCCCCCCCCC00 /* ICLProcessDelegate.swift */,
+				CC000002CCCCCCCCCCCCCC00 /* ICLProcessMain.swift */,
+				CC000003CCCCCCCCCCCCCC00 /* main.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -632,12 +634,12 @@
 				4C469F8020EC60F100094EA4 /* ICLPayloadLocal.m in Sources */,
 				4C469F8720EC60F100094EA4 /* ICLMediaAssessment.m in Sources */,
 				4C469F8620EC60F100094EA4 /* ICLPluginManager.m in Sources */,
-				4C469F8220EC60F100094EA4 /* ICLProcessDelegate.m in Sources */,
-				4C469F8120EC60F100094EA4 /* ICLProcessMain.m in Sources */,
+				CC000005CCCCCCCCCCCCCC00 /* ICLProcessDelegate.swift in Sources */,
+				CC000006CCCCCCCCCCCCCC00 /* ICLProcessMain.swift in Sources */,
 				4C469F8920EC60F100094EA4 /* ICMAssessedMedia.m in Sources */,
 				4C469F8F20EC60F100094EA4 /* ICMInlineHTML.m in Sources */,
 				4C469F8E20EC60F100094EA4 /* ICMInlineImage.m in Sources */,
-				4C469F8320EC60F100094EA4 /* main.m in Sources */,
+				CC000007CCCCCCCCCCCCCC00 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -666,6 +668,7 @@
 				INFOPLIST_FILE = "Resources/Property Lists/Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.codeux.app-utilities.Textual-InlineContentLoader";
 				PRODUCT_NAME = "Inline Content Loader";
+				SWIFT_OBJC_BRIDGING_HEADER = "${SRCROOT}/Classes/Headers/Private/ICLSwiftBridgingHeader.h";
 			};
 			name = Debug;
 		};
@@ -677,6 +680,7 @@
 				INFOPLIST_FILE = "Resources/Property Lists/Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.codeux.app-utilities.Textual-InlineContentLoader";
 				PRODUCT_NAME = "Inline Content Loader";
+				SWIFT_OBJC_BRIDGING_HEADER = "${SRCROOT}/Classes/Headers/Private/ICLSwiftBridgingHeader.h";
 			};
 			name = Release;
 		};

@@ -5,7 +5,7 @@
  *                   | |  __/>  <| |_| |_| | (_| | |
  *                   |_|\___/_/\_\\__|\__,_|\__,_|_|
  *
- * Copyright (c) 2016 - 2018 Codeux Software, LLC & respective contributors.
+ * Copyright (c) 2017, 2018 Codeux Software, LLC & respective contributors.
  *       Please see Acknowledgements.pdf for additional information.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,9 +35,18 @@
  *
  *********************************************************************** */
 
-NS_ASSUME_NONNULL_BEGIN
+#import <CocoaExtensions/CocoaExtensions.h>
+#import <GRMustache/GRMustache.h>
 
-@implementation HLSHistoricLogViewContext
-@end
+#import "StaticDefinitions.h"
 
-NS_ASSUME_NONNULL_END
+#import "ICLInlineContentProtocol.h"
+#import "ICLMediaType.h"
+#import "ICLInlineContentModule.h"
+#import "ICLInlineContentModulePrivate.h"
+#import "ICLPluginManagerPrivate.h"
+#import "ICLPayloadPrivate.h"
+#import "CoreModulesImportsPrivate.h"
+
+#import "TPCPreferences.h"
+#import "TPCPreferencesUserDefaults.h"

@@ -5,7 +5,7 @@
  *                   | |  __/>  <| |_| |_| | (_| | |
  *                   |_|\___/_/\_\\__|\__,_|\__,_|_|
  *
- * Copyright (c) 2017, 2018 Codeux Software, LLC & respective contributors.
+ * Copyright (c) 2016 - 2018 Codeux Software, LLC & respective contributors.
  *       Please see Acknowledgements.pdf for additional information.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,26 +35,44 @@
  *
  *********************************************************************** */
 
-#import "ICLProcessDelegatePrivate.h"
+import Foundation
 
-NS_ASSUME_NONNULL_BEGIN
+final class HSLHistoricLogProcessDelegate: NSObject, NSXPCListenerDelegate {
+	func listener(_ listener: NSXPCListener, shouldAcceptNewConnection newConnection: NSXPCConnection) -> Bool {
+		let exportedInterface = NSXPCInterface(with: HLSHistoricLogServerProtocol.self)
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wnullability-inferred-on-nested-type"
+		let logLineClasses: Set<AnyHashable> = [NSArray.self, TVCLogLineXPC.self]
 
-int main(int argc, const char *argv[])
-{
-	ICLProcessDelegate *delegate = [ICLProcessDelegate new];
+		exportedInterface.setClasses(logLineClasses,
+			for: NSSelectorFromString("fetchEntriesForView:ascending:fetchLimit:limitToDate:withCompletionBlock:"),
+			argumentIndex: 0, ofReply: true)
 
-	NSXPCListener *listener = [NSXPCListener serviceListener];
+		exportedInterface.setClasses(logLineClasses,
+			for: NSSelectorFromString("fetchEntriesForView:withUniqueIdentifier:beforeFetchLimit:afterFetchLimit:limitToDate:withCompletionBlock:"),
+			argumentIndex: 0, ofReply: true)
 
-	listener.delegate = delegate;
+		exportedInterface.setClasses(logLineClasses,
+			for: NSSelectorFromString("fetchEntriesForView:beforeUniqueIdentifier:fetchLimit:limitToDate:withCompletionBlock:"),
+			argumentIndex: 0, ofReply: true)
 
-	[listener resume];
+		exportedInterface.setClasses(logLineClasses,
+			for: NSSelectorFromString("fetchEntriesForView:afterUniqueIdentifier:fetchLimit:limitToDate:withCompletionBlock:"),
+			argumentIndex: 0, ofReply: true)
 
-	return 0;
+		exportedInterface.setClasses(logLineClasses,
+			for: NSSelectorFromString("fetchEntriesForView:afterUniqueIdentifier:beforeUniqueIdentifier:fetchLimit:withCompletionBlock:"),
+			argumentIndex: 0, ofReply: true)
+
+		newConnection.exportedInterface = exportedInterface
+
+		let remoteInterface = NSXPCInterface(with: HLSHistoricLogClientProtocol.self)
+		newConnection.remoteObjectInterface = remoteInterface
+
+		let exportedObject = HLSHistoricLogProcessMain(connection: newConnection)
+		newConnection.exportedObject = exportedObject
+
+		newConnection.resume()
+
+		return true
+	}
 }
-
-#pragma clang diagnostic pop
-
-NS_ASSUME_NONNULL_END

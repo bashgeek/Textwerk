@@ -35,24 +35,21 @@
  *
  *********************************************************************** */
 
-NS_ASSUME_NONNULL_BEGIN
+import Foundation
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wnullability-inferred-on-nested-type"
+final class RCMProcessDelegate: NSObject, NSXPCListenerDelegate {
+	func listener(_ listener: NSXPCListener, shouldAcceptNewConnection newConnection: NSXPCConnection) -> Bool {
+		let exportedInterface = NSXPCInterface(with: RCMConnectionManagerServerProtocol.self)
+		newConnection.exportedInterface = exportedInterface
 
-int main(int argc, const char *argv[])
-{
-	RCMProcessDelegate *delegate = [RCMProcessDelegate new];
+		let exportedObject = RCMProcessMain(xpcConnection: newConnection)
+		newConnection.exportedObject = exportedObject
 
-	NSXPCListener *listener = [NSXPCListener serviceListener];
+		let remoteInterface = NSXPCInterface(with: RCMConnectionManagerClientProtocol.self)
+		newConnection.remoteObjectInterface = remoteInterface
 
-	listener.delegate = delegate;
+		newConnection.resume()
 
-	[listener resume];
-
-	return 0;
+		return true
+	}
 }
-
-#pragma clang diagnostic pop
-
-NS_ASSUME_NONNULL_END

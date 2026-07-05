@@ -25,7 +25,7 @@
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
  * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY. OR CONSEQUENTIAL
  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
  * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
  * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
@@ -35,24 +35,10 @@
  *
  *********************************************************************** */
 
-NS_ASSUME_NONNULL_BEGIN
+import Foundation
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wnullability-inferred-on-nested-type"
-
-int main(int argc, const char *argv[])
-{
-	HSLHistoricLogProcessDelegate *delegate = [HSLHistoricLogProcessDelegate new];
-
-	NSXPCListener *listener = [NSXPCListener serviceListener];
-
-	listener.delegate = delegate;
-
-	[listener resume];
-
-	return 0;
-}
-
-#pragma clang diagnostic pop
-
-NS_ASSUME_NONNULL_END
+let delegate = HSLHistoricLogProcessDelegate()
+let listener = NSXPCListener.service()
+listener.delegate = delegate
+listener.resume()
+RunLoop.main.run()

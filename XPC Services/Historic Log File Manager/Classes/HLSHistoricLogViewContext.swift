@@ -5,7 +5,7 @@
  *                   | |  __/>  <| |_| |_| | (_| | |
  *                   |_|\___/_/\_\\__|\__,_|\__,_|_|
  *
- * Copyright (c) 2017, 2018 Codeux Software, LLC & respective contributors.
+ * Copyright (c) 2016 - 2018 Codeux Software, LLC & respective contributors.
  *       Please see Acknowledgements.pdf for additional information.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,8 +35,13 @@
  *
  *********************************************************************** */
 
-#import <CocoaExtensions/CocoaExtensions.h>
+import CoreData
+import Foundation
 
-#import <GRMustache/GRMustache.h>
-
-#import "StaticDefinitions.h"
+@objc(HLSHistoricLogViewContext)
+final class HLSHistoricLogViewContext: NSManagedObjectContext {
+	var hls_viewId: String = ""
+	var hls_totalLineCount: UInt = 0
+	var hls_newestIdentifier: UInt = 0
+	var hls_resizeTimer: DispatchSourceTimer?
+}

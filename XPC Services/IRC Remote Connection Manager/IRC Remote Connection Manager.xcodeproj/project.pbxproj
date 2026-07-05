@@ -13,9 +13,9 @@
 		4C46A06920EC68B800094EA4 /* NSObjectHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C46A05720EC67E300094EA4 /* NSObjectHelper.m */; };
 		4C46A06A20EC68B800094EA4 /* IRCConnectionConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C46A02B20EC67E300094EA4 /* IRCConnectionConfig.m */; };
 		4C46A06D20EC68B800094EA4 /* TLOTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C46A03220EC67E300094EA4 /* TLOTimer.m */; };
-		4C46A07020EC68B800094EA4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C46A00C20EC626E00094EA4 /* main.m */; };
-		4C46A07120EC68B800094EA4 /* RCMProcessDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C46A00A20EC626E00094EA4 /* RCMProcessDelegate.m */; };
-		4C46A07220EC68B800094EA4 /* RCMProcessMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C46A00B20EC626E00094EA4 /* RCMProcessMain.m */; };
+		AA000001AAAAAAAAAAAAAA01 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001AAAAAAAAAAAAAA00 /* main.swift */; };
+		AA000002AAAAAAAAAAAAAA01 /* RCMProcessDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000002AAAAAAAAAAAAAA00 /* RCMProcessDelegate.swift */; };
+		AA000003AAAAAAAAAAAAAA01 /* RCMProcessMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000003AAAAAAAAAAAAAA00 /* RCMProcessMain.swift */; };
 		4C46A07320EC68C000094EA4 /* IRCConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C469FFF20EC626E00094EA4 /* IRCConnection.swift */; };
 		4C46A07420EC68C000094EA4 /* IRCConnectionSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C46A00020EC626E00094EA4 /* IRCConnectionSocket.swift */; };
 		4C46A07620EC68C000094EA4 /* IRCConnectionSocketNWF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C469FFD20EC626E00094EA4 /* IRCConnectionSocketNWF.swift */; };
@@ -37,9 +37,9 @@
 		4C46A00620EC626E00094EA4 /* RCMProcessDelegatePrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCMProcessDelegatePrivate.h; sourceTree = "<group>"; };
 		4C46A00720EC626E00094EA4 /* RCMProcessPCHPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCMProcessPCHPrivate.h; sourceTree = "<group>"; };
 		4C46A00820EC626E00094EA4 /* IRCConnectionPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRCConnectionPrivate.h; sourceTree = "<group>"; };
-		4C46A00A20EC626E00094EA4 /* RCMProcessDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCMProcessDelegate.m; sourceTree = "<group>"; };
-		4C46A00B20EC626E00094EA4 /* RCMProcessMain.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCMProcessMain.m; sourceTree = "<group>"; };
-		4C46A00C20EC626E00094EA4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		AA000001AAAAAAAAAAAAAA00 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		AA000002AAAAAAAAAAAAAA00 /* RCMProcessDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RCMProcessDelegate.swift; sourceTree = "<group>"; };
+		AA000003AAAAAAAAAAAAAA00 /* RCMProcessMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RCMProcessMain.swift; sourceTree = "<group>"; };
 		4C46A02220EC677B00094EA4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4C46A02B20EC67E300094EA4 /* IRCConnectionConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IRCConnectionConfig.m; sourceTree = "<group>"; };
 		4C46A03220EC67E300094EA4 /* TLOTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TLOTimer.m; sourceTree = "<group>"; };
@@ -180,9 +180,9 @@
 		4C46A00920EC626E00094EA4 /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				4C46A00C20EC626E00094EA4 /* main.m */,
-				4C46A00A20EC626E00094EA4 /* RCMProcessDelegate.m */,
-				4C46A00B20EC626E00094EA4 /* RCMProcessMain.m */,
+				AA000001AAAAAAAAAAAAAA00 /* main.swift */,
+				AA000002AAAAAAAAAAAAAA00 /* RCMProcessDelegate.swift */,
+				AA000003AAAAAAAAAAAAAA00 /* RCMProcessMain.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -471,9 +471,9 @@
 				4C5274DE20F8D50C00B18F9D /* IRCConnectionErrors.m in Sources */,
 				4C46A06D20EC68B800094EA4 /* TLOTimer.m in Sources */,
 				4CACDB5B20F7496D0075AFB5 /* TLOLocalization.swift in Sources */,
-				4C46A07020EC68B800094EA4 /* main.m in Sources */,
-				4C46A07120EC68B800094EA4 /* RCMProcessDelegate.m in Sources */,
-				4C46A07220EC68B800094EA4 /* RCMProcessMain.m in Sources */,
+				AA000001AAAAAAAAAAAAAA01 /* main.swift in Sources */,
+				AA000002AAAAAAAAAAAAAA01 /* RCMProcessDelegate.swift in Sources */,
+				AA000003AAAAAAAAAAAAAA01 /* RCMProcessMain.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

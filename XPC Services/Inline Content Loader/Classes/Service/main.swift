@@ -35,32 +35,10 @@
  *
  *********************************************************************** */
 
-NS_ASSUME_NONNULL_BEGIN
+import Foundation
 
-@implementation RCMProcessDelegate
-
-#pragma mark -
-#pragma mark XPC Delegate
-
-- (BOOL)listener:(NSXPCListener *)listener shouldAcceptNewConnection:(NSXPCConnection *)newConnection
-{
-	NSXPCInterface *exportedInterface = [NSXPCInterface interfaceWithProtocol:@protocol(RCMConnectionManagerServerProtocol)];
-
-	newConnection.exportedInterface = exportedInterface;
-
-	RCMProcessMain *exportedObject = [[RCMProcessMain alloc] initWithXPCConnection:newConnection];
-
-	newConnection.exportedObject = exportedObject;
-
-	NSXPCInterface *remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:@protocol(RCMConnectionManagerClientProtocol)];
-
-	newConnection.remoteObjectInterface = remoteObjectInterface;
-
-	[newConnection resume];
-
-	return YES;
-}
-
-@end
-
-NS_ASSUME_NONNULL_END
+let delegate = ICLProcessDelegate()
+let listener = NSXPCListener.service()
+listener.delegate = delegate
+listener.resume()
+RunLoop.main.run()

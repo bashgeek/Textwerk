@@ -5,7 +5,7 @@
  *                   | |  __/>  <| |_| |_| | (_| | |
  *                   |_|\___/_/\_\\__|\__,_|\__,_|_|
  *
- * Copyright (c) 2016 - 2018 Codeux Software, LLC & respective contributors.
+ * Copyright (c) 2017, 2018 Codeux Software, LLC & respective contributors.
  *       Please see Acknowledgements.pdf for additional information.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,30 +35,10 @@
  *
  *********************************************************************** */
 
-NS_ASSUME_NONNULL_BEGIN
+import Foundation
 
-@implementation HLSHistoricLogLineEntityMigration
-
-- (NSString *)newLogLineUniqueIdentifier
-{
-	NSString *printIdentifier = [NSString stringWithUUID]; // Example: 68753A44-4D6F-1226-9C60-0050E4C00067
-
-	return [printIdentifier substringFromIndex:19]; // Example: 9C60-0050E4C00067
-}
-
-- (NSNumber *)newSessionIdentifier
-{
-	static NSUInteger sessionIdentifier = 0;
-
-	static dispatch_once_t onceToken;
-
-	dispatch_once(&onceToken, ^{
-		sessionIdentifier = arc4random_uniform(999999);
-	});
-
-	return @(sessionIdentifier);
-}
-
-@end
-
-NS_ASSUME_NONNULL_END
+let delegate = RCMProcessDelegate()
+let listener = NSXPCListener.service()
+listener.delegate = delegate
+listener.resume()
+RunLoop.main.run()

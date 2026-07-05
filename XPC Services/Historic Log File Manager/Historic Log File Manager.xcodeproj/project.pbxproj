@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4C469E4F20EC5E5300094EA4 /* HSLHistoricLogProcessDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469E4220EC5E5300094EA4 /* HSLHistoricLogProcessDelegate.m */; };
-		4C469E5020EC5E5300094EA4 /* HLSHistoricLogViewContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469E4320EC5E5300094EA4 /* HLSHistoricLogViewContext.m */; };
-		4C469E5120EC5E5300094EA4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469E4420EC5E5300094EA4 /* main.m */; };
-		4C469E5220EC5E5300094EA4 /* HLSHistoricLogProcessMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469E4D20EC5E5300094EA4 /* HLSHistoricLogProcessMain.m */; };
-		4C469E5320EC5E5300094EA4 /* HLSHistoricLogLineEntityMigration.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469E4E20EC5E5300094EA4 /* HLSHistoricLogLineEntityMigration.m */; };
+		BB000001BBBBBBBBBBBBBB01 /* HSLHistoricLogProcessDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000001BBBBBBBBBBBBBB00 /* HSLHistoricLogProcessDelegate.swift */; };
+		BB000002BBBBBBBBBBBBBB01 /* HLSHistoricLogViewContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000002BBBBBBBBBBBBBB00 /* HLSHistoricLogViewContext.swift */; };
+		BB000003BBBBBBBBBBBBBB01 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000003BBBBBBBBBBBBBB00 /* main.swift */; };
+		BB000004BBBBBBBBBBBBBB01 /* HLSHistoricLogProcessMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000004BBBBBBBBBBBBBB00 /* HLSHistoricLogProcessMain.swift */; };
+		BB000005BBBBBBBBBBBBBB01 /* HLSHistoricLogLineEntityMigration.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000005BBBBBBBBBBBBBB00 /* HLSHistoricLogLineEntityMigration.swift */; };
 		4C469E9620EC5ED500094EA4 /* TVCLogLineXPC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469E9520EC5ED500094EA4 /* TVCLogLineXPC.m */; };
 		4C469E9C20EC5F7700094EA4 /* HistoricLogFileStorageModel.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 4C469E9820EC5F7700094EA4 /* HistoricLogFileStorageModel.xcmappingmodel */; };
 		4C469E9D20EC5F7700094EA4 /* HistoricLogFileStorageModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4C469E9920EC5F7700094EA4 /* HistoricLogFileStorageModel.xcdatamodeld */; };
@@ -22,16 +22,17 @@
 
 /* Begin PBXFileReference section */
 		4C442C881E13B3D200B187F4 /* Scrollback History Manager.xpc */ = {isa = PBXFileReference; explicitFileType = "wrapper.xpc-service"; includeInIndex = 0; path = "Scrollback History Manager.xpc"; sourceTree = BUILT_PRODUCTS_DIR; };
-		4C469E4220EC5E5300094EA4 /* HSLHistoricLogProcessDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HSLHistoricLogProcessDelegate.m; sourceTree = "<group>"; };
-		4C469E4320EC5E5300094EA4 /* HLSHistoricLogViewContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HLSHistoricLogViewContext.m; sourceTree = "<group>"; };
-		4C469E4420EC5E5300094EA4 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		BB000001BBBBBBBBBBBBBB00 /* HSLHistoricLogProcessDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HSLHistoricLogProcessDelegate.swift; sourceTree = "<group>"; };
+		BB000002BBBBBBBBBBBBBB00 /* HLSHistoricLogViewContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HLSHistoricLogViewContext.swift; sourceTree = "<group>"; };
+		BB000003BBBBBBBBBBBBBB00 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		4C469E4720EC5E5300094EA4 /* HLSHistoricLogViewContextPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HLSHistoricLogViewContextPrivate.h; sourceTree = "<group>"; };
 		4C469E4820EC5E5300094EA4 /* HSLHistoricLogProcessDelegatePrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HSLHistoricLogProcessDelegatePrivate.h; sourceTree = "<group>"; };
 		4C469E4920EC5E5300094EA4 /* HLSHistoricLogProcessMainPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HLSHistoricLogProcessMainPrivate.h; sourceTree = "<group>"; };
 		4C469E4A20EC5E5300094EA4 /* HLSHistoricLogLineEntityMigrationPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HLSHistoricLogLineEntityMigrationPrivate.h; sourceTree = "<group>"; };
 		4C469E4B20EC5E5300094EA4 /* HSLHistoricLogPCHPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HSLHistoricLogPCHPrivate.h; sourceTree = "<group>"; };
-		4C469E4D20EC5E5300094EA4 /* HLSHistoricLogProcessMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HLSHistoricLogProcessMain.m; sourceTree = "<group>"; };
-		4C469E4E20EC5E5300094EA4 /* HLSHistoricLogLineEntityMigration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HLSHistoricLogLineEntityMigration.m; sourceTree = "<group>"; };
+		BB000004BBBBBBBBBBBBBB00 /* HLSHistoricLogProcessMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HLSHistoricLogProcessMain.swift; sourceTree = "<group>"; };
+		BB000005BBBBBBBBBBBBBB00 /* HLSHistoricLogLineEntityMigration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HLSHistoricLogLineEntityMigration.swift; sourceTree = "<group>"; };
+		BB000006BBBBBBBBBBBBBB00 /* HLSSwiftBridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HLSSwiftBridgingHeader.h; sourceTree = "<group>"; };
 		4C469E7520EC5E9C00094EA4 /* TVCLogLineXPCPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TVCLogLineXPCPrivate.h; sourceTree = "<group>"; };
 		4C469E9520EC5ED500094EA4 /* TVCLogLineXPC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TVCLogLineXPC.m; sourceTree = "<group>"; };
 		4C469E9820EC5F7700094EA4 /* HistoricLogFileStorageModel.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = HistoricLogFileStorageModel.xcmappingmodel; sourceTree = "<group>"; };
@@ -374,14 +375,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4C469E5020EC5E5300094EA4 /* HLSHistoricLogViewContext.m in Sources */,
-				4C469E5320EC5E5300094EA4 /* HLSHistoricLogLineEntityMigration.m in Sources */,
-				4C469E5220EC5E5300094EA4 /* HLSHistoricLogProcessMain.m in Sources */,
+				BB000002BBBBBBBBBBBBBB01 /* HLSHistoricLogViewContext.swift in Sources */,
+				BB000005BBBBBBBBBBBBBB01 /* HLSHistoricLogLineEntityMigration.swift in Sources */,
+				BB000004BBBBBBBBBBBBBB01 /* HLSHistoricLogProcessMain.swift in Sources */,
 				4C469E9620EC5ED500094EA4 /* TVCLogLineXPC.m in Sources */,
-				4C469E4F20EC5E5300094EA4 /* HSLHistoricLogProcessDelegate.m in Sources */,
+				BB000001BBBBBBBBBBBBBB01 /* HSLHistoricLogProcessDelegate.swift in Sources */,
 				4C469E9D20EC5F7700094EA4 /* HistoricLogFileStorageModel.xcdatamodeld in Sources */,
 				4CBDFBEA2C3ED3920003B272 /* TPCPreferencesUserDefaults.m in Sources */,
-				4C469E5120EC5E5300094EA4 /* main.m in Sources */,
+				BB000003BBBBBBBBBBBBBB01 /* main.swift in Sources */,
 				4C469E9C20EC5F7700094EA4 /* HistoricLogFileStorageModel.xcmappingmodel in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -411,6 +412,7 @@
 				INFOPLIST_FILE = "Resources/Property Lists/Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.codeux.app-utilities.Textual-ScrollbackHistoryManager";
 				PRODUCT_NAME = "Scrollback History Manager";
+				SWIFT_OBJC_BRIDGING_HEADER = "${SRCROOT}/Classes/Headers/Private/HLSSwiftBridgingHeader.h";
 			};
 			name = Debug;
 		};
@@ -422,6 +424,7 @@
 				INFOPLIST_FILE = "Resources/Property Lists/Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.codeux.app-utilities.Textual-ScrollbackHistoryManager";
 				PRODUCT_NAME = "Scrollback History Manager";
+				SWIFT_OBJC_BRIDGING_HEADER = "${SRCROOT}/Classes/Headers/Private/HLSSwiftBridgingHeader.h";
 			};
 			name = Release;
 		};
