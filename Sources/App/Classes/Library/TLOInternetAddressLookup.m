@@ -133,7 +133,7 @@ NS_ASSUME_NONNULL_BEGIN
 		return [self thirdPartySourceURL];
 	}
 	
-	return @"https://myip.codeux.com/";
+	return @"https://api.ipify.org/";
 }
 
 - (NSString *)thirdPartySourceURL

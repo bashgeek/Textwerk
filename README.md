@@ -10,8 +10,8 @@ A community fork of [Textual](https://github.com/Codeux-Software/Textual), the m
 
 ## Screenshots
 
-[![Light](https://www.codeux.com/textual/private/images/v600media/YosemiteLightThumbnail.png)](https://www.codeux.com/textual/private/images/v600media/YosemiteLightFullscreen.png)
-[![Dark](https://www.codeux.com/textual/private/images/v600media/YosemiteDarkThumbnail.png)](https://www.codeux.com/textual/private/images/v600media/YosemiteDarkFullscreen.png)
+[![Light](docs/screenshots/YosemiteLightThumbnail.png)](docs/screenshots/YosemiteLightFullscreen.png)
+[![Dark](docs/screenshots/YosemiteDarkThumbnail.png)](docs/screenshots/YosemiteDarkFullscreen.png)
 
 ## Building
 

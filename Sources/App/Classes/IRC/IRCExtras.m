@@ -117,11 +117,11 @@ NS_ASSUME_NONNULL_BEGIN
 	}
 	else if ([action isEqualToString:@"knowledge-base"])
 	{
-		[TLOpenLink openWithString:@"https://help.codeux.com/textual/" inBackground:NO];
+		[TLOpenLink openWithString:@"https://github.com/bashgeek/Textual/wiki" inBackground:NO];
 	}
 	else if ([action isEqualToString:@"newsletter"])
 	{
-		[TLOpenLink openWithString:@"https://www.codeux.com/textual/newsletter/" inBackground:NO];
+		[TLOpenLink openWithString:@"https://github.com/bashgeek/Textual" inBackground:NO];
 	}
 	else if ([action isEqualToString:@"support-channel"])
 	{

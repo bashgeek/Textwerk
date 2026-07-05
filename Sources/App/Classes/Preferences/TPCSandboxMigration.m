@@ -449,7 +449,7 @@ typedef NS_ENUM(NSUInteger, TPCMigrateSandboxInstallation)
 	}];
 
 	[alert setButtonClickedBlock:^BOOL(TVCAlert *sender, TVCAlertResponseButton buttonClicked) {
-		[TLOpenLink openWithString:@"https://help.codeux.com/textual/miscellaneous/Why-Did-Textual-Copy-Files-to-a-New-Location.kb" inBackground:NO];
+		[TLOpenLink openWithString:@"https://github.com/bashgeek/Textual/wiki" inBackground:NO];
 
 		return NO;
 	} forButton:TVCAlertResponseButtonThird];
