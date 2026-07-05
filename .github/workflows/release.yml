@@ -17,6 +17,15 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Set version from tag
+        run: |
+          VERSION="${{ github.ref_name }}"
+          VERSION="${VERSION#v}"
+          /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $VERSION" \
+            "Sources/App/Resources/Property Lists/Application Properties/Info.plist"
+          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $VERSION" \
+            "Sources/App/Resources/Property Lists/Application Properties/Info.plist"
+
       - name: Build
         run: ./build.sh
 
