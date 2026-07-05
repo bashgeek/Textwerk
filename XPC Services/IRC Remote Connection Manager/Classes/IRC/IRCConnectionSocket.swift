@@ -98,20 +98,24 @@ class ConnectionSocket: NSObject
 			return
 		}
 
+		var error: CFError?
+
+		let trusted = SecTrustEvaluateWithError(trust, &error)
+
+		if (trusted) {
+			response(true)
+
+			return
+		}
+
 		var evaluationResult: SecTrustResultType = .invalid
 
-		let evaluationStatus = SecTrustEvaluate(trust, &evaluationResult)
+		SecTrustGetTrustResult(trust, &evaluationResult)
 
-		if (evaluationStatus == errSecSuccess) {
-			if (evaluationResult == .unspecified || evaluationResult == .proceed) {
-				response(true)
+		if (evaluationResult == .recoverableTrustFailure) {
+			delegate?.connection(self, requiresTrust: response)
 
-				return
-			} else if (evaluationResult == .recoverableTrustFailure) {
-				delegate?.connection(self, requiresTrust: response)
-
-				return
-			}
+			return
 		}
 
 		response(false)

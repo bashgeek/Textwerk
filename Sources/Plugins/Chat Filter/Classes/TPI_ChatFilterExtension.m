@@ -369,15 +369,15 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 #pragma mark Table View Delegate
 
-- (BOOL)tableView:(NSTableView *)tableView writeRowsWithIndexes:(NSIndexSet *)rowIndexes toPasteboard:(NSPasteboard *)pasteboard
+- (nullable id<NSPasteboardWriting>)tableView:(NSTableView *)tableView pasteboardWriterForRow:(NSInteger)row
 {
-	NSData *draggedData = [NSKeyedArchiver archivedDataWithRootObject:rowIndexes];
+	NSPasteboardItem *item = [NSPasteboardItem new];
 
-	[pasteboard declareTypes:@[_filterTableDragToken] owner:self];
+	NSData *draggedData = [NSKeyedArchiver archivedDataWithRootObject:[NSIndexSet indexSetWithIndex:row] requiringSecureCoding:NO error:NULL];
 
-	[pasteboard setData:draggedData forType:_filterTableDragToken];
+	[item setData:draggedData forType:_filterTableDragToken];
 
-	return YES;
+	return item;
 }
 
 - (NSDragOperation)tableView:(NSTableView *)tableView validateDrop:(id<NSDraggingInfo>)info proposedRow:(NSInteger)row proposedDropOperation:(NSTableViewDropOperation)dropOperation
@@ -389,9 +389,9 @@ NS_ASSUME_NONNULL_BEGIN
 {
 	NSPasteboard *pasteboard = [info draggingPasteboard];
 
-	NSData *draggedData = [pasteboard dataForType:_filterTableDragToken];
+	NSData *draggedData = [[pasteboard pasteboardItems].firstObject dataForType:_filterTableDragToken];
 
-	NSIndexSet *draggedRowIndexes = [NSKeyedUnarchiver unarchiveObjectWithData:draggedData];
+	NSIndexSet *draggedRowIndexes = [NSKeyedUnarchiver unarchivedObjectOfClass:[NSIndexSet class] fromData:draggedData error:NULL];
 
 	NSUInteger draggedRowIndex = draggedRowIndexes.firstIndex;
 

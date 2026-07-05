@@ -69,7 +69,7 @@ public extension Data
 			return nil
 		}
 
-		return String(cString: buffer)
+		return String(decoding: buffer.prefix(while: { $0 != 0 }).map { UInt8(bitPattern: $0) }, as: UTF8.self)
 	}
 
 	var IPv6Address: String?
@@ -86,7 +86,7 @@ public extension Data
 			return nil
 		}
 
-		return String(cString: buffer)
+		return String(decoding: buffer.prefix(while: { $0 != 0 }).map { UInt8(bitPattern: $0) }, as: UTF8.self)
 	}
 
 	///

@@ -37,6 +37,7 @@
  *********************************************************************** */
 
 #import <AudioToolbox/AudioToolbox.h>
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
 #import "TLONotificationConfigurationPrivate.h"
 #import "TLOSoundPlayer.h"
@@ -111,18 +112,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 	NSString *fileExtension = filePath.pathExtension;
 
-	CFStringRef fileUTI = UTTypeCreatePreferredIdentifierForTag(
-		kUTTagClassFilenameExtension, (__bridge CFStringRef)fileExtension, NULL);
+	UTType *fileUTI = [UTType typeWithFilenameExtension:fileExtension];
 
-	if (UTTypeConformsTo(fileUTI, kUTTypeAudio) == false) {
+	if ([fileUTI conformsToType:UTTypeAudio] == NO) {
 		LogToConsoleDebug("File is not audio file: '%{public}@'", filePath.standardizedTildePath);
-
-		CFRelease(fileUTI);
 
 		return;
 	}
-
-	CFRelease(fileUTI);
 
 	if ( path) {
 		*path = filePath;

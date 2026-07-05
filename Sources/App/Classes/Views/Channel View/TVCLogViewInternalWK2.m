@@ -50,7 +50,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#define _maximumProcessCount			8
 #define _maximumViewInstances			50
 
 @interface TVCLogViewInternalWK2 ()
@@ -59,7 +58,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation TVCLogViewInternalWK2
 
-static WKProcessPool *_sharedProcessPool = nil;
 static WKUserContentController *_sharedUserContentController = nil;
 static WKWebViewConfiguration *_sharedWebViewConfiguration = nil;
 static TVCLogPolicy *_sharedWebPolicy = nil;
@@ -75,11 +73,7 @@ static NSUInteger _numberOfViews = 0;
 	static dispatch_once_t onceToken;
 
 	dispatch_once(&onceToken, ^{
-		[self constructProcessPool];
-
 		_sharedWebViewConfiguration = [WKWebViewConfiguration new];
-
-		_sharedWebViewConfiguration.processPool = _sharedProcessPool;
 
 		_sharedWebViewConfiguration._allowUniversalAccessFromFileURLs = YES;
 
@@ -137,42 +131,6 @@ static NSUInteger _numberOfViews = 0;
 
 		_sharedWebPolicy = [TVCLogPolicy new];
 	});
-}
-
-+ (void)constructProcessPool
-{
-	/* What we are doing here is very dirty which means it is probably a good idea
-	 that we go above and beyond for error checking incase this stuff is changed. */
-	WKProcessPool *sharedProcessPool = [WKProcessPool alloc];
-
-	if ([TPCPreferences webKit2ProcessPoolSizeLimited] == NO) {
-		goto create_normal_pool;
-	}
-
-	if ([sharedProcessPool respondsToSelector:@selector(_initWithConfiguration:)] == NO) {
-		goto create_normal_pool;
-	}
-
-	Class processPoolConfigurationClass = objc_getClass("_WKProcessPoolConfiguration");
-
-	if (processPoolConfigurationClass) {
-		id processPoolConfiguration = [processPoolConfigurationClass new];
-
-		if (processPoolConfiguration == nil) {
-			goto create_normal_pool;
-		} else if ([processPoolConfiguration respondsToSelector:@selector(setMaximumProcessCount:)] == NO) {
-			goto create_normal_pool;
-		}
-
-		[processPoolConfiguration setMaximumProcessCount:_maximumProcessCount];
-
-		_sharedProcessPool = [sharedProcessPool _initWithConfiguration:processPoolConfiguration];
-
-		return;
-	}
-
-create_normal_pool:
-	_sharedProcessPool = [sharedProcessPool init];
 }
 
 - (instancetype)initWithHostView:(TVCLogView *)hostView

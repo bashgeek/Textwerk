@@ -170,7 +170,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)tableView:(NSTableView *)tableView writeRowsWithIndexes:(NSIndexSet *)rowIndexes toPasteboard:(NSPasteboard *)pasteboard
 {
-	NSData *draggedData = [NSKeyedArchiver archivedDataWithRootObject:rowIndexes];
+	NSData *draggedData = [NSKeyedArchiver archivedDataWithRootObject:rowIndexes requiringSecureCoding:NO error:NULL];
 
 	[pasteboard declareTypes:@[_endpointEntryTableDragToken] owner:self];
 
@@ -190,7 +190,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 	NSData *draggedData = [pasteboard dataForType:_endpointEntryTableDragToken];
 
-	NSIndexSet *draggedRowIndexes = [NSKeyedUnarchiver unarchiveObjectWithData:draggedData];
+	NSIndexSet *draggedRowIndexes = [NSKeyedUnarchiver unarchivedObjectOfClass:[NSIndexSet class] fromData:draggedData error:NULL];
 
 	NSUInteger draggedRowIndex = draggedRowIndexes.firstIndex;
 

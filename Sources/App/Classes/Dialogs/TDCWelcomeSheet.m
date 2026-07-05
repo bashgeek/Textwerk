@@ -276,7 +276,9 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 #pragma mark NSTableView Delegate
 
-- (void)textDidEndEditing:(NSNotification *)note
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-implementations"
+- (void)controlTextDidEndEditing:(NSNotification *)note
 {
 	NSInteger editedRow = self.channelTable.editedRow;
 
@@ -294,6 +296,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 	[self updateDeleteChannelButton];
 }
+#pragma clang diagnostic pop
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)sender
 {

@@ -72,7 +72,7 @@ NSString * const TVCMemberListDragType = @"TVCMemberListDragType";
 
 	[self updateTrackingAreas];
 
-	[self registerForDraggedTypes:@[NSFilenamesPboardType]];
+	[self registerForDraggedTypes:@[NSPasteboardTypeFileURL]];
 }
 
 - (void)viewDidMoveToWindow
@@ -297,7 +297,9 @@ NSString * const TVCMemberListDragType = @"TVCMemberListDragType";
 
 - (NSArray *)draggedFiles:(id <NSDraggingInfo>)sender
 {
-	return [[sender draggingPasteboard] propertyListForType:NSFilenamesPboardType];
+	NSArray<NSURL *> *urls = [[sender draggingPasteboard] readObjectsForClasses:@[[NSURL class]] options:@{NSPasteboardURLReadingFileURLsOnlyKey : @YES}];
+
+	return [urls valueForKey:@"path"];
 }
 
 - (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender

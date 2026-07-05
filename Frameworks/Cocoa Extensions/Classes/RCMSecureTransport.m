@@ -357,6 +357,7 @@ COCOA_EXTENSIONS_IGNORE_DEPRECATION_BEGIN
 }
 COCOA_EXTENSIONS_IGNORE_DEPRECATION_END
 
+COCOA_EXTENSIONS_IGNORE_DEPRECATION_BEGIN
 + (nullable NSString *)descriptionForProtocolType:(tls_protocol_version_t)protocolType
 {
 	switch (protocolType) {
@@ -369,6 +370,7 @@ COCOA_EXTENSIONS_IGNORE_DEPRECATION_END
 		default: { return @"Unknown"; }
 	}
 }
+COCOA_EXTENSIONS_IGNORE_DEPRECATION_END
 
 + (NSArray<NSString *> *)descriptionsForCipherListCollection:(RCMCipherSuiteCollection)collection
 {
@@ -733,18 +735,24 @@ COCOA_EXTENSIONS_IGNORE_DEPRECATION_END
 {
 	NSParameterAssert(trustRef != NULL);
 
-	CFIndex trustCertificateCount = SecTrustGetCertificateCount(trustRef);
+	CFArrayRef chainRef = SecTrustCopyCertificateChain(trustRef);
 
-	NSMutableArray<NSData *> *results = [NSMutableArray arrayWithCapacity:trustCertificateCount];
+	if (chainRef == NULL) {
+		return nil;
+	}
 
-	for (CFIndex trustCertificateIndex = 0; trustCertificateIndex < trustCertificateCount; trustCertificateIndex++) {
-		SecCertificateRef certificateRef = SecTrustGetCertificateAtIndex(trustRef, trustCertificateIndex);
+	NSArray *chain = (__bridge_transfer NSArray *)chainRef;
+
+	NSMutableArray<NSData *> *results = [NSMutableArray arrayWithCapacity:chain.count];
+
+	for (id certObj in chain) {
+		SecCertificateRef certificateRef = (__bridge SecCertificateRef)certObj;
 
 		NSData *certificateData = (__bridge_transfer NSData *)SecCertificateCopyData(certificateRef);
 
 		if (certificateData == nil) {
 			LogToConsoleErrorWithSubsystem(_CSFrameworkInternalLogSubsystem(),
-				"Bad certificate data at index: %{public}lu", trustCertificateIndex);
+				"Bad certificate data");
 
 			continue;
 		}

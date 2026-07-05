@@ -175,14 +175,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)pluginLoadedIntoMemory
 {
-	/* This plugin uses NSProgress which is not available on Mountain Lion */
-	/* The Textual Extras installer can detect operating system and will not
-	 allow it to be installed on Mountain Lion, but still good to have some
-	 type of sanity type. */
-	if (TEXTUAL_RUNNING_ON(10.9, Mavericks) == NO) {
-		return;
-	}
-
 	/* Load interface and begin observing client list changes */
 	(void)[TPIBundleFromClass() loadNibNamed:@"TPI_Caffeine" owner:self topLevelObjects:nil];
 

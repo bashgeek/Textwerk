@@ -2238,7 +2238,7 @@ TEXTUAL_IGNORE_DEPRECATION_END
 
 - (BOOL)tableView:(NSTableView *)tableView writeRowsWithIndexes:(NSIndexSet *)rowIndexes toPasteboard:(NSPasteboard *)pasteboard
 {
-	NSData *draggedData = [NSKeyedArchiver archivedDataWithRootObject:rowIndexes];
+	NSData *draggedData = [NSKeyedArchiver archivedDataWithRootObject:rowIndexes requiringSecureCoding:NO error:NULL];
 
 	[pasteboard declareTypes:@[_tableDragToken] owner:self];
 
@@ -2258,7 +2258,7 @@ TEXTUAL_IGNORE_DEPRECATION_END
 
 	NSData *draggedData = [pasteboard dataForType:_tableDragToken];
 
-	NSIndexSet *draggedRowIndexes = [NSKeyedUnarchiver unarchiveObjectWithData:draggedData];
+	NSIndexSet *draggedRowIndexes = [NSKeyedUnarchiver unarchivedObjectOfClass:[NSIndexSet class] fromData:draggedData error:NULL];
 
 	NSUInteger draggedRowIndex = draggedRowIndexes.firstIndex;
 

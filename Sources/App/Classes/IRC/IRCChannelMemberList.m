@@ -632,7 +632,7 @@ NS_ASSUME_NONNULL_BEGIN
 	   @"nicknames" : nicknames
 	};
 
-	NSData *pasteboardData = [NSKeyedArchiver archivedDataWithRootObject:pasteboardDictionary];
+	NSData *pasteboardData = [NSKeyedArchiver archivedDataWithRootObject:pasteboardDictionary requiringSecureCoding:NO error:NULL];
 
 	return pasteboardData;
 }
@@ -645,7 +645,7 @@ NS_ASSUME_NONNULL_BEGIN
 	/* This is a private method which means that we are very lazy about
 	 validating the input, but this is a TODO to myself: add strict type
 	 checks if you end up making this method public. */
-	NSDictionary *pasteboardDictionary = [NSKeyedUnarchiver unarchiveObjectWithData:pasteboardData];
+	NSDictionary *pasteboardDictionary = [NSKeyedUnarchiver unarchivedObjectOfClasses:[NSSet setWithObjects:[NSDictionary class], [NSString class], [NSArray class], nil] fromData:pasteboardData error:NULL];
 
 	if ([pasteboardDictionary isKindOfClass:[NSDictionary class]] == NO) {
 		return NO;

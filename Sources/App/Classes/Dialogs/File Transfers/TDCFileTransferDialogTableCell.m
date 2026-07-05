@@ -36,6 +36,8 @@
  *
  *********************************************************************** */
 
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
+
 #import "TXGlobalModels.h"
 #import "TLOLocalization.h"
 #import "TDCFileTransferDialogTransferControllerPrivate.h"
@@ -94,7 +96,7 @@ NS_ASSUME_NONNULL_BEGIN
 	self.progressIndicator.minValue = 0;
 	self.progressIndicator.maxValue = totalFilesize;
 
-	NSImage *iconImage = [RZWorkspace() iconForFileType:filename.pathExtension];
+	NSImage *iconImage = [RZWorkspace() iconForContentType:[UTType typeWithFilenameExtension:filename.pathExtension]];
 
 	self.fileIconView.image = iconImage;
 

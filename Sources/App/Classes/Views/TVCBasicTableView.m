@@ -89,16 +89,19 @@ NS_ASSUME_NONNULL_BEGIN
 	[super rightMouseDown:e];
 }
 
-- (void)textDidEndEditing:(NSNotification *)note
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-implementations"
+- (void)controlTextDidEndEditing:(NSNotification *)note
 {
-	if ([self.textEditingDelegate respondsToSelector:@selector(textDidEndEditing:)]) {
-		[self.textEditingDelegate textDidEndEditing:note];
+	if ([self.textEditingDelegate respondsToSelector:@selector(controlTextDidEndEditing:)]) {
+		[self.textEditingDelegate controlTextDidEndEditing:note];
 
 		return;
 	}
 
-	[super textDidEndEditing:note];
+	[super controlTextDidEndEditing:note];
 }
+#pragma clang diagnostic pop
 
 @end
 

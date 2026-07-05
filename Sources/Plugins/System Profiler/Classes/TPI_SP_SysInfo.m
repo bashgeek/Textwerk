@@ -592,7 +592,7 @@ TEXTUAL_IGNORE_DEPRECATION_END
 
 	io_iterator_t entryIterator;
 
-	if (IOServiceGetMatchingServices(kIOMasterPortDefault, pciDevices, &entryIterator) != kIOReturnSuccess) {
+	if (IOServiceGetMatchingServices(kIOMainPortDefault, pciDevices, &entryIterator) != kIOReturnSuccess) {
 		return nil;
 	}
 

@@ -136,7 +136,7 @@ NS_ASSUME_NONNULL_BEGIN
 												   kFSEventStreamCreateFlagNoDefer |
 												   kFSEventStreamCreateFlagUseCFTypes));
 
-	FSEventStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
+	FSEventStreamSetDispatchQueue(stream, dispatch_get_main_queue());
 
 	FSEventStreamStart(stream);
 

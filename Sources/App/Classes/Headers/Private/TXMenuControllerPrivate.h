@@ -78,8 +78,6 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TXMenuControllerMainWindowProxy : NSObject
 - (IBAction)showWelcomeSheet:(id)sender;
 
-- (IBAction)manageLicense:(id)sender;
-
 - (IBAction)openStandaloneStoreWebpage:(id)sender;
 @end
 

@@ -83,7 +83,7 @@ DESIGNATED_INITIALIZER_EXCEPTION_BODY_END
 	NSParameterAssert(data != nil);
 
 	if ((self = [super init])) {
-		return [NSKeyedUnarchiver unarchiveObjectWithData:data];
+		return [NSKeyedUnarchiver unarchivedObjectOfClass:[TVCLogLine class] fromData:data error:NULL];
 	}
 
 	return nil;
@@ -100,7 +100,7 @@ DESIGNATED_INITIALIZER_EXCEPTION_BODY_END
 	 attaches the unique identifier to the XPC object. We can then write it out here. */
 	/* We check if the object's unique identifier is nil before setting the database's
 	 value because the value may have already been unarchived if it is present. */
-	TVCLogLine *object = [NSKeyedUnarchiver unarchiveObjectWithData:xpcObject.data];
+	TVCLogLine *object = [NSKeyedUnarchiver unarchivedObjectOfClass:[TVCLogLine class] fromData:xpcObject.data error:NULL];
 
 	if (object->_uniqueIdentifier == nil) {
 		object->_uniqueIdentifier = [xpcObject.uniqueIdentifier copy];
@@ -210,7 +210,7 @@ DESIGNATED_INITIALIZER_EXCEPTION_BODY_END
 {
 	NSParameterAssert(treeItem != nil);
 
-	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self];
+	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self requiringSecureCoding:NO error:NULL];
 
 	TVCLogLineXPC *xpcObject =
 	[[TVCLogLineXPC alloc] initWithLogLineData:data
