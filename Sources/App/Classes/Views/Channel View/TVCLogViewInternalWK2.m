@@ -62,7 +62,6 @@ static WKUserContentController *_sharedUserContentController = nil;
 static WKWebViewConfiguration *_sharedWebViewConfiguration = nil;
 static TVCLogPolicy *_sharedWebPolicy = nil;
 static TVCLogScriptEventSink *_sharedWebViewScriptSink = nil;
-static BOOL _safeToUseWebKit2 = YES;
 static NSUInteger _numberOfViews = 0;
 
 #pragma mark -
@@ -178,16 +177,7 @@ static NSUInteger _numberOfViews = 0;
 
 + (BOOL)t_safeToUse
 {
-	/* June 2024: WebKit2 was enabled by default for beta update users.
-	 One user who is in 200+ channels managed to enter WK2 into an endless
-	 termination loop. Probably resource exhaustion. I am still investigating
-	 the underlying cause of that. But given the extremes of the situation,
-	 this temporary fix may just end up being a permanent one. */
-	if (_numberOfViews > _maximumViewInstances) {
-		return NO;
-	}
-
-	return _safeToUseWebKit2;
+	return (_numberOfViews <= _maximumViewInstances);
 }
 
 #pragma mark -
@@ -462,10 +452,8 @@ static NSUInteger _numberOfViews = 0;
 		return;
 	}
 
-	LogToConsoleError("A WebKit process terminated for a reason not understood. Disabling WebKit2 until relaunch.");
+	LogToConsoleError("A WebKit process terminated for a reason not understood.");
 	LogStackTrace();
-
-	_safeToUseWebKit2 = NO;
 
 	[self webViewClosedUnexpectedly];
 }

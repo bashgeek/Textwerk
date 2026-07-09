@@ -52,7 +52,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TVCLogView ()
 @property (nonatomic, strong) id webViewBacking;
-@property (nonatomic, readwrite, assign) BOOL isUsingWebKit2;
 @property (nonatomic, getter=isLayingOutView, readwrite) BOOL layingOutView;
 @end
 
@@ -89,8 +88,6 @@ NSString * const TVCLogViewCommonUserAgentString = @"Textual/0.1 (+https://githu
 
 - (void)constructWebView
 {
-	self.isUsingWebKit2 = YES;
-
 	self.webViewBacking = [[TVCLogViewInternalWK2 alloc] initWithHostView:self];
 }
 
@@ -339,11 +336,7 @@ NSString * const TVCLogViewCommonUserAgentString = @"Textual/0.1 (+https://githu
 		[self.webViewBacking _t_evaluateJavaScript:code completionHandler:completionHandler];
 	};
 
-//	if (self.isUsingWebKit2) {
-//		blockToPerform();
-//	} else {
-		XRPerformBlockAsynchronouslyOnMainQueue(blockToPerform);
-//	}
+	XRPerformBlockAsynchronouslyOnMainQueue(blockToPerform);
 }
 
 + (NSString *)descriptionOfJavaScriptResult:(id)scriptResult

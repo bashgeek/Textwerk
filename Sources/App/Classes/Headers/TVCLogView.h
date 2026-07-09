@@ -45,8 +45,6 @@ TEXTUAL_EXTERN NSString * const TVCLogViewCommonUserAgentString;
 - (void)clearSelection;
 @property (readonly, copy, nullable) NSString *selection;
 
-@property (readonly) BOOL isUsingWebKit2;
-
 @property (readonly) NSView *webView;
 
 @property (readonly, getter=isLayingOutView) BOOL layingOutView;

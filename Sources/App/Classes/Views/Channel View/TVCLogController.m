@@ -85,6 +85,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) BOOL historyLoadedForFirstTime;
 @property (nonatomic, assign) BOOL reloadingHistory;
 @property (nonatomic, assign) BOOL reloadingTheme;
+@property (nonatomic, assign) BOOL pendingThemeReload;
 @property (nonatomic, assign) BOOL historyLoaded;
 @property (nonatomic, assign) NSInteger activeLineCount;
 @property (nonatomic, copy, nullable) NSString *lastVisitedHighlight;
@@ -649,6 +650,7 @@ NSString * const TVCLogControllerViewFinishedLoadingNotification = @"TVCLogContr
 	self.historyLoadedForFirstTime = YES;
 
 	self.reloadingTheme = YES;
+	self.pendingThemeReload = YES;
 
 	[self clearWithReset:NO];
 
@@ -1528,9 +1530,7 @@ NSString * const TVCLogControllerViewFinishedLoadingNotification = @"TVCLogContr
 
 	BOOL usesCustomScrollers = [TPCPreferences themeChannelViewUsesCustomScrollers];
 
-	BOOL usingWebKit2 = self.backingView.isUsingWebKit2;
-
-	return (onlyShowDuringScrolling == NO && usesCustomScrollers && usingWebKit2);
+	return (onlyShowDuringScrolling == NO && usesCustomScrollers);
 }
 
 - (NSString *)initialDocument
@@ -1676,11 +1676,13 @@ NSString * const TVCLogControllerViewFinishedLoadingNotification = @"TVCLogContr
 		  @{
 			  @"selected" : @(self.selected),
 			  @"visible" : @(self.visible),
-			  @"reloadingTheme" : @(self.reloadingTheme), // TODO: Fix this always being false
+			  @"reloadingTheme" : @(self.pendingThemeReload),
 			  @"textSizeMultiplier" : @(textSizeMultiplier),
 			  @"scrollbackLimit" : @(scrollbackLimit)
 		  }
 	  ]];
+
+	self.pendingThemeReload = NO;
 
 	[self setInitialTopic];
 

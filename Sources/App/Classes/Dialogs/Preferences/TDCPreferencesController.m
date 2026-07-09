@@ -100,7 +100,6 @@ NS_ASSUME_NONNULL_BEGIN
 #define _toolbarItemIndexDefaultIdentity			108008
 #define _toolbarItemIndexDefaultIRCopMessages		108009
 #define _toolbarItemIndexOffRecordMessaging			108010
-#define _toolbarItemIndexHiddenPreferences			108011 // unused
 
 #define _addonsToolbarInstalledAddonsMenuItemIndex		109000
 #define _addonsToolbarItemMultiplier					995
