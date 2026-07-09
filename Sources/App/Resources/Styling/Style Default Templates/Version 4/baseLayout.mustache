@@ -11,16 +11,9 @@
 		<script src="{{applicationResourcePath}}/JavaScript/API/core.js" type="text/javascript" charset="UTF-8"></script>
 		<script src="{{applicationResourcePath}}/JavaScript/API/corePrivate.js" type="text/javascript" charset="UTF-8"></script>
 
-		<script src="{{applicationResourcePath}}/JavaScript/API/private/core/clickMenuSelection.js" type="text/javascript" charset="UTF-8"></script>
-		<script src="{{applicationResourcePath}}/JavaScript/API/private/core/documentBody.js" type="text/javascript" charset="UTF-8"></script>
-		<script src="{{applicationResourcePath}}/JavaScript/API/private/core/events.js" type="text/javascript" charset="UTF-8"></script>
-		<script src="{{applicationResourcePath}}/JavaScript/API/private/core/inlineMedia.js" type="text/javascript" charset="UTF-8"></script>
-		<script src="{{applicationResourcePath}}/JavaScript/API/private/core/messageBuffer.js" type="text/javascript" charset="UTF-8"></script>
-		<script src="{{applicationResourcePath}}/JavaScript/API/private/core/scrollTo.js" type="text/javascript" charset="UTF-8"></script>
-		<script src="{{applicationResourcePath}}/JavaScript/API/private/scroller/state.js" type="text/javascript" charset="UTF-8"></script>
-		<script src="{{applicationResourcePath}}/JavaScript/API/private/scroller/automatic.js" type="text/javascript" charset="UTF-8"></script>
-		<script src="{{applicationResourcePath}}/JavaScript/API/private/conversationTracking.js" type="text/javascript" charset="UTF-8"></script>
-		<script src="{{applicationResourcePath}}/JavaScript/API/private/scriptSink.js" type="text/javascript" charset="UTF-8"></script>
+		<script type="text/javascript">
+			Textual.initializeCore("{{applicationResourcePath}}");
+		</script>
 
 		{{#activeStyleJSFiles}}
 		<script src="{{.}}?{{cacheToken}}" type="text/javascript" charset="UTF-8"></script>

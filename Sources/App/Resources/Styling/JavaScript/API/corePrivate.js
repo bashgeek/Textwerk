@@ -46,6 +46,21 @@
 /* Private objects */
 var _Textual = {};
 
+/* Resource management */
+Textual.initializeCore = function(resourcesPath)
+{
+	Textual.includeScriptResourceFile(resourcesPath + "/JavaScript/API/private/core/clickMenuSelection.js");
+	Textual.includeScriptResourceFile(resourcesPath + "/JavaScript/API/private/core/documentBody.js");
+	Textual.includeScriptResourceFile(resourcesPath + "/JavaScript/API/private/core/events.js");
+	Textual.includeScriptResourceFile(resourcesPath + "/JavaScript/API/private/core/inlineMedia.js");
+	Textual.includeScriptResourceFile(resourcesPath + "/JavaScript/API/private/core/messageBuffer.js");
+	Textual.includeScriptResourceFile(resourcesPath + "/JavaScript/API/private/core/scrollTo.js");
+	Textual.includeScriptResourceFile(resourcesPath + "/JavaScript/API/private/scroller/state.js");
+	Textual.includeScriptResourceFile(resourcesPath + "/JavaScript/API/private/scroller/automatic.js");
+	Textual.includeScriptResourceFile(resourcesPath + "/JavaScript/API/private/conversationTracking.js");
+	Textual.includeScriptResourceFile(resourcesPath + "/JavaScript/API/private/scriptSink.js");
+};
+
 Textual.includeStyleResourceFile = function(file)
 {
 	if (/loaded|complete/.test(document.readyState)) {
