@@ -171,7 +171,7 @@ xcodebuild \
     -destination "platform=macOS,arch=arm64" \
     -derivedDataPath "$DERIVED_DATA" \
     CONFIGURATION_BUILD_DIR="$BUILD_DIR" \
-    "${EXTRA_ARGS[@]}" \
+    "${EXTRA_ARGS[@]+"${EXTRA_ARGS[@]}"}" \
     build 2>&1 | awk -v root="$ROOT" -v use_color="$USE_COLOR" "$AWK_PROG"
 PIPE_STATUS=("${PIPESTATUS[@]}")
 set -e
