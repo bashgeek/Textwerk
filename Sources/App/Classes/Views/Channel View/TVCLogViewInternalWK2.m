@@ -119,6 +119,40 @@ static NSUInteger _numberOfViews = 0;
 		[_sharedUserContentController addScriptMessageHandler:(id)_sharedWebViewScriptSink name:@"topicBarDoubleClicked"];
 		[_sharedUserContentController addScriptMessageHandler:(id)_sharedWebViewScriptSink name:@"finishedLayingOutView"];
 
+		NSString *jsBase = [NSBundle.mainBundle.resourcePath stringByAppendingPathComponent:@"JavaScript/API"];
+
+		NSArray<NSString *> *coreScripts = @[
+			@"core.js",
+			@"corePrivate.js",
+			@"private/core/clickMenuSelection.js",
+			@"private/core/documentBody.js",
+			@"private/core/events.js",
+			@"private/core/inlineMedia.js",
+			@"private/core/messageBuffer.js",
+			@"private/core/scrollTo.js",
+			@"private/scroller/state.js",
+			@"private/scroller/automatic.js",
+			@"private/conversationTracking.js",
+			@"private/scriptSink.js",
+		];
+
+		for (NSString *name in coreScripts) {
+			NSString *path = [jsBase stringByAppendingPathComponent:name];
+			NSString *source = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
+
+			if (source == nil) {
+				LogToConsoleError("Failed to read core JS: %{public}@", name);
+				continue;
+			}
+
+			WKUserScript *script = [[WKUserScript alloc]
+				initWithSource:source
+				injectionTime:WKUserScriptInjectionTimeAtDocumentStart
+				forMainFrameOnly:YES];
+
+			[_sharedUserContentController addUserScript:script];
+		}
+
 		_sharedWebViewConfiguration.userContentController = _sharedUserContentController;
 
 		_sharedWebPolicy = [TVCLogPolicy new];
