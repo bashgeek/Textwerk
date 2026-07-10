@@ -3,9 +3,15 @@
 A community fork of [Textual](https://github.com/Codeux-Software/Textual), the macOS IRC client originally built by Codeux Software. The upstream project is archived. This fork modernizes the codebase and targets macOS 26+.
 
 **What changed from upstream:**
+- Fixed crashes and blank channel views on macOS 26
+- Fixed IRC connection crashes on macOS 26 (NWError.wifiAware handling)
+- Core JavaScript is now injected via `WKUserScript` instead of `document.write` — more reliable script initialization
+- Text-to-speech migrated from deprecated `NSSpeechSynthesizer` to `AVSpeechSynthesizer`
+- Modern keychain APIs for client-side TLS certificate authentication
 - Removed the license manager, OTR/Blowfish encryption, and WK1 WebView (all dead code)
+- Removed FAQ, privacy, license, support, and help search from the Help menu
 - Replaced `OELReachability` with `NWPathMonitor` (Network.framework)
-- Removed all git submodule dependencies (inlining in progress)
+- Removed all git submodule dependencies
 - Targeting macOS 26+; no backward-compat cruft
 
 ## Screenshots
