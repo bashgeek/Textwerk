@@ -130,17 +130,14 @@ a:hover {
   top: 0;
   left: 0;
   right: 0;
-  padding-bottom: 5px;
   opacity: 0; /* Set by JavaScript */
   z-index: 400;
   color: #dddddd;
   overflow: hidden;
   position: fixed;
   padding: 7px 0.5em 7px;
-  box-shadow: 0 1px 5px #777;
   border-bottom: 1px solid #404040;
   transition: opacity 0.8s linear;
-  text-shadow: 1px 1px rgba(10, 10, 10, 0.7);
   background: rgba(60, 60, 60, 0.91);
 }
 
@@ -148,7 +145,6 @@ a:hover {
 #topicBar .channel {
   color: #64a5ff;
   border-color: #64a5ff;
-  text-shadow: 1px 1px rgba(10, 10, 10, 0.7);
 }
 
 /* Hidden scrollback history bar */

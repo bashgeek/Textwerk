@@ -122,10 +122,8 @@ a:hover {
 	color: #FFFFFF;
 	position: fixed;
 	padding: 2px 0.5em 3px;
-	box-shadow: 0 1px 5px #777;
 	border-bottom: 1px solid #61778F;
-	text-shadow: 1px 1px rgba(83, 86, 94, 0.7);
-	background: linear-gradient(top, #A2B0D0 0%, #7385AD 100%);
+	background: #8D9BBD;
 	transition: opacity 0.8s linear;
 	-webkit-font-smoothing: antialiased;
 	overflow: hidden;

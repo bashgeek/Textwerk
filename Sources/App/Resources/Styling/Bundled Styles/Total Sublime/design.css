@@ -124,9 +124,7 @@ a:hover {
 	color: #555;
 	position: fixed;
 	padding: 2px 0.5em 3px;
-	box-shadow: 0 1px 5px #444;
 	border-bottom: 1px solid #222;
-	text-shadow: 1px 1px rgba(10, 10, 10, 0.7);
 	background: #171814;
 	transition: opacity 0.8s linear;
 	-webkit-font-smoothing: antialiased;
