@@ -38,6 +38,7 @@
 
 #import <CommonCrypto/CommonDigest.h>
 
+#import "NSColorHelper.h"
 #import "TPCPreferencesUserDefaults.h"
 #import "TPCThemeController.h"
 #import "TPCTheme.h"

@@ -36,6 +36,7 @@
  *
  *********************************************************************** */
 
+#import "NSColorHelper.h"
 #import "IRC.h"
 #import "IRCClient.h"
 #import "IRCISupportInfo.h"

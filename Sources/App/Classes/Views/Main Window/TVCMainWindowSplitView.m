@@ -36,6 +36,7 @@
  *
  *********************************************************************** */
 
+#import "NSColorHelper.h"
 #import "NSViewHelperPrivate.h"
 #import "TPCPreferencesLocal.h"
 #import "TPCPreferencesUserDefaults.h"

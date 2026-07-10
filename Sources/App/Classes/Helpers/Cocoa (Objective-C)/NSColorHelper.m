@@ -238,6 +238,77 @@ NS_ASSUME_NONNULL_BEGIN
 	return TXCalibratedRGBColor(0.80, 0.80, 0.80);
 }
 
++ (nullable NSColor *)colorWithHexadecimalValue:(NSString *)string
+{
+	if ([string hasPrefix:@"#"]) {
+		string = [string substringFromIndex:1];
+	}
+
+	if (string.length == 0 ||
+		string.length > 8 ||
+		(string.length % 2) != 0)
+	{
+		return nil;
+	}
+
+	long colorTotal = strtol(string.UTF8String, NULL, 16);
+
+	if (string.length < 8) {
+		colorTotal <<= 8;
+		colorTotal |= 0xFF;
+	}
+
+	NSInteger r = ((colorTotal & 0xff000000) >> 24);
+	NSInteger g = ((colorTotal & 0x00ff0000) >> 16);
+	NSInteger b = ((colorTotal & 0x0000ff00) >> 8);
+	NSInteger a =  (colorTotal & 0x000000ff);
+
+	return [NSColor colorWithDeviceRed:(r / 255.0) green:(g / 255.0) blue:(b / 255.0) alpha:(a / 255.0)];
+}
+
++ (NSColor *)calibratedColorWithRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha
+{
+	if (red > 1.0)   { red   /= 0xff; }
+	if (green > 1.0) { green /= 0xff; }
+	if (blue > 1.0)  { blue  /= 0xff; }
+	if (alpha > 1.0) { alpha /= 0xff; }
+
+	return [NSColor colorWithCalibratedRed:red green:green blue:blue alpha:alpha];
+}
+
+- (NSColor *)invertedColor
+{
+	NSColor *obj = [self colorUsingColorSpace:NSColorSpace.deviceRGBColorSpace];
+
+	return [NSColor colorWithCalibratedRed:(1.0 - obj.redComponent)
+									 green:(1.0 - obj.greenComponent)
+									  blue:(1.0 - obj.blueComponent)
+									 alpha:obj.alphaComponent];
+}
+
+- (NSString *)hexadecimalValue
+{
+	return [self hexadecimalValueWithAlpha:NO];
+}
+
+- (NSString *)hexadecimalValueWithAlpha:(BOOL)withAlpha
+{
+	NSColor *rgb = [self colorUsingColorSpace:NSColorSpace.sRGBColorSpace] ?: self;
+
+	if (withAlpha) {
+		return [NSString stringWithFormat:@"#%02X%02X%02X%02X",
+				(NSInteger)(rgb.redComponent * 0xff),
+				(NSInteger)(rgb.greenComponent * 0xff),
+				(NSInteger)(rgb.blueComponent * 0xff),
+				(NSInteger)(rgb.alphaComponent * 0xff)];
+	}
+
+	return [NSString stringWithFormat:@"#%02X%02X%02X",
+			(NSInteger)(rgb.redComponent * 0xff),
+			(NSInteger)(rgb.greenComponent * 0xff),
+			(NSInteger)(rgb.blueComponent * 0xff)];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END

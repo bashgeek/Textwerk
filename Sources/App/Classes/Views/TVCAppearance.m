@@ -35,6 +35,7 @@
  *
  *********************************************************************** */
 
+#import "NSColorHelper.h"
 #import "NSObjectHelperPrivate.h"
 #import "TVCAppearancePrivate.h"
 

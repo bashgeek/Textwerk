@@ -35,6 +35,7 @@
  *
  *********************************************************************** */
 
+#import "NSColorHelper.h"
 #import "NSObjectHelperPrivate.h"
 #import "TXAppearance.h"
 #import "TPCApplicationInfo.h"

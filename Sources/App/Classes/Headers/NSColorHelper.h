@@ -41,6 +41,13 @@ NS_ASSUME_NONNULL_BEGIN
 @interface NSColor (TXColorHelper)
 @property (class, readonly, copy) NSArray<NSColor *> *formatterColors;
 
++ (nullable NSColor *)colorWithHexadecimalValue:(NSString *)string;
++ (NSColor *)calibratedColorWithRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha;
+
+@property (readonly, copy) NSColor *invertedColor;
+@property (readonly, copy) NSString *hexadecimalValue;
+- (NSString *)hexadecimalValueWithAlpha:(BOOL)withAlpha;
+
 @property (class, readonly) NSColor *formatterWhiteColor;
 @property (class, readonly) NSColor *formatterBlackColor;
 @property (class, readonly) NSColor *formatterNavyBlueColor;
