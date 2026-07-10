@@ -37,7 +37,7 @@ body {
 	z-index: 100;
 	position: absolute;
 	opacity: 0; /* Set by JavaScript */
-	-webkit-transition: opacity 0.8s linear;
+	transition: opacity 0.8s linear;
 }
 
 /* Only factor in height of topic bar when selected == true
@@ -69,7 +69,7 @@ body[dir="rtl"] .sender {
 	border-radius: 5px;
 	padding: 5px 10px;
 	opacity: 1; /* Set by JavaScript */
-	-webkit-transition: opacity 0.8s linear;
+	transition: opacity 0.8s linear;
 }
 
 /* Time */
@@ -125,8 +125,8 @@ a:hover {
 	padding: 2px 0.5em 3px;
 	border-bottom: 1px solid #1f1f1f;
 	-webkit-box-shadow: 0 1px 5px #777;
-	-webkit-transition: opacity 0.8s linear;
-	-webkit-font-smoothing: subpixel-antialiased;
+	transition: opacity 0.8s linear;
+	-webkit-font-smoothing: antialiased;
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
@@ -161,7 +161,7 @@ a:hover {
 	margin-top: -1px;
 	border-bottom: 1px dashed;
 	border-color: #444;
-	-webkit-transition: 0.2s linear;
+	transition: 0.2s linear;
 }
 
 /* Message buffer loading animation */

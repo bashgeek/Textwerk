@@ -47,7 +47,7 @@
 		<key>Channel Cell</key>
 		<dict>
 			<key>rowHeight</key>
-			<integer>20</integer>
+			<integer>22</integer>
 			<key>font</key>
 			<dict>
 				<key>name</key>

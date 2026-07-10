@@ -42,7 +42,7 @@ body .line {
   z-index: 100;
   max-height: 99.99%;
   opacity: 0; /* Set by JavaScript */
-  -webkit-transition: opacity 0.8s linear;
+  transition: opacity 0.8s linear;
 }
 
 #body {
@@ -73,7 +73,7 @@ body[dir=rtl] .senderContainer {
   padding: 5px;
   padding-left: 10px;
   opacity: 1; /* Set by JavaScript */
-  -webkit-transition: opacity 0.8s linear;
+  transition: opacity 0.8s linear;
 }
 
 #loadingScreen progress {
@@ -139,7 +139,7 @@ a:hover {
   padding: 7px 0.5em 7px;
   box-shadow: 0 1px 5px #777;
   border-bottom: 1px solid #404040;
-  -webkit-transition: opacity 0.8s linear;
+  transition: opacity 0.8s linear;
   text-shadow: 1px 1px rgba(10, 10, 10, 0.7);
   background: rgba(60, 60, 60, 0.91);
 }
@@ -178,7 +178,7 @@ a:hover {
   margin-top: -1px;
   border-bottom: 1px solid;
   border-color: #444;
-  -webkit-transition: 0.2s linear;
+  transition: 0.2s linear;
 }
 
 body[dir=ltr] div[data-line-type=action] .sender:before {
@@ -541,7 +541,7 @@ body .sender {
 }
 
 body .f {  /* fade out */
-  -webkit-transition: color .75s;
+  transition: color .75s;
   color: rgb(22, 22, 22) !important;
 }
 
