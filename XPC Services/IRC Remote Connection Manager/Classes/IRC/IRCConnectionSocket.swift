@@ -129,40 +129,38 @@ class ConnectionSocket: NSObject
 
 		/* ====================================== */
 
-		var keychainRef: SecKeychainItem?
+		let lookupQuery: [String: Any] = [
+			kSecValuePersistentRef as String: certificateDataIn,
+			kSecReturnRef as String: true,
+		]
 
-		let certificateDataInRef = certificateDataIn as CFData
+		var itemRef: CFTypeRef?
 
-		var status = SecKeychainItemCopyFromPersistentReference(certificateDataInRef, &keychainRef)
+		let status = SecItemCopyMatching(lookupQuery as CFDictionary, &itemRef)
 
-		if (status != noErr) {
+		if status != noErr {
 			Logging.defaultSubsystem?.error("Operation Failed (1): \(status, privacy: .public)")
 
 			return nil
 		}
 
-		/* "A SecKeychainItem object for a certificate that is stored
-		 in a keychain can be safely cast to a SecCertificate for use
-		 with Certificate, Key, and Trust Services." */
-		/* Contrary to the statement above, as stated in documentation,
-		 casting was crashing. This is a workaround until that's fixed. */
-		let certificateRef = unsafeBitCast(keychainRef, to: SecCertificate.self)
+		let identityRef = itemRef as! SecIdentity
 
 		/* ====================================== */
 
-		var identityRef: SecIdentity?
+		var certificateRef: SecCertificate?
 
-		status = SecIdentityCreateWithCertificate(nil, certificateRef, &identityRef)
+		let certStatus = SecIdentityCopyCertificate(identityRef, &certificateRef)
 
-		if (status != noErr) {
-			Logging.defaultSubsystem?.error("Operation Failed (2): \(status, privacy: .public)")
+		if certStatus != noErr || certificateRef == nil {
+			Logging.defaultSubsystem?.error("Operation Failed (2): \(certStatus, privacy: .public)")
 
 			return nil
 		}
 
 		/* ====================================== */
 
-		return (identity: identityRef!, certificate: certificateRef)
+		return (identity: identityRef, certificate: certificateRef!)
 	}
 
 	final func changeProxy(to type: IRCConnectionProxyType = .none, at host: String? = nil, on port: UInt16 = 0, username: String? = nil, password: String? = nil)

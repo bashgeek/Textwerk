@@ -1547,11 +1547,28 @@ TEXTUAL_IGNORE_DEPRECATION_END
 
 	/* ====================================== */
 
-	SecKeychainItemRef certificateRef;
+	CFTypeRef itemRef = NULL;
 
-	CFDataRef certificateDataInRef = (__bridge CFDataRef)certificateDataIn;
+	NSDictionary *lookupQuery = @{
+		(__bridge id)kSecValuePersistentRef: certificateDataIn,
+		(__bridge id)kSecReturnRef: @YES,
+	};
 
-	OSStatus status = SecKeychainItemCopyFromPersistentReference(certificateDataInRef, &certificateRef);
+	OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)lookupQuery, &itemRef);
+
+	if (status != noErr) {
+		return;
+	}
+
+	SecIdentityRef identityRef = (SecIdentityRef)itemRef;
+
+	/* ====================================== */
+
+	SecCertificateRef certificateRef;
+
+	status = SecIdentityCopyCertificate(identityRef, &certificateRef);
+
+	CFRelease(identityRef);
 
 	if (status != noErr) {
 		return;
@@ -1561,7 +1578,7 @@ TEXTUAL_IGNORE_DEPRECATION_END
 
 	CFStringRef commonNameRef;
 
-	status = SecCertificateCopyCommonName((SecCertificateRef)certificateRef, &commonNameRef);
+	status = SecCertificateCopyCommonName(certificateRef, &commonNameRef);
 
 	if (status != noErr) {
 		CFRelease(certificateRef);
@@ -1569,13 +1586,11 @@ TEXTUAL_IGNORE_DEPRECATION_END
 		return;
 	}
 
-	*commonNameOut = (__bridge NSString *)(commonNameRef);
-
-	CFRelease(commonNameRef);
+	*commonNameOut = (__bridge_transfer NSString *)commonNameRef;
 
 	/* ====================================== */
 
-	CFDataRef certificateDataRef = SecCertificateCopyData((SecCertificateRef)certificateRef);
+	CFDataRef certificateDataRef = SecCertificateCopyData(certificateRef);
 
 	if (certificateDataRef) {
 		NSData *certificateData = (__bridge NSData *)certificateDataRef;
@@ -1601,9 +1616,14 @@ TEXTUAL_IGNORE_DEPRECATION_END
 
 	/* ====================================== */
 
-	SecCertificateRef certificateRef;
+	CFTypeRef persistentRefResult = NULL;
 
-	OSStatus status = SecIdentityCopyCertificate(identityInRef, &certificateRef);
+	NSDictionary *saveQuery = @{
+		(__bridge id)kSecValueRef: (__bridge id)identityInRef,
+		(__bridge id)kSecReturnPersistentRef: @YES,
+	};
+
+	OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)saveQuery, &persistentRefResult);
 
 	if (status != noErr) {
 		LogToConsoleError("Operation Failed (2): %{public}i", status);
@@ -1613,32 +1633,13 @@ TEXTUAL_IGNORE_DEPRECATION_END
 
 	/* ====================================== */
 
-	CFDataRef certificateDataRef;
-
-	status = SecKeychainItemCreatePersistentReference((SecKeychainItemRef)certificateRef, &certificateDataRef);
-
-	if (status != noErr) {
-		CFRelease(certificateRef);
-
-		LogToConsoleError("Operation Failed (3): %{public}i", status);
-
-		return;
-	}
-
-	/* ====================================== */
-
-	self.config.identityClientSideCertificate = (__bridge NSData *)certificateDataRef;
+	self.config.identityClientSideCertificate = (__bridge_transfer NSData *)persistentRefResult;
 
 	if (self.prefersSecuredConnectionCheck.state == NSControlStateValueOff) {
 		self.prefersSecuredConnectionCheck.state = NSControlStateValueOn;
 
 		[self useSSLCheckChanged:nil];
 	}
-
-	/* ====================================== */
-
-	CFRelease(certificateRef);
-	CFRelease(certificateDataRef);
 }
 
 - (void)updateClientCertificatePage
