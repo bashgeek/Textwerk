@@ -226,7 +226,9 @@ typedef NS_OPTIONS(NSUInteger, _TPCThemeMonitoringResult) {
 	NSMutableArray<TPCThemeVariety *> *varieties = [NSMutableArray array];
 
 	for (NSURL *fileURL in preFileList) {
-		NSNumber *isDirectory = [fileURL resourceValueForKey:NSURLIsDirectoryKey];
+		id _isDirectory = nil;
+		[fileURL getResourceValue:&_isDirectory forKey:NSURLIsDirectoryKey error:nil];
+		NSNumber *isDirectory = _isDirectory;
 
 		if ([isDirectory boolValue] == NO) {
 			continue;
@@ -292,7 +294,7 @@ typedef NS_OPTIONS(NSUInteger, _TPCThemeMonitoringResult) {
 	/* The file representation is compared instead of the
 	 resource identifier because the resource identifier
 	 returns nil when the URL no longer exists. */
-	return [url1 isEqualByFileRepresentation:url2];
+	return (strcmp(url1.fileSystemRepresentation, url2.fileSystemRepresentation) == 0);
 }
 
 - (nullable TPCThemeVariety *)_varietyAtURL:(NSURL *)url
@@ -854,7 +856,7 @@ typedef NS_OPTIONS(NSUInteger, _TPCThemeMonitoringResult) {
 {
 	NSParameterAssert(urls != nil);
 
-	return [NSArray pathsArrayForFileURLs:urls];
+	return [urls valueForKeyPath:@"URLByStandardizingPath.path"];
 }
 
 #pragma mark -

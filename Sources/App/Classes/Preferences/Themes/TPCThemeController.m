@@ -536,7 +536,9 @@ typedef NSMutableDictionary	<NSString *, TPCTheme *> 	*TPCThemeControllerThemeLi
 	}
 
 	/* Create theme */
-	NSString *themeName = [url resourceValueForKey:NSURLNameKey];
+	id _themeName = nil;
+	[url getResourceValue:&_themeName forKey:NSURLNameKey error:nil];
+	NSString *themeName = _themeName;
 
 	TPCThemeControllerThemeListMutable themeList = [self mutableListForStorageLocation:storageLocation];
 
@@ -556,7 +558,7 @@ typedef NSMutableDictionary	<NSString *, TPCTheme *> 	*TPCThemeControllerThemeLi
 		return;
 	}
 
-	LogToConsoleDebug("Theme '%{public}@' named '%{public}@' at '%{public}@' created", theme, themeName, url.standardizedTildePath);
+	LogToConsoleDebug("Theme '%{public}@' named '%{public}@' at '%{public}@' created", theme, themeName, url.path.standardizedTildePath);
 
 	[RZNotificationCenter() postNotificationName:TPCThemeControllerThemeListDidChangeNotification object:self];
 }
@@ -600,13 +602,17 @@ typedef NSMutableDictionary	<NSString *, TPCTheme *> 	*TPCThemeControllerThemeLi
 	}
 
 	for (NSURL *fileURL in preFileList) {
-		NSNumber *isDirectory = [fileURL resourceValueForKey:NSURLIsDirectoryKey];
+		id _isDirectory = nil;
+		[fileURL getResourceValue:&_isDirectory forKey:NSURLIsDirectoryKey error:nil];
+		NSNumber *isDirectory = _isDirectory;
 
 		if ([isDirectory boolValue] == NO) {
 			continue;
 		}
 
-		NSString *name = [fileURL resourceValueForKey:NSURLNameKey];
+		id _name = nil;
+		[fileURL getResourceValue:&_name forKey:NSURLNameKey error:nil];
+		NSString *name = _name;
 
 		(void)[self themeAtURL:fileURL
 				  withFilename:name

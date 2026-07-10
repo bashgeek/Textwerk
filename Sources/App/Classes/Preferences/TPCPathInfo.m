@@ -78,7 +78,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 	if ([RZFileManager() createDirectoryAtURL:directoryURL withIntermediateDirectories:YES attributes:nil error:&createDirectoryError] == NO) {
 		LogToConsoleError("Failed to create directory at path: '%{public}@' - %{public}@",
-			directoryURL.standardizedTildePath, createDirectoryError.localizedDescription);
+			directoryURL.path.standardizedTildePath, createDirectoryError.localizedDescription);
 	}
 }
 

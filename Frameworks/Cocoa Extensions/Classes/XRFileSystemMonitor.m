@@ -114,7 +114,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 	NSArray *urlsToWatch = self.urls;
 
-	NSArray *pathsToWatch = [NSArray pathsArrayForFileURLs:urlsToWatch standardizingPaths:YES];
+	NSArray *pathsToWatch = [urlsToWatch valueForKeyPath:@"URLByStandardizingPath.path"];
 
 	CFArrayRef pathsToWatchRef = (__bridge CFArrayRef)pathsToWatch;
 
@@ -210,7 +210,8 @@ void _monitorCallback(ConstFSEventStreamRef streamRef,
 	[contextObjectsIn enumerateKeysAndObjectsUsingBlock:^(NSURL *urlIn, id object, BOOL *stop) {
 		NSURL *urlOut = urlIn.URLByStandardizingPath;
 
-		NSString *key = urlOut.filesystemRepresentationString;
+		const char *_rep = urlOut.fileSystemRepresentation;
+		NSString *key = [[NSFileManager defaultManager] stringWithFileSystemRepresentation:_rep length:strlen(_rep)];
 
 		contextObjectsOut[key] = object;
 	}];
@@ -228,7 +229,8 @@ void _monitorCallback(ConstFSEventStreamRef streamRef,
 		return nil;
 	}
 
-	NSString *key = url.filesystemRepresentationString;
+	const char *_rep = url.fileSystemRepresentation;
+	NSString *key = [[NSFileManager defaultManager] stringWithFileSystemRepresentation:_rep length:strlen(_rep)];
 
 	return contextObjects[key];
 }

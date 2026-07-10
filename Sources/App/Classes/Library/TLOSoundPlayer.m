@@ -160,7 +160,7 @@ NS_ASSUME_NONNULL_BEGIN
 	}
 
 	LogToConsoleError("Returned error code %{public}i when loading file at path: %{public}@",
-		soundLoadError, soundPathURL.standardizedTildePath);
+		soundLoadError, soundPathURL.path.standardizedTildePath);
 
 	return 0;
 }

@@ -514,7 +514,7 @@ typedef NS_ENUM(NSUInteger, TPCMigrateSandboxInstallation)
 		return NO;
 	}
 
-	LogToConsole("Removing group container contents at URL: %{public}@", gcLocation.standardizedTildePath);
+	LogToConsole("Removing group container contents at URL: %{public}@", gcLocation.path.standardizedTildePath);
 
 	BOOL result = [RZFileManager() removeContentsOfDirectoryAtURL:gcLocation
 													excludingURLs:oldExtensions
@@ -573,9 +573,13 @@ typedef NS_ENUM(NSUInteger, TPCMigrateSandboxInstallation)
 	NSUInteger numberRemaining = 0;
 
 	for (NSURL *oldExtension in oldExtensions) {
-		NSString *name = [oldExtension resourceValueForKey:NSURLNameKey];
-		
-		NSNumber *isPackage = [oldExtension resourceValueForKey:NSURLIsPackageKey];
+		id _name = nil;
+		[oldExtension getResourceValue:&_name forKey:NSURLNameKey error:nil];
+		NSString *name = _name;
+
+		id _isPackage = nil;
+		[oldExtension getResourceValue:&_isPackage forKey:NSURLIsPackageKey error:nil];
+		NSNumber *isPackage = _isPackage;
 
 		if ([name hasSuffix:@".bundle"] == NO ||
 			(isPackage == nil || isPackage.boolValue == NO))
@@ -597,7 +601,7 @@ typedef NS_ENUM(NSUInteger, TPCMigrateSandboxInstallation)
 
 		if ([TPCResourceManager _URLIsSymbolicLink:newExtension] == NO) {
 #ifdef DEBUG
-			LogToConsoleDebug("Pruning URL: '%{public}@'", oldExtension.standardizedTildePath);
+			LogToConsoleDebug("Pruning URL: '%{public}@'", oldExtension.path.standardizedTildePath);
 #endif
 
 			NSError *deleteError = nil;
@@ -606,7 +610,7 @@ typedef NS_ENUM(NSUInteger, TPCMigrateSandboxInstallation)
 
 			if (deleteError) {
 				LogToConsoleError("Failed to prune extension at URL ['%{public}@']: %{public}@",
-					oldExtension.standardizedTildePath, deleteError.localizedDescription);
+					oldExtension.path.standardizedTildePath, deleteError.localizedDescription);
 			}
 		}
 
@@ -735,7 +739,7 @@ typedef NS_ENUM(NSUInteger, TPCMigrateSandboxInstallation)
 
 	if (listExtensionsError) {
 		LogToConsoleError("Unable to list contents of extensions at URL ['%{public}@']: %{public}@",
-			oldLocation.standardizedTildePath, listExtensionsError.localizedDescription);
+			oldLocation.path.standardizedTildePath, listExtensionsError.localizedDescription);
 
 		return nil;
 	}
@@ -780,7 +784,10 @@ typedef NS_ENUM(NSUInteger, TPCMigrateSandboxInstallation)
 
 	NSError *error = nil;
 
-	NSTimeInterval age = [url intervalSinceCreatedWithError:&error];
+	NSDate *_modDate = nil;
+	[url getResourceValue:&_modDate forKey:NSURLCreationDateKey error:&error];
+	if (_modDate == nil) _modDate = NSDate.distantFuture;
+	NSTimeInterval age = -[_modDate timeIntervalSinceNow];
 
 	if (error) {
 		/* This is purposely considered debug information as the user knowing
@@ -798,7 +805,10 @@ typedef NS_ENUM(NSUInteger, TPCMigrateSandboxInstallation)
 
 	NSError *error = nil;
 
-	NSTimeInterval age = [url intervalSinceLastModificationWithError:&error];
+	NSDate *_modDate = nil;
+	[url getResourceValue:&_modDate forKey:NSURLContentModificationDateKey error:&error];
+	if (_modDate == nil) _modDate = NSDate.distantFuture;
+	NSTimeInterval age = -[_modDate timeIntervalSinceNow];
 
 	if (error) {
 		/* This is purposely considered debug information as the user knowing
@@ -816,7 +826,9 @@ typedef NS_ENUM(NSUInteger, TPCMigrateSandboxInstallation)
 
 	/* Skip check if file exists because no resource value
 	 will be returned if that is the case. */
-	NSNumber *isSymblink = [url resourceValueForKey:NSURLIsSymbolicLinkKey];
+	id _isSymblink = nil;
+	[url getResourceValue:&_isSymblink forKey:NSURLIsSymbolicLinkKey error:nil];
+	NSNumber *isSymblink = _isSymblink;
 
 	return (isSymblink != nil && isSymblink.boolValue);
 }

@@ -344,7 +344,7 @@ static NSUInteger _numberOfViews = 0;
 	}
 
 	LogToConsoleError("A JavaScript error occurred in %{public}@ on line %{public}ld of %{public}@: %{public}@",
-		channelName, lineNumber.unsignedIntegerValue, sourceURL.standardizedTildePath, errorMessage);
+		channelName, lineNumber.unsignedIntegerValue, sourceURL.path.standardizedTildePath, errorMessage);
 }
 
 - (void)_t_evaluateJavaScript:(NSString *)code completionHandler:(void (^ _Nullable)(id _Nullable))completionHandler

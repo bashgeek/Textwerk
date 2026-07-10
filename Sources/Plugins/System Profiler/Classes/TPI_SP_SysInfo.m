@@ -231,10 +231,17 @@ NS_ASSUME_NONNULL_BEGIN
 	NSArray *volumes = [RZFileManager() mountedVolumeURLsIncludingResourceValuesForKeys:volumeAttributes options:NSVolumeEnumerationSkipHiddenVolumes];
 
 	[volumes enumerateObjectsUsingBlock:^(NSURL *volume, NSUInteger index, BOOL *stop) {
-		NSString *volumeName = [volume resourceValueForKey:NSURLVolumeNameKey];
+		id _volumeName = nil;
+		[volume getResourceValue:&_volumeName forKey:NSURLVolumeNameKey error:nil];
+		NSString *volumeName = _volumeName;
 
-		uint64_t totalSpace = [[volume resourceValueForKey:NSURLVolumeTotalCapacityKey] longLongValue];
-		uint64_t freeSpace = [[volume resourceValueForKey:NSURLVolumeAvailableCapacityKey] longLongValue];
+		id _totalSpace = nil;
+		[volume getResourceValue:&_totalSpace forKey:NSURLVolumeTotalCapacityKey error:nil];
+		uint64_t totalSpace = [_totalSpace longLongValue];
+
+		id _freeSpace = nil;
+		[volume getResourceValue:&_freeSpace forKey:NSURLVolumeAvailableCapacityKey error:nil];
+		uint64_t freeSpace = [_freeSpace longLongValue];
 
 		if (index == 0) {
 			[resultString appendString:TPILocalizedString(@"BasicLanguage[bvr-wz]", volumeName,

@@ -80,7 +80,6 @@
 #import <CocoaExtensions/NSTabViewHelper.h>
 #import <CocoaExtensions/NSTextFieldHelper.h>
 #import <CocoaExtensions/NSThemeFrameHelper.h>
-#import <CocoaExtensions/NSURLHelper.h>
 #import <CocoaExtensions/NSUserDefaultsHelper.h>
 #import <CocoaExtensions/NSValueHelper.h>
 #import <CocoaExtensions/NSWindowHelper.h>
