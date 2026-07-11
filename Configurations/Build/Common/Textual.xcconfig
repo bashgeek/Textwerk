@@ -1,7 +1,7 @@
 
 // Main application, extensions, and XPC services
 
-TEXTUAL_PRODUCT_NAME = Textual
+TEXTUAL_PRODUCT_NAME = Textwerk
 
 // TEXTUAL_PRODUCT_LOCATION is replaced by the build script
 TEXTUAL_PRODUCT_LOCATION = /Applications/${TEXTUAL_PRODUCT_NAME}.app

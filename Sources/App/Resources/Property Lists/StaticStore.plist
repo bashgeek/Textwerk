@@ -88,7 +88,7 @@
 	</array>
 	<key>THOPluginManager List of Forbidden Extensions</key>
 	<array>
-		<string>com.codeux.app-extensions.textual-Caffeine</string>
+		<string>app.textwerk.Caffeine</string>
 	</array>
 	<key>THOPluginManager List of Reserved Commands</key>
 	<array>
@@ -115,9 +115,9 @@
 	</array>
 	<key>THOPluginManager Extras Installer Latest Extension Versions</key>
 	<dict>
-		<key>com.codeux.app-extensions.textual-BlowfishEncryption</key>
+		<key>app.textwerk.BlowfishEncryption</key>
 		<string>1.0.18</string>
-		<key>com.codeux.app-extensions.textual-WikiStyleLinkParser</key>
+		<key>app.textwerk.WikiStyleLinkParser</key>
 		<string>1.0.9</string>
 	</dict>
 	<key>Spelling Ignores</key>

@@ -3930,10 +3930,7 @@
 				ORGANIZATIONNAME = "Codeux Software, LLC";
 				TargetAttributes = {
 					4C1DC5511580420500A47BC9 = {
-						DevelopmentTeam = 8482Q6EPL6;
-						DevelopmentTeamName = "Codeux Software, LLC";
 						LastSwiftMigration = 1100;
-						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.Mac = {
 								enabled = 1;
@@ -3941,10 +3938,7 @@
 						};
 					};
 					4C5BA37216F1302F00A96CA2 = {
-						DevelopmentTeam = 8482Q6EPL6;
-						DevelopmentTeamName = "Codeux Software, LLC";
 						LastSwiftMigration = 1100;
-						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.Mac = {
 								enabled = 1;
@@ -3952,7 +3946,6 @@
 						};
 					};
 					4CCF301015804DCE006FFE21 = {
-						DevelopmentTeam = 8482Q6EPL6;
 					};
 				};
 			};

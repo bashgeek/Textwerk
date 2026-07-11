@@ -53,9 +53,9 @@
 	<key>DefaultIdentity -&gt; Nickname</key>
 	<string>Guest</string>
 	<key>DefaultIdentity -&gt; Realname</key>
-	<string>Textual User</string>
+	<string>Textwerk User</string>
 	<key>DefaultIdentity -&gt; Username</key>
-	<string>textual</string>
+	<string>textwerk</string>
 	<key>DestinationOfNonserverNotices</key>
 	<integer>0</integer>
 	<key>DisableMainWindowSegmentedController</key>

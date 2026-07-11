@@ -27,40 +27,40 @@
     </choices-outline>
    
     <choice id="installer_choice_1_1" start_selected="false" title="INSTALLER_CHOICE_1_1_TITLE" description="INSTALLER_CHOICE_1_1_DESCRIPTION">
-        <pkg-ref id="com.codeux.app-extensions.textual-scripts-installer-AudioVideo"/>
+        <pkg-ref id="app.textwerk.scripts-installer-AudioVideo"/>
     </choice>
     <choice id="installer_choice_1_2" start_selected="false" title="INSTALLER_CHOICE_1_2_TITLE" description="INSTALLER_CHOICE_1_2_DESCRIPTION">
-        <pkg-ref id="com.codeux.app-extensions.textual-scripts-installer-Fun"/>
+        <pkg-ref id="app.textwerk.scripts-installer-Fun"/>
     </choice>
     <choice id="installer_choice_1_3" start_selected="false" title="INSTALLER_CHOICE_1_3_TITLE" description="INSTALLER_CHOICE_1_3_DESCRIPTION">
-        <pkg-ref id="com.codeux.app-extensions.textual-scripts-installer-Utilities"/>
+        <pkg-ref id="app.textwerk.scripts-installer-Utilities"/>
     </choice>
     <choice id="installer_choice_1" title="INSTALLER_CHOICE_1_TITLE" description="INSTALLER_CHOICE_1_DESCRIPTION"/>
     
     <choice id="installer_choice_2_1" start_selected="false" title="INSTALLER_CHOICE_2_1_TITLE" description="INSTALLER_CHOICE_2_1_DESCRIPTION">
-        <pkg-ref id="com.codeux.app-extensions.textual-extension-installer-BlowfishEncryption"/>
+        <pkg-ref id="app.textwerk.extension-installer-BlowfishEncryption"/>
     </choice>
     <choice id="installer_choice_2_2" start_selected="false" title="INSTALLER_CHOICE_2_2_TITLE" description="INSTALLER_CHOICE_2_2_DESCRIPTION">
-        <pkg-ref id="com.codeux.app-extensions.textual-extension-installer-WikiStyleLinkParser"/>
+        <pkg-ref id="app.textwerk.extension-installer-WikiStyleLinkParser"/>
     </choice>
     <choice id="installer_choice_2" title="INSTALLER_CHOICE_2_TITLE" description="INSTALLER_CHOICE_2_DESCRIPTION"/>
   
-    <pkg-ref id="com.codeux.app-extensions.textual-scripts-installer-AudioVideo" version="1.4">#Scripts-AudioVideo.pkg</pkg-ref>
-    <pkg-ref id="com.codeux.app-extensions.textual-scripts-installer-Fun" version="1.3">#Scripts-Fun.pkg</pkg-ref>
-    <pkg-ref id="com.codeux.app-extensions.textual-scripts-installer-Utilities" version="1.3">#Scripts-Utilities.pkg</pkg-ref>
-    <pkg-ref id="com.codeux.app-extensions.textual-extension-installer-BlowfishEncryption" version="1.0.18">#Extension-BlowfishEncryption.pkg</pkg-ref>
-    <pkg-ref id="com.codeux.app-extensions.textual-extension-installer-WikiStyleLinkParser" version="1.0.9">#Extension-WikiStyleLinkParser.pkg</pkg-ref>
+    <pkg-ref id="app.textwerk.scripts-installer-AudioVideo" version="1.4">#Scripts-AudioVideo.pkg</pkg-ref>
+    <pkg-ref id="app.textwerk.scripts-installer-Fun" version="1.3">#Scripts-Fun.pkg</pkg-ref>
+    <pkg-ref id="app.textwerk.scripts-installer-Utilities" version="1.3">#Scripts-Utilities.pkg</pkg-ref>
+    <pkg-ref id="app.textwerk.extension-installer-BlowfishEncryption" version="1.0.18">#Extension-BlowfishEncryption.pkg</pkg-ref>
+    <pkg-ref id="app.textwerk.extension-installer-WikiStyleLinkParser" version="1.0.9">#Extension-WikiStyleLinkParser.pkg</pkg-ref>
 
-    <pkg-ref id="com.codeux.app-extensions.textual-extension-installer-BlowfishEncryption">
+    <pkg-ref id="app.textwerk.extension-installer-BlowfishEncryption">
         <must-close>
-	        <app id="com.codeux.apps.textual"/>
-	        <app id="com.codeux.apps.textual-mas"/>
+	        <app id="app.textwerk"/>
+	        <app id="app.textwerk-mas"/>
         </must-close>
     </pkg-ref>
-    <pkg-ref id="com.codeux.app-extensions.textual-extension-installer-WikiStyleLinkParser">
+    <pkg-ref id="app.textwerk.extension-installer-WikiStyleLinkParser">
         <must-close>
-	        <app id="com.codeux.apps.textual"/>
-	        <app id="com.codeux.apps.textual-mas"/>
+	        <app id="app.textwerk"/>
+	        <app id="app.textwerk-mas"/>
         </must-close>
     </pkg-ref>
 

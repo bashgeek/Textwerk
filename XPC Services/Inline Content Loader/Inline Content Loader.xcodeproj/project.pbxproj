@@ -666,7 +666,7 @@
 				CODE_SIGN_ENTITLEMENTS = "${PROJECT_DIR}/Configurations/Sandbox/Release.entitlements";
 				GCC_PREFIX_HEADER = "${PROJECT_DIR}/Classes/Headers/Private/ICLProcessPCHPrivate.h";
 				INFOPLIST_FILE = "Resources/Property Lists/Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.codeux.app-utilities.Textual-InlineContentLoader";
+				PRODUCT_BUNDLE_IDENTIFIER = "app.textwerk.InlineContentLoader";
 				PRODUCT_NAME = "Inline Content Loader";
 				SWIFT_OBJC_BRIDGING_HEADER = "${SRCROOT}/Classes/Headers/Private/ICLSwiftBridgingHeader.h";
 			};
@@ -678,7 +678,7 @@
 				CODE_SIGN_ENTITLEMENTS = "${PROJECT_DIR}/Configurations/Sandbox/Release.entitlements";
 				GCC_PREFIX_HEADER = "${PROJECT_DIR}/Classes/Headers/Private/ICLProcessPCHPrivate.h";
 				INFOPLIST_FILE = "Resources/Property Lists/Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.codeux.app-utilities.Textual-InlineContentLoader";
+				PRODUCT_BUNDLE_IDENTIFIER = "app.textwerk.InlineContentLoader";
 				PRODUCT_NAME = "Inline Content Loader";
 				SWIFT_OBJC_BRIDGING_HEADER = "${SRCROOT}/Classes/Headers/Private/ICLSwiftBridgingHeader.h";
 			};

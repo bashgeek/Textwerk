@@ -770,7 +770,7 @@
 				GCC_PREFIX_HEADER = Classes/CocoaExtensions_Prefix.pch;
 				INFOPLIST_FILE = Resources/Info.plist;
 				MODULEMAP_PRIVATE_FILE = Classes/module.private.modulemap;
-				PRODUCT_BUNDLE_IDENTIFIER = com.codeux.frameworks.CocoaExtensions;
+				PRODUCT_BUNDLE_IDENTIFIER = app.textwerk.CocoaExtensions;
 				PRODUCT_NAME = CocoaExtensions;
 				WRAPPER_EXTENSION = framework;
 			};
@@ -790,7 +790,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.codeux.frameworks.CocoaExtensionsTests;
+				PRODUCT_BUNDLE_IDENTIFIER = app.textwerk.CocoaExtensionsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
@@ -803,7 +803,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.codeux.frameworks.CocoaExtensionsTests;
+				PRODUCT_BUNDLE_IDENTIFIER = app.textwerk.CocoaExtensionsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
@@ -823,7 +823,7 @@
 				GCC_PREFIX_HEADER = Classes/CocoaExtensions_Prefix.pch;
 				INFOPLIST_FILE = Resources/Info.plist;
 				MODULEMAP_PRIVATE_FILE = Classes/module.private.modulemap;
-				PRODUCT_BUNDLE_IDENTIFIER = com.codeux.frameworks.CocoaExtensions;
+				PRODUCT_BUNDLE_IDENTIFIER = app.textwerk.CocoaExtensions;
 				PRODUCT_NAME = CocoaExtensions;
 				WRAPPER_EXTENSION = framework;
 			};

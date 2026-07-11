@@ -9,7 +9,7 @@
 	<key>CFBundleSignature</key>
 	<string>TXTL</string>
 	<key>CFBundleDisplayName</key>
-	<string>Textual IRC Client</string>
+	<string>Textwerk</string>
 	<key>CFBundleIdentifier</key>
 	<string>${PRODUCT_BUNDLE_IDENTIFIER}</string>
 	<key>CFBundleName</key>
@@ -35,7 +35,7 @@
 	<key>NSPrincipalClass</key>
 	<string>TXApplication</string>
 	<key>NSContactsUsageDescription</key>
-	<string>Textual accesses contacts to automatically populate certain forms with your name and/or e-mail address. Access to this information is not required.</string>
+	<string>Textwerk accesses contacts to automatically populate certain forms with your name and/or e-mail address. Access to this information is not required.</string>
 	<key>NSAppleScriptEnabled</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -51,7 +51,7 @@
 				<string>scpt</string>
 			</array>
 			<key>CFBundleTypeName</key>
-			<string>Textual IRC Client Script</string>
+			<string>Textwerk Script</string>
 			<key>CFBundleTypeOSTypes</key>
 			<array>
 				<string>****</string>
@@ -71,7 +71,7 @@
 				<string>bundle</string>
 			</array>
 			<key>CFBundleTypeName</key>
-			<string>Textual IRC Client Extension</string>
+			<string>Textwerk Extension</string>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>LSHandlerRank</key>

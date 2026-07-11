@@ -337,8 +337,6 @@
 				TargetAttributes = {
 					4C442C871E13B3D200B187F4 = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = 8482Q6EPL6;
-						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -410,7 +408,7 @@
 				CODE_SIGN_ENTITLEMENTS = "${PROJECT_DIR}/Configurations/Sandbox/Release.entitlements";
 				GCC_PREFIX_HEADER = "${SRCROOT}/Classes/Headers/Private/HSLHistoricLogPCHPrivate.h";
 				INFOPLIST_FILE = "Resources/Property Lists/Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.codeux.app-utilities.Textual-ScrollbackHistoryManager";
+				PRODUCT_BUNDLE_IDENTIFIER = "app.textwerk.ScrollbackHistoryManager";
 				PRODUCT_NAME = "Scrollback History Manager";
 				SWIFT_OBJC_BRIDGING_HEADER = "${SRCROOT}/Classes/Headers/Private/HLSSwiftBridgingHeader.h";
 			};
@@ -422,7 +420,7 @@
 				CODE_SIGN_ENTITLEMENTS = "${PROJECT_DIR}/Configurations/Sandbox/Release.entitlements";
 				GCC_PREFIX_HEADER = "${SRCROOT}/Classes/Headers/Private/HSLHistoricLogPCHPrivate.h";
 				INFOPLIST_FILE = "Resources/Property Lists/Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.codeux.app-utilities.Textual-ScrollbackHistoryManager";
+				PRODUCT_BUNDLE_IDENTIFIER = "app.textwerk.ScrollbackHistoryManager";
 				PRODUCT_NAME = "Scrollback History Manager";
 				SWIFT_OBJC_BRIDGING_HEADER = "${SRCROOT}/Classes/Headers/Private/HLSSwiftBridgingHeader.h";
 			};

@@ -18,9 +18,9 @@ else
     B='' D='' R='' Y='' G='' Z=''
 fi
 
-printf '%s\n' "${B}Building Textual...${Z}"
+printf '%s\n' "${B}Building Textwerk...${Z}"
 printf '%s\n' "${D}  Scheme:  $SCHEME${Z}"
-printf '%s\n' "${D}  Output:  $BUILD_DIR/Textual.app${Z}"
+printf '%s\n' "${D}  Output:  $BUILD_DIR/Textwerk.app${Z}"
 printf '\n'
 
 EXTRA_ARGS=()
@@ -181,7 +181,7 @@ ELAPSED=$(( $(date +%s) - START ))
 printf '\n'
 if [[ ${PIPE_STATUS[0]} -eq 0 ]]; then
     printf '%s\n' "${G}${B}✓  Build succeeded${Z}${D} — ${ELAPSED}s${Z}"
-    printf '%s\n' "${D}   $BUILD_DIR/Textual.app${Z}"
+    printf '%s\n' "${D}   $BUILD_DIR/Textwerk.app${Z}"
 else
     printf '%s\n' "${R}${B}✗  Build failed${Z}${D} — ${ELAPSED}s${Z}"
     exit 1
