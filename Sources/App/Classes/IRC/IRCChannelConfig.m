@@ -306,7 +306,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
 	NSString *secretKeyServiceName = [NSString stringWithFormat:@"textual.cjoinkey.%@", self.uniqueIdentifier];
 
-	NSString *kcPassword = [XRKeychain getPasswordFromKeychainItem:@"Textual (Channel JOIN Key)"
+	NSString *kcPassword = [XRKeychain getPasswordFromKeychainItem:@"Textwerk (Channel JOIN Key)"
 													  withItemKind:@"application password"
 													   forUsername:nil
 													   serviceName:secretKeyServiceName];
@@ -322,7 +322,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 	NSString *secretKeyServiceName = [NSString stringWithFormat:@"textual.cjoinkey.%@", self.uniqueIdentifier];
 
-	[XRKeychain modifyOrAddKeychainItem:@"Textual (Channel JOIN Key)"
+	[XRKeychain modifyOrAddKeychainItem:@"Textwerk (Channel JOIN Key)"
 						   withItemKind:@"application password"
 							forUsername:nil
 						withNewPassword:self->_secretKey
@@ -335,7 +335,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
 	NSString *secretKeyServiceName = [NSString stringWithFormat:@"textual.cjoinkey.%@", self.uniqueIdentifier];
 
-	[XRKeychain deleteKeychainItem:@"Textual (Channel JOIN Key)"
+	[XRKeychain deleteKeychainItem:@"Textwerk (Channel JOIN Key)"
 					  withItemKind:@"application password"
 					   forUsername:nil
 					   serviceName:secretKeyServiceName];

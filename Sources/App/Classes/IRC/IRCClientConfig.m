@@ -585,7 +585,7 @@ TEXTUAL_IGNORE_DEPRECATION_END
 
 	NSString *serverPasswordServiceName = [NSString stringWithFormat:@"textual.server.%@", self.uniqueIdentifier];
 
-	NSString *serverPassword = [XRKeychain getPasswordFromKeychainItem:@"Textual (Server Password)"
+	NSString *serverPassword = [XRKeychain getPasswordFromKeychainItem:@"Textwerk (Server Password)"
 														  withItemKind:@"application password"
 														   forUsername:nil
 														   serviceName:serverPasswordServiceName];
@@ -836,7 +836,7 @@ TEXTUAL_IGNORE_DEPRECATION_END
 {
 	NSString *nicknamePasswordServiceName = [NSString stringWithFormat:@"textual.nickserv.%@", self.uniqueIdentifier];
 
-	NSString *kcPassword = [XRKeychain getPasswordFromKeychainItem:@"Textual (NickServ)"
+	NSString *kcPassword = [XRKeychain getPasswordFromKeychainItem:@"Textwerk (NickServ)"
 													  withItemKind:@"application password"
 													   forUsername:nil
 													   serviceName:nicknamePasswordServiceName];
@@ -857,7 +857,7 @@ TEXTUAL_IGNORE_DEPRECATION_END
 {
 	NSString *proxyPasswordServiceName = [NSString stringWithFormat:@"textual.proxy-server.%@", self.uniqueIdentifier];
 
-	NSString *kcPassword = [XRKeychain getPasswordFromKeychainItem:@"Textual (Proxy Server Password)"
+	NSString *kcPassword = [XRKeychain getPasswordFromKeychainItem:@"Textwerk (Proxy Server Password)"
 													  withItemKind:@"application password"
 													   forUsername:nil
 													   serviceName:proxyPasswordServiceName];
@@ -873,7 +873,7 @@ TEXTUAL_IGNORE_DEPRECATION_END
 
 	NSString *nicknamePasswordServiceName = [NSString stringWithFormat:@"textual.nickserv.%@", self.uniqueIdentifier];
 
-	[XRKeychain modifyOrAddKeychainItem:@"Textual (NickServ)"
+	[XRKeychain modifyOrAddKeychainItem:@"Textwerk (NickServ)"
 						   withItemKind:@"application password"
 							forUsername:nil
 						withNewPassword:self->_nicknamePassword
@@ -890,7 +890,7 @@ TEXTUAL_IGNORE_DEPRECATION_END
 
 	NSString *proxyPasswordServiceName = [NSString stringWithFormat:@"textual.proxy-server.%@", self.uniqueIdentifier];
 
-	[XRKeychain modifyOrAddKeychainItem:@"Textual (Proxy Server Password)"
+	[XRKeychain modifyOrAddKeychainItem:@"Textwerk (Proxy Server Password)"
 						   withItemKind:@"application password"
 							forUsername:nil
 						withNewPassword:self->_proxyPassword
@@ -903,7 +903,7 @@ TEXTUAL_IGNORE_DEPRECATION_END
 {
 	NSString *nicknamePasswordServiceName = [NSString stringWithFormat:@"textual.nickserv.%@", self.uniqueIdentifier];
 
-	[XRKeychain deleteKeychainItem:@"Textual (NickServ)"
+	[XRKeychain deleteKeychainItem:@"Textwerk (NickServ)"
 					  withItemKind:@"application password"
 					   forUsername:nil
 					   serviceName:nicknamePasswordServiceName];
@@ -915,7 +915,7 @@ TEXTUAL_IGNORE_DEPRECATION_END
 {
 	NSString *proxyPasswordServiceName = [NSString stringWithFormat:@"textual.proxy-server.%@", self.uniqueIdentifier];
 
-	[XRKeychain deleteKeychainItem:@"Textual (Proxy Server Password)"
+	[XRKeychain deleteKeychainItem:@"Textwerk (Proxy Server Password)"
 					  withItemKind:@"application password"
 					   forUsername:nil
 					   serviceName:proxyPasswordServiceName];
@@ -933,7 +933,7 @@ TEXTUAL_IGNORE_DEPRECATION_END
 
 	NSString *serverPasswordServiceName = [NSString stringWithFormat:@"textual.server.%@", self.uniqueIdentifier];
 
-	[XRKeychain deleteKeychainItem:@"Textual (Server Password)"
+	[XRKeychain deleteKeychainItem:@"Textwerk (Server Password)"
 					  withItemKind:@"application password"
 					   forUsername:nil
 					   serviceName:serverPasswordServiceName];

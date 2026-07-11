@@ -154,7 +154,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
 	NSString *serverPasswordServiceName = [NSString stringWithFormat:@"textual.server.%@", self.uniqueIdentifier];
 
-	NSString *kcPassword = [XRKeychain getPasswordFromKeychainItem:@"Textual (Server Password)"
+	NSString *kcPassword = [XRKeychain getPasswordFromKeychainItem:@"Textwerk (Server Password)"
 													  withItemKind:@"application password"
 													   forUsername:nil
 													   serviceName:serverPasswordServiceName];
@@ -170,7 +170,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 	NSString *serverPasswordServiceName = [NSString stringWithFormat:@"textual.server.%@", self.uniqueIdentifier];
 
-	[XRKeychain modifyOrAddKeychainItem:@"Textual (Server Password)"
+	[XRKeychain modifyOrAddKeychainItem:@"Textwerk (Server Password)"
 						   withItemKind:@"application password"
 							forUsername:nil
 						withNewPassword:self->_serverPassword
@@ -183,7 +183,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
 	NSString *serverPasswordServiceName = [NSString stringWithFormat:@"textual.server.%@", self.uniqueIdentifier];
 
-	[XRKeychain deleteKeychainItem:@"Textual (Server Password)"
+	[XRKeychain deleteKeychainItem:@"Textwerk (Server Password)"
 					  withItemKind:@"application password"
 					   forUsername:nil
 					   serviceName:serverPasswordServiceName];
