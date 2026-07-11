@@ -1403,7 +1403,7 @@
 		4C171669254A589D004BE8AE /* Inline Content Loader.xpc */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.xpc-service"; name = "Inline Content Loader.xpc"; path = "../../../.tmp/SharedBuildProducts-XPCServices/Inline Content Loader.xpc"; sourceTree = "<group>"; };
 		4C17166A254A589E004BE8AE /* Scrollback History Manager.xpc */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.xpc-service"; name = "Scrollback History Manager.xpc"; path = "../../../.tmp/SharedBuildProducts-XPCServices/Scrollback History Manager.xpc"; sourceTree = "<group>"; };
 		4C17305322B4A94000DC5836 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/TDCPreferencesUserStyleSheet.xib; sourceTree = "<group>"; };
-		4C1DC5521580420500A47BC9 /* Textual.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Textual.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4C1DC5521580420500A47BC9 /* Textwerk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Textwerk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C24DC751A93C9CE0098D1BE /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = "../../Frameworks/Static Libraries/Libraries/Sparkle.framework"; sourceTree = SOURCE_ROOT; };
 		4C2BEB622C385189008F8F0D /* PostprocessSparkle.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = PostprocessSparkle.sh; path = "Build Scripts/PostprocessSparkle.sh"; sourceTree = "<group>"; };
 		4C2BEB632C3864C1008F8F0D /* KeysExcludedFromContainer.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = KeysExcludedFromContainer.plist; sourceTree = "<group>"; };
@@ -1884,7 +1884,7 @@
 		4C5274E020F8D78700B18F9D /* IRCConnectionErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IRCConnectionErrors.h; path = ../../../Shared/Headers/IRCConnectionErrors.h; sourceTree = "<group>"; };
 		4C5274E520F8D7CD00B18F9D /* IRCConnectionErrors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IRCConnectionErrors.m; path = ../../../Shared/IRC/IRCConnectionErrors.m; sourceTree = "<group>"; };
 		4C58B570186011AC00834882 /* Acknowledgements.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = Acknowledgements.pdf; path = ../../Acknowledgements.pdf; sourceTree = SOURCE_ROOT; };
-		4C5BA4E616F1302F00A96CA2 /* Textual.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Textual.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4C5BA4E616F1302F00A96CA2 /* Textwerk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Textwerk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C761BAE1E155CB100A505B7 /* BuildServices.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = BuildServices.sh; path = "Build Scripts/BuildServices.sh"; sourceTree = "<group>"; };
 		4C7961C6267D25B400D37F07 /* UpdateFeatureFlags.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = UpdateFeatureFlags.sh; path = "Build Scripts/UpdateFeatureFlags.sh"; sourceTree = "<group>"; };
 		4C83B9101BA9BEB800BD7718 /* Chat Filters.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = "Chat Filters.bundle"; path = "../../.tmp/SharedBuildProducts-Extensions/Chat Filters.bundle"; sourceTree = SOURCE_ROOT; };
@@ -2172,8 +2172,8 @@
 		4C1DC5531580420500A47BC9 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4C1DC5521580420500A47BC9 /* Textual.app */,
-				4C5BA4E616F1302F00A96CA2 /* Textual.app */,
+				4C1DC5521580420500A47BC9 /* Textwerk.app */,
+				4C5BA4E616F1302F00A96CA2 /* Textwerk.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3865,9 +3865,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		4C1DC5511580420500A47BC9 /* Textual (Standard Release) */ = {
+		4C1DC5511580420500A47BC9 /* Textwerk (Standard Release) */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4C1DC5701580420500A47BC9 /* Build configuration list for PBXNativeTarget "Textual (Standard Release)" */;
+			buildConfigurationList = 4C1DC5701580420500A47BC9 /* Build configuration list for PBXNativeTarget "Textwerk (Standard Release)" */;
 			buildPhases = (
 				4C1DC5501580420500A47BC9 /* Resources */,
 				4CEA6AA42C36F8E700A36551 /* Copy Preference Resources */,
@@ -3888,14 +3888,14 @@
 			dependencies = (
 				4CBB842D16F0DA1D004E3ED6 /* PBXTargetDependency */,
 			);
-			name = "Textual (Standard Release)";
-			productName = Textual;
-			productReference = 4C1DC5521580420500A47BC9 /* Textual.app */;
+			name = "Textwerk (Standard Release)";
+			productName = Textwerk;
+			productReference = 4C1DC5521580420500A47BC9 /* Textwerk.app */;
 			productType = "com.apple.product-type.application";
 		};
-		4C5BA37216F1302F00A96CA2 /* Textual (Debug) */ = {
+		4C5BA37216F1302F00A96CA2 /* Textwerk (Debug) */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4C5BA4E116F1302F00A96CA2 /* Build configuration list for PBXNativeTarget "Textual (Debug)" */;
+			buildConfigurationList = 4C5BA4E116F1302F00A96CA2 /* Build configuration list for PBXNativeTarget "Textwerk (Debug)" */;
 			buildPhases = (
 				4C5BA37916F1302F00A96CA2 /* Resources */,
 				4CEA6AA92C36F91400A36551 /* Copy Preference Resources */,
@@ -3914,9 +3914,9 @@
 			);
 			dependencies = (
 			);
-			name = "Textual (Debug)";
-			productName = Textual;
-			productReference = 4C5BA4E616F1302F00A96CA2 /* Textual.app */;
+			name = "Textwerk (Debug)";
+			productName = Textwerk;
+			productReference = 4C5BA4E616F1302F00A96CA2 /* Textwerk.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -3949,7 +3949,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 4C1DC54C1580420500A47BC9 /* Build configuration list for PBXProject "Textual App" */;
+			buildConfigurationList = 4C1DC54C1580420500A47BC9 /* Build configuration list for PBXProject "Textwerk App" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -3962,8 +3962,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				4C5BA37216F1302F00A96CA2 /* Textual (Debug) */,
-				4C1DC5511580420500A47BC9 /* Textual (Standard Release) */,
+				4C5BA37216F1302F00A96CA2 /* Textwerk (Debug) */,
+				4C1DC5511580420500A47BC9 /* Textwerk (Standard Release) */,
 				4CCF301015804DCE006FFE21 /* Build Frameworks */,
 			);
 		};
@@ -5201,7 +5201,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		4C1DC54C1580420500A47BC9 /* Build configuration list for PBXProject "Textual App" */ = {
+		4C1DC54C1580420500A47BC9 /* Build configuration list for PBXProject "Textwerk App" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4C1DC56E1580420500A47BC9 /* Debug */,
@@ -5211,7 +5211,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4C1DC5701580420500A47BC9 /* Build configuration list for PBXNativeTarget "Textual (Standard Release)" */ = {
+		4C1DC5701580420500A47BC9 /* Build configuration list for PBXNativeTarget "Textwerk (Standard Release)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4C1DC5711580420500A47BC9 /* Debug */,
@@ -5221,7 +5221,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4C5BA4E116F1302F00A96CA2 /* Build configuration list for PBXNativeTarget "Textual (Debug)" */ = {
+		4C5BA4E116F1302F00A96CA2 /* Build configuration list for PBXNativeTarget "Textwerk (Debug)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4C5BA4E216F1302F00A96CA2 /* Debug */,

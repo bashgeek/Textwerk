@@ -28,7 +28,7 @@ Grab the latest build from the [Releases](https://github.com/bashgeek/Textwerk/r
 Releases are unsigned. macOS will block the app on first launch. To open it anyway, right-click the app and choose **Open**, then confirm in the dialog. Alternatively, remove the quarantine attribute from the terminal:
 
 ```sh
-xattr -d com.apple.quarantine /Applications/Textual.app
+xattr -d com.apple.quarantine /Applications/Textwerk.app
 ```
 
 ### Build from source
@@ -43,15 +43,15 @@ cd Textwerk
 ./build.sh
 ```
 
-The built app lands in `./build/Textual.app`.
+The built app lands in `./build/Textwerk.app`.
 
 <details>
 <summary>Manual xcodebuild invocation</summary>
 
 ```sh
 xcodebuild \
-  -project "Sources/App/Textual App.xcodeproj" \
-  -scheme "Textual (Standard Release)" \
+  -project "Sources/App/Textwerk App.xcodeproj" \
+  -scheme "Textwerk (Standard Release)" \
   -derivedDataPath ./build/DerivedData \
   CONFIGURATION_BUILD_DIR=./build \
   build

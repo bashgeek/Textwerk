@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -uo pipefail
 
-SCHEME="Textual (Standard Release)"
-PROJECT="Sources/App/Textual App.xcodeproj"
+SCHEME="Textwerk (Standard Release)"
+PROJECT="Sources/App/Textwerk App.xcodeproj"
 BUILD_DIR="$(pwd)/build"
 DERIVED_DATA="$BUILD_DIR/DerivedData"
 ROOT="$(pwd)"
