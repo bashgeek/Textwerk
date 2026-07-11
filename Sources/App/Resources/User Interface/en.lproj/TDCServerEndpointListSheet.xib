@@ -46,7 +46,7 @@
                         <rect key="frame" x="18" y="296" width="659" height="48"/>
                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" id="qeA-Ep-V8r">
                             <font key="font" metaFont="system"/>
-                            <string key="title">The order of this table, from top to bottom, determines the order in which Textual connects to each server.  Drag and drop servers to change the order. The top-most server is always the primary.</string>
+                            <string key="title">The order of this table, from top to bottom, determines the order in which Textwerk connects to each server.  Drag and drop servers to change the order. The top-most server is always the primary.</string>
                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>

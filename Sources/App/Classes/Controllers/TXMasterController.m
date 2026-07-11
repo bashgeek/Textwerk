@@ -233,7 +233,7 @@ NS_ASSUME_NONNULL_BEGIN
 	                                                       cachePolicy:NSURLRequestReloadIgnoringCacheData
 	                                                   timeoutInterval:30.0];
 
-	[request setValue:@"Textual IRC" forHTTPHeaderField:@"User-Agent"];
+	[request setValue:@"Textwerk IRC" forHTTPHeaderField:@"User-Agent"];
 
 	NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:request
 	                                                             completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -269,7 +269,7 @@ NS_ASSUME_NONNULL_BEGIN
 			if ([currentVersion compare:latestVersion options:NSNumericSearch] == NSOrderedAscending) {
 				NSAlert *alert = [[NSAlert alloc] init];
 				alert.messageText = @"Update Available";
-				alert.informativeText = [NSString stringWithFormat:@"Textual %@ is available. You have %@.", latestTag, currentVersion];
+				alert.informativeText = [NSString stringWithFormat:@"Textwerk %@ is available. You have %@.", latestTag, currentVersion];
 				[alert addButtonWithTitle:@"View on GitHub"];
 				[alert addButtonWithTitle:@"Later"];
 
@@ -282,7 +282,7 @@ NS_ASSUME_NONNULL_BEGIN
 			} else if (userInitiated) {
 				NSAlert *alert = [[NSAlert alloc] init];
 				alert.messageText = @"You're Up to Date";
-				alert.informativeText = [NSString stringWithFormat:@"Textual %@ is the latest version.", currentVersion];
+				alert.informativeText = [NSString stringWithFormat:@"Textwerk %@ is the latest version.", currentVersion];
 				[alert addButtonWithTitle:@"OK"];
 				[alert runModal];
 			}

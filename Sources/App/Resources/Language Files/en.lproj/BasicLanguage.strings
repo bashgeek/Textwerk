@@ -38,7 +38,7 @@
 "71l-y7" = "None";
 "vbl-xi" = "Unknown";
 
-"1dd-0f" = "Textual IRC Client: www.textualapp.com";
+"1dd-0f" = "Textwerk IRC Client";
 "vfu-c0" = "Untitled Connection";
 
 "zhr-lq" = "My %@ has gone to sleep. ZZZzzz…";
@@ -48,7 +48,7 @@
 "1f6-bg" = "Close Window";
 "w3a-je" = "Disconnect from %@";
 "5td-3f" = "Leave Channel";
-"x97-ro" = "Quit Textual";
+"x97-ro" = "Quit Textwerk";
 
 "6cw-ni" = "Copy Log as HTML";
 "ngd-ms" = "Force Reload Style";

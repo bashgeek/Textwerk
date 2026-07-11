@@ -57,7 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation TVCLogView
 
-NSString * const TVCLogViewCommonUserAgentString = @"Textual/0.1 (+https://github.com/bashgeek/Textual)";
+NSString * const TVCLogViewCommonUserAgentString = @"Textwerk/0.1 (+https://github.com/bashgeek/Textual)";
 
 - (instancetype)init
 {

@@ -99,7 +99,7 @@ DQ
                                             </attributes>
                                         </fragment>
                                         <fragment>
-                                            <string key="content"> Textual monitors Join, Part, and Quit activity on channels in which you are present to establish the activity pattern of someone that you would like to track. On servers that support it, Textual will also use commands such as </string>
+                                            <string key="content"> Textwerk monitors Join, Part, and Quit activity on channels in which you are present to establish the activity pattern of someone that you would like to track. On servers that support it, Textwerk will also use commands such as </string>
                                             <attributes>
                                                 <color key="NSColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                                 <font key="NSFont" metaFont="smallSystem"/>

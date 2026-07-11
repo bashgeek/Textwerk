@@ -3,7 +3,7 @@
 #include "Enabled Features.xcconfig"
 
 TEXTUAL_BUNDLE_IDENTIFIER = app.textwerk
-TEXTUAL_GROUP_CONTAINER_IDENTIFIER = app.textwerk
+TEXTUAL_GROUP_CONTAINER_IDENTIFIER = group.app.textwerk
 TEXTUAL_BUILD_SCHEME_TOKEN = devid
 
 TEXTUAL_EXTENSION_BUILD_SCHEME = Release

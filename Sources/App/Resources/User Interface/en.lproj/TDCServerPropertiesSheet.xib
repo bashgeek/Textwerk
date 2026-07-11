@@ -408,7 +408,7 @@ Gw
                     <subviews>
                         <button translatesAutoresizingMaskIntoConstraints="NO" id="1531">
                             <rect key="frame" x="-2" y="43" width="201" height="18"/>
-                            <buttonCell key="cell" type="check" title="Connect when Textual opens" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="1536">
+                            <buttonCell key="cell" type="check" title="Connect when Textwerk opens" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="1536">
                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                 <font key="font" metaFont="system"/>
                             </buttonCell>
@@ -654,7 +654,7 @@ Gw
                                 <constraints>
                                     <constraint firstAttribute="height" constant="22" id="nEL-Vg-sf4"/>
                                 </constraints>
-                                <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Textual User" usesSingleLineMode="YES" id="1615" customClass="TVCValidatedTextFieldCell">
+                                <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Textwerk User" usesSingleLineMode="YES" id="1615" customClass="TVCValidatedTextFieldCell">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -907,7 +907,7 @@ Gw
                                 <size key="minSize" width="450" height="31"/>
                                 <size key="maxSize" width="1155" height="10000000"/>
                                 <attributedString key="textStorage">
-                                    <fragment content="The following options will automatically take effect when Textual detects that it is connecting to ">
+                                    <fragment content="The following options will automatically take effect when Textwerk detects that it is connecting to ">
                                         <attributes>
                                             <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                             <font key="NSFont" metaFont="system"/>
@@ -1628,7 +1628,7 @@ Gw
                             <rect key="frame" x="78" y="76" width="364" height="48"/>
                             <textFieldCell key="cell" controlSize="mini" selectable="YES" sendsActionOnEndEditing="YES" id="voS-R3-3c7">
                                 <font key="font" metaFont="system"/>
-                                <string key="title">Textual will attempt to connect to the Tor anonymity network using the SOCKS5 proxy on port 9150 that is available when the “Tor Browser” application is open.</string>
+                                <string key="title">Textwerk will attempt to connect to the Tor anonymity network using the SOCKS5 proxy on port 9150 that is available when the “Tor Browser” application is open.</string>
                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
@@ -2424,7 +2424,7 @@ Gw
                     <rect key="frame" x="33" y="217" width="454" height="48"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" id="SnQ-4b-NG2">
                         <font key="font" metaFont="system"/>
-                        <string key="title">Textual is capable of automatically connecting to one or more alternate servers if the primary server fails to connect. Click the button presented below to modify the alternate servers for this connection.</string>
+                        <string key="title">Textwerk is capable of automatically connecting to one or more alternate servers if the primary server fails to connect. Click the button presented below to modify the alternate servers for this connection.</string>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>

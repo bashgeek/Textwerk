@@ -140,10 +140,10 @@
         </menu>
         <menu title="MainMenu" systemMenu="main" id="29">
             <items>
-                <menuItem title="Textual" tag="1" id="56">
-                    <menu key="submenu" title="Textual" systemMenu="apple" id="57">
+                <menuItem title="Textwerk" tag="1" id="56">
+                    <menu key="submenu" title="Textwerk" systemMenu="apple" id="57">
                         <items>
-                            <menuItem title="About Textual" tag="100" id="58">
+                            <menuItem title="About Textwerk" tag="100" id="58">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="showAboutWindow:" target="267" id="2575"/>
@@ -174,7 +174,7 @@
                             <menuItem isSeparatorItem="YES" tag="108" id="144">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Hide Textual" tag="109" keyEquivalent="h" id="134">
+                            <menuItem title="Hide Textwerk" tag="109" keyEquivalent="h" id="134">
                                 <connections>
                                     <action selector="hide:" target="-2" id="152"/>
                                 </connections>
@@ -193,7 +193,7 @@
                             <menuItem isSeparatorItem="YES" tag="112" id="149">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Quit Textual" tag="113" keyEquivalent="q" id="136">
+                            <menuItem title="Quit Textwerk" tag="113" keyEquivalent="q" id="136">
                                 <connections>
                                     <action selector="terminate:" target="-2" id="139"/>
                                 </connections>

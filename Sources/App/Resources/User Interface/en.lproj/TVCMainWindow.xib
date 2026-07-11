@@ -12,7 +12,7 @@
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <window title="Textual 7" allowsToolTipsWhenApplicationIsInactive="NO" restorable="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" tabbingMode="disallowed" id="21" userLabel="Window" customClass="TVCMainWindow">
+        <window title="Textwerk" allowsToolTipsWhenApplicationIsInactive="NO" restorable="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" tabbingMode="disallowed" id="21" userLabel="Window" customClass="TVCMainWindow">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowCollectionBehavior key="collectionBehavior" fullScreenPrimary="YES"/>
             <rect key="contentRect" x="515" y="206" width="800" height="477"/>
@@ -1885,7 +1885,7 @@
             <subviews>
                 <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fXR-tC-HNL">
                     <rect key="frame" x="75" y="44" width="255" height="35"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Welcome to Textual" id="0jK-Hy-GsU">
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Welcome to Textwerk" id="0jK-Hy-GsU">
                         <font key="font" metaFont="system" size="30"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1950,7 +1950,7 @@
                 </imageView>
                 <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="hcL-fW-9VX">
                     <rect key="frame" x="114" y="112" width="255" height="35"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Welcome to Textual" id="uL2-Aa-1FS">
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Welcome to Textwerk" id="uL2-Aa-1FS">
                         <font key="font" metaFont="system" size="30"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1960,7 +1960,7 @@
                     <rect key="frame" x="33" y="56" width="416" height="48"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" id="bTX-Jn-rpL">
                         <font key="font" metaFont="system"/>
-                        <string key="title">Textual is a powerful, yet lightweight, IRC client built exclusively for the Mac. To get started, Textual will walk you through adding your first server. Click the button below to get started.</string>
+                        <string key="title">Textwerk is a powerful, yet lightweight, IRC client built exclusively for the Mac. To get started, Textwerk will walk you through adding your first server. Click the button below to get started.</string>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
@@ -1996,7 +1996,7 @@
             <subviews>
                 <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Sxb-jV-wmm">
                     <rect key="frame" x="55" y="200" width="410" height="35"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Your trial of Textual has expired!" id="LNi-eT-r8e">
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Your trial of Textwerk has expired!" id="LNi-eT-r8e">
                         <font key="font" metaFont="system" size="30"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -2006,9 +2006,9 @@
                     <rect key="frame" x="18" y="144" width="484" height="48"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" id="J9b-GU-Ie0">
                         <font key="font" metaFont="system"/>
-                        <string key="title">Thank you for trying Textual for the past 30 days. 
+                        <string key="title">Thank you for trying Textwerk for the past 30 days. 
 
-To continue using Textual, you will need to purchase it.</string>
+To continue using Textwerk, you will need to purchase it.</string>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
@@ -2019,7 +2019,7 @@ To continue using Textual, you will need to purchase it.</string>
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
-                    <accessibility description="Purchase Textual"/>
+                    <accessibility description="Purchase Textwerk"/>
                     <connections>
                         <action selector="openStandaloneStoreWebpage:" target="U6M-jc-NbT" id="KTW-vE-uqm"/>
                     </connections>
@@ -2040,7 +2040,7 @@ To continue using Textual, you will need to purchase it.</string>
                 </box>
                 <textField focusRingType="none" verticalHuggingPriority="750" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LK8-9t-3xT">
                     <rect key="frame" x="164" y="55" width="192" height="16"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Already own a copy of Textual?" id="MJr-dN-Icn">
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Already own a copy of Textwerk?" id="MJr-dN-Icn">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -2048,7 +2048,7 @@ To continue using Textual, you will need to purchase it.</string>
                 </textField>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="XHv-hd-4V2">
                     <rect key="frame" x="195" y="13" width="130" height="32"/>
-                    <buttonCell key="cell" type="push" title="Activate Textual" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="zy8-ma-OJS">
+                    <buttonCell key="cell" type="push" title="Activate Textwerk" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="zy8-ma-OJS">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>

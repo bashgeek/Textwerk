@@ -69,7 +69,7 @@ Gw
                             <constraint firstAttribute="width" secondItem="zqh-Vb-fjj" secondAttribute="height" multiplier="1:1" id="udu-Tc-oQa"/>
                         </constraints>
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="applicationIcon" id="0YK-op-vRE"/>
-                        <accessibility description="Textual Logo"/>
+                        <accessibility description="Textwerk Logo"/>
                     </imageView>
                     <button translatesAutoresizingMaskIntoConstraints="NO" id="151">
                         <rect key="frame" x="240" y="149" width="140" height="18"/>
@@ -123,7 +123,7 @@ Gw
                     </textField>
                     <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="157">
                         <rect key="frame" x="146" y="438" width="198" height="24"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" alignment="center" title="Welcome to Textual!" id="163">
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" alignment="center" title="Welcome to Textwerk!" id="163">
                             <font key="font" metaFont="systemBold" size="20"/>
                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>

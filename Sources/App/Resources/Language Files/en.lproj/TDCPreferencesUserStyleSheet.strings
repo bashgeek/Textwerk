@@ -48,7 +48,7 @@ written in CSS: https://developer.mozilla.org/en-US/docs/Web/CSS
 	display: none;
 }
 
-Textual does not perform sanitation in any form on your rules
+Textwerk does not perform sanitation in any form on your rules
 which means you could possibly abuse this feature by escaping
 from the style element and inserting JavaScript or other code.
 

@@ -55,7 +55,7 @@
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <window title="Textual Preferences" allowsToolTipsWhenApplicationIsInactive="NO" restorable="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" tabbingMode="disallowed" toolbarStyle="preference" id="4929" userLabel="Toolbar Window">
+        <window title="Textwerk Preferences" allowsToolTipsWhenApplicationIsInactive="NO" restorable="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" tabbingMode="disallowed" toolbarStyle="preference" id="4929" userLabel="Toolbar Window">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <rect key="contentRect" x="367" y="318" width="670" height="240"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1055"/>
@@ -243,7 +243,7 @@
             <subviews>
                 <button translatesAutoresizingMaskIntoConstraints="NO" id="bKt-Ac-1I2">
                     <rect key="frame" x="40" y="152" width="295" height="18"/>
-                    <buttonCell key="cell" type="check" title="Request confirmation before quitting Textual" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="XAa-aA-vKv">
+                    <buttonCell key="cell" type="check" title="Request confirmation before quitting Textwerk" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="XAa-aA-vKv">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
@@ -775,7 +775,7 @@
                                         <subviews>
                                             <button translatesAutoresizingMaskIntoConstraints="NO" id="Oe8-JD-drm">
                                                 <rect key="frame" x="-2" y="29" width="420" height="18"/>
-                                                <buttonCell key="cell" type="check" title="Show number of unread private messages on Textual's Dock icon" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="JLd-nU-beO">
+                                                <buttonCell key="cell" type="check" title="Show number of unread private messages on Textwerk's Dock icon" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="JLd-nU-beO">
                                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                     <font key="font" metaFont="system"/>
                                                 </buttonCell>
@@ -785,7 +785,7 @@
                                             </button>
                                             <button translatesAutoresizingMaskIntoConstraints="NO" id="CzB-hl-Vy9">
                                                 <rect key="frame" x="-2" y="-1" width="426" height="18"/>
-                                                <buttonCell key="cell" type="check" title="Show number of unread channel messages on Textual's Dock icon" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="8oW-yL-fGe">
+                                                <buttonCell key="cell" type="check" title="Show number of unread channel messages on Textwerk's Dock icon" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="8oW-yL-fGe">
                                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                     <font key="font" metaFont="system"/>
                                                 </buttonCell>
@@ -805,7 +805,7 @@
                                     </stackView>
                                     <button translatesAutoresizingMaskIntoConstraints="NO" id="5zM-ja-Fht">
                                         <rect key="frame" x="40" y="91" width="286" height="18"/>
-                                        <buttonCell key="cell" type="check" title="Show notifications when Textual is focused" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="gmn-OS-fhp">
+                                        <buttonCell key="cell" type="check" title="Show notifications when Textwerk is focused" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="gmn-OS-fhp">
                                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
@@ -2783,7 +2783,7 @@ Messages are not saved between app launches unless “Restore scrollback from pr
                     <rect key="frame" x="98" y="68" width="474" height="48"/>
                     <textFieldCell key="cell" selectable="YES" sendsActionOnEndEditing="YES" alignment="left" id="pVP-3h-Oiy">
                         <font key="font" metaFont="system"/>
-                        <string key="title">The commands listed above are performed like any other: write a forward slash (/) followed by the name of the command plus any required arguments. Textual will perform the command and output the results accordingly.</string>
+                        <string key="title">The commands listed above are performed like any other: write a forward slash (/) followed by the name of the command plus any required arguments. Textwerk will perform the command and output the results accordingly.</string>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
@@ -3234,7 +3234,7 @@ Messages are not saved between app launches unless “Restore scrollback from pr
                             <rect key="frame" x="-2" y="0.0" width="466" height="75"/>
                             <textFieldCell key="cell" selectable="YES" sendsActionOnEndEditing="YES" id="juM-7X-6WQ">
                                 <font key="font" metaFont="cellTitle"/>
-                                <string key="title">Textual must periodically poll the channels that you are in to find out when the away status of each user changes. This preference defines the maximum number of users a channel can contain before the channel is skipped over.
+                                <string key="title">Textwerk must periodically poll the channels that you are in to find out when the away status of each user changes. This preference defines the maximum number of users a channel can contain before the channel is skipped over.
 
 A lower value is always better especially when in a large number of channels.</string>
                                 <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
@@ -4696,7 +4696,7 @@ You should therefore not rely solely on this preference.</string>
             <subviews>
                 <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="V0L-wf-MX5">
                     <rect key="frame" x="151" y="30" width="369" height="15"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Some preferences may require a restart of Textual to take effect." id="uly-It-UKM">
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Some preferences may require a restart of Textwerk to take effect." id="uly-It-UKM">
                         <font key="font" metaFont="cellTitle"/>
                         <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>

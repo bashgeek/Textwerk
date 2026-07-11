@@ -35,7 +35,7 @@
                             <constraint firstAttribute="width" constant="65" id="jJy-qZ-1jH"/>
                         </constraints>
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="applicationIcon" id="4"/>
-                        <accessibility description="Textual Logo"/>
+                        <accessibility description="Textwerk Logo"/>
                     </imageView>
                     <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5">
                         <rect key="frame" x="103" y="114" width="309" height="16"/>
@@ -112,7 +112,7 @@ Gw
                             <constraint firstAttribute="width" secondItem="5kA-MY-GbC" secondAttribute="height" multiplier="1:1" id="mzK-py-jwW"/>
                         </constraints>
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="NSCaution" id="oaW-1W-dL0"/>
-                        <accessibility description="Textual Logo"/>
+                        <accessibility description="Textwerk Logo"/>
                     </imageView>
                 </subviews>
                 <constraints>
