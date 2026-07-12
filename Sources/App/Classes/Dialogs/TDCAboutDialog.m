@@ -46,8 +46,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TDCAboutDialog ()
 @property (nonatomic, weak) IBOutlet NSTextField *versionInfoTextField;
 
-- (IBAction)displayAcknowledgements:(id)sender;
 - (IBAction)openGitHub:(id)sender;
+- (IBAction)openWebsite:(id)sender;
 @end
 
 @implementation TDCAboutDialog
@@ -79,14 +79,14 @@ NS_ASSUME_NONNULL_BEGIN
 	[super show];
 }
 
-- (void)displayAcknowledgements:(id)sender
-{
-	[menuController() openAcknowledgements:sender];
-}
-
 - (void)openGitHub:(id)sender
 {
-	[RZWorkspace() openURL:[NSURL URLWithString:@"https://github.com/bashgeek/Textual"]];
+	[RZWorkspace() openURL:[NSURL URLWithString:@"https://github.com/bashgeek/Textwerk"]];
+}
+
+- (void)openWebsite:(id)sender
+{
+	[RZWorkspace() openURL:[NSURL URLWithString:@"https://textwerk.app"]];
 }
 
 - (void)windowWillClose:(NSNotification *)note

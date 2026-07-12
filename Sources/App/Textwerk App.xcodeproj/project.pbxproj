@@ -66,9 +66,7 @@
 		4C06E03F20EC4A100055D09A /* DIGreenBadgeRight.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C31536020EB676400448776 /* DIGreenBadgeRight.png */; };
 		4C06E04020EC4A100055D09A /* DIGreenBadgeCenter.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C31536120EB676400448776 /* DIGreenBadgeCenter.png */; };
 		4C06E04C20EC4A2E0055D09A /* applicationIcon.iconset in Resources */ = {isa = PBXBuildFile; fileRef = 4C31535920EB676400448776 /* applicationIcon.iconset */; };
-		4C06E04D20EC4A2E0055D09A /* applicationIconBirthday.icns in Resources */ = {isa = PBXBuildFile; fileRef = 4C31535A20EB676400448776 /* applicationIconBirthday.icns */; };
 		4C06E04E20EC4A2F0055D09A /* applicationIcon.iconset in Resources */ = {isa = PBXBuildFile; fileRef = 4C31535920EB676400448776 /* applicationIcon.iconset */; };
-		4C06E04F20EC4A2F0055D09A /* applicationIconBirthday.icns in Resources */ = {isa = PBXBuildFile; fileRef = 4C31535A20EB676400448776 /* applicationIconBirthday.icns */; };
 		4C06E05320EC4A3D0055D09A /* Copyright Information for Images.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4C31535620EB676400448776 /* Copyright Information for Images.txt */; };
 		4C06E05420EC4A3E0055D09A /* Copyright Information for Images.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4C31535620EB676400448776 /* Copyright Information for Images.txt */; };
 		4C06E05A20EC4A4C0055D09A /* encryptionLockIconLight@2x.tif in Resources */ = {isa = PBXBuildFile; fileRef = 4C31535020EB676400448776 /* encryptionLockIconLight@2x.tif */; };
@@ -1102,8 +1100,6 @@
 		4C5274E320F8D78800B18F9D /* IRCConnectionErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C5274E020F8D78700B18F9D /* IRCConnectionErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4C5274E720F8D7CD00B18F9D /* IRCConnectionErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C5274E520F8D7CD00B18F9D /* IRCConnectionErrors.m */; };
 		4C5274E820F8D7CD00B18F9D /* IRCConnectionErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C5274E520F8D7CD00B18F9D /* IRCConnectionErrors.m */; };
-		4C58B572186011B900834882 /* Acknowledgements.pdf in Copy Acknowledgements */ = {isa = PBXBuildFile; fileRef = 4C58B570186011AC00834882 /* Acknowledgements.pdf */; };
-		4C58B573186011BE00834882 /* Acknowledgements.pdf in Copy Acknowledgements */ = {isa = PBXBuildFile; fileRef = 4C58B570186011AC00834882 /* Acknowledgements.pdf */; };
 		4C5BA3CB16F1302F00A96CA2 /* Style Default Templates in Resources */ = {isa = PBXBuildFile; fileRef = 4C52379215C18F6700414852 /* Style Default Templates */; };
 		4C7B05001D1210F300295E82 /* BuildConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CC70202171E1CB400BDFAE0 /* BuildConfig.h */; };
 		4C7B05011D12110500295E82 /* BuildConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CC70202171E1CB400BDFAE0 /* BuildConfig.h */; };
@@ -1212,17 +1208,6 @@
 			name = "Copy Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		4C5BA4DC16F1302F00A96CA2 /* Copy Acknowledgements */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = Documentation;
-			dstSubfolderSpec = 7;
-			files = (
-				4C58B573186011BE00834882 /* Acknowledgements.pdf in Copy Acknowledgements */,
-			);
-			name = "Copy Acknowledgements";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		4C761BA41E155C4300A505B7 /* Copy XPC Services */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1247,17 +1232,6 @@
 				4C171683254A58C2004BE8AE /* Scrollback History Manager.xpc in Copy XPC Services */,
 			);
 			name = "Copy XPC Services";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		4C9E534415B4C171000E84A9 /* Copy Acknowledgements */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = Documentation;
-			dstSubfolderSpec = 7;
-			files = (
-				4C58B572186011B900834882 /* Acknowledgements.pdf in Copy Acknowledgements */,
-			);
-			name = "Copy Acknowledgements";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		4CEA6AA42C36F8E700A36551 /* Copy Preference Resources */ = {
@@ -1818,7 +1792,6 @@
 		4C31535620EB676400448776 /* Copyright Information for Images.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Copyright Information for Images.txt"; sourceTree = "<group>"; };
 		4C31535820EB676400448776 /* applicationIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = applicationIcon.icns; sourceTree = "<group>"; };
 		4C31535920EB676400448776 /* applicationIcon.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = applicationIcon.iconset; sourceTree = "<group>"; };
-		4C31535A20EB676400448776 /* applicationIconBirthday.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = applicationIconBirthday.icns; sourceTree = "<group>"; };
 		4C31535F20EB676400448776 /* DIGreenBadgeLeft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DIGreenBadgeLeft.png; sourceTree = "<group>"; };
 		4C31536020EB676400448776 /* DIGreenBadgeRight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DIGreenBadgeRight.png; sourceTree = "<group>"; };
 		4C31536120EB676400448776 /* DIGreenBadgeCenter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DIGreenBadgeCenter.png; sourceTree = "<group>"; };
@@ -1883,7 +1856,6 @@
 		4C52379215C18F6700414852 /* Style Default Templates */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "Style Default Templates"; sourceTree = "<group>"; };
 		4C5274E020F8D78700B18F9D /* IRCConnectionErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IRCConnectionErrors.h; path = ../../../Shared/Headers/IRCConnectionErrors.h; sourceTree = "<group>"; };
 		4C5274E520F8D7CD00B18F9D /* IRCConnectionErrors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IRCConnectionErrors.m; path = ../../../Shared/IRC/IRCConnectionErrors.m; sourceTree = "<group>"; };
-		4C58B570186011AC00834882 /* Acknowledgements.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = Acknowledgements.pdf; path = ../../Acknowledgements.pdf; sourceTree = SOURCE_ROOT; };
 		4C5BA4E616F1302F00A96CA2 /* Textwerk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Textwerk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C761BAE1E155CB100A505B7 /* BuildServices.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = BuildServices.sh; path = "Build Scripts/BuildServices.sh"; sourceTree = "<group>"; };
 		4C7961C6267D25B400D37F07 /* UpdateFeatureFlags.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = UpdateFeatureFlags.sh; path = "Build Scripts/UpdateFeatureFlags.sh"; sourceTree = "<group>"; };
@@ -3040,7 +3012,6 @@
 			children = (
 				4C31535920EB676400448776 /* applicationIcon.iconset */,
 				4C31535820EB676400448776 /* applicationIcon.icns */,
-				4C31535A20EB676400448776 /* applicationIconBirthday.icns */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -3241,7 +3212,6 @@
 		4C46CCA21580437400846B64 /* Documentation */ = {
 			isa = PBXGroup;
 			children = (
-				4C58B570186011AC00834882 /* Acknowledgements.pdf */,
 			);
 			name = Documentation;
 			path = ..;
@@ -3871,7 +3841,6 @@
 			buildPhases = (
 				4C1DC5501580420500A47BC9 /* Resources */,
 				4CEA6AA42C36F8E700A36551 /* Copy Preference Resources */,
-				4C9E534415B4C171000E84A9 /* Copy Acknowledgements */,
 				4C1DC54F1580420500A47BC9 /* Frameworks */,
 				4C1DC54E1580420500A47BC9 /* Sources */,
 				4CCF2F9E15804C18006FFE21 /* Headers */,
@@ -3899,7 +3868,6 @@
 			buildPhases = (
 				4C5BA37916F1302F00A96CA2 /* Resources */,
 				4CEA6AA92C36F91400A36551 /* Copy Preference Resources */,
-				4C5BA4DC16F1302F00A96CA2 /* Copy Acknowledgements */,
 				4C5BA45716F1302F00A96CA2 /* Frameworks */,
 				4C0444F316F1602900EBB665 /* Sources */,
 				4C5BA3D916F1302F00A96CA2 /* Headers */,
@@ -4051,7 +4019,6 @@
 				4C06E08720EC4A540055D09A /* FormattingColor_0.png in Resources */,
 				4C06DFED20EC49FB0055D09A /* VibrantLightServerListViewPrivateMessageUserIconInactive.tif in Resources */,
 				4C06E1D420EC4AC40055D09A /* TDCPreferences.xib in Resources */,
-				4C06E04F20EC4A2F0055D09A /* applicationIconBirthday.icns in Resources */,
 				4C06E02120EC4A060055D09A /* DIRedBadgeLeft.png in Resources */,
 				4C06E02220EC4A060055D09A /* DIRedBadgeCenter.png in Resources */,
 				4C06E18C20EC4AC40055D09A /* TDCServerPropertiesSheet.xib in Resources */,
@@ -4187,7 +4154,6 @@
 				4C06E09920EC4A540055D09A /* FormattingColor_0.png in Resources */,
 				4C06DFD220EC49FA0055D09A /* VibrantLightServerListViewPrivateMessageUserIconInactive.tif in Resources */,
 				4C06E1D320EC4AC40055D09A /* TDCPreferences.xib in Resources */,
-				4C06E04D20EC4A2E0055D09A /* applicationIconBirthday.icns in Resources */,
 				4C06E02720EC4A060055D09A /* DIRedBadgeLeft.png in Resources */,
 				4C06E02820EC4A060055D09A /* DIRedBadgeCenter.png in Resources */,
 				4C06E18B20EC4AC40055D09A /* TDCServerPropertiesSheet.xib in Resources */,

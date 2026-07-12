@@ -117,7 +117,6 @@ SUCH DAMAGE.
 
 ```
 Copyright (c) 2010 - 2020 Codeux Software, LLC & respective contributors.
-      Please see Acknowledgements.pdf for additional information.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions
@@ -146,3 +145,17 @@ SUCH DAMAGE.
 ```
 
 </details>
+
+### Third-party software
+
+Textwerk bundles or links against the following third-party components:
+
+| Component | License | Copyright |
+|---|---|---|
+| [GRMustache](https://github.com/groue/GRMustache) | MIT | (c) 2014 Gwendal Roué |
+| [AutoHyperlinks Framework](https://github.com/Codeux-Software/AutoHyperlinks) | BSD 3-Clause | (c) 2005-2011 The Adium Team, (c) 2011 Codeux Software, LLC |
+| [CocoaAsyncSocket](https://github.com/robbiehanson/CocoaAsyncSocket) (`GCDAsyncSocket`) | Public Domain | Originally by Robbie Hanson; maintained by Deusty LLC |
+| [Colloquy](https://github.com/Colloquy/colloquy) (Chat Core) | BSD-style | (c) 2000-2012 the Colloquy IRC Client — used for a portion of SASL authentication handling in `IRCClient.m` |
+| [Sparkle](https://github.com/sparkle-project/Sparkle) | MIT (plus bundled bsdiff, sais-lite, ed25519, and `SUSignatureVerifier` components under their own permissive licenses) | (c) 2006-2017 Andy Matuschak and contributors |
+
+The "Cocoa Extensions" internal helper framework also carries a small number of third-party snippets (Dave Dribin's MIT-licensed code, an Apple sample-code snippet, and a Chromium-derived NSString helper) — see `Frameworks/Cocoa Extensions/ACKNOWLEDGEMENT.txt`, which ships inside the app bundle alongside the framework.

@@ -797,22 +797,22 @@ typedef NS_ENUM(NSUInteger, TPI_ChatFilterEditFilterSheetSelection)
 
 - (void)viewFilterMatchHelpText:(id)sender
 {
-	[TLOpenLink openWithString:@"https://github.com/bashgeek/Textual/wiki" inBackground:NO];
+	[TLOpenLink openWithString:@"https://github.com/bashgeek/Textwerk/wiki" inBackground:NO];
 }
 
 - (void)viewFilterActionHelpText:(id)sender
 {
-	[TLOpenLink openWithString:@"https://github.com/bashgeek/Textual/wiki" inBackground:NO];
+	[TLOpenLink openWithString:@"https://github.com/bashgeek/Textwerk/wiki" inBackground:NO];
 }
 
 - (void)viewFilterSenderMatchHelpText:(id)sender
 {
-	[TLOpenLink openWithString:@"https://github.com/bashgeek/Textual/wiki" inBackground:NO];
+	[TLOpenLink openWithString:@"https://github.com/bashgeek/Textwerk/wiki" inBackground:NO];
 }
 
 - (void)viewFilterForwardToDestinationHelpText:(id)sender
 {
-	[TLOpenLink openWithString:@"https://github.com/bashgeek/Textual/wiki" inBackground:NO];
+	[TLOpenLink openWithString:@"https://github.com/bashgeek/Textwerk/wiki" inBackground:NO];
 }
 
 - (void)filterLimitedToMatrixChanged:(id)sender

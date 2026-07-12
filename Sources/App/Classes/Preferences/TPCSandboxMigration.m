@@ -547,7 +547,7 @@ typedef NS_ENUM(NSUInteger, TPCMigrateSandboxInstallation)
 	}];
 
 	[alert setButtonClickedBlock:^BOOL(TVCAlert *sender, TVCAlertResponseButton buttonClicked) {
-		[TLOpenLink openWithString:@"https://github.com/bashgeek/Textual/wiki" inBackground:NO];
+		[TLOpenLink openWithString:@"https://github.com/bashgeek/Textwerk/wiki" inBackground:NO];
 
 		return NO;
 	} forButton:TVCAlertResponseButtonThird];

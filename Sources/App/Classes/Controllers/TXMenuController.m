@@ -2360,13 +2360,6 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 #pragma mark Help
 
-- (void)openAcknowledgements:(id)sender
-{
-	NSURL *Acknowledgements = [RZMainBundle() URLForResource:@"Acknowledgements" withExtension:@"pdf" subdirectory:@"Documentation"];
-
-	[RZWorkspace() openURL:Acknowledgements];
-}
-
 - (void)openStandaloneStoreWebpage:(id)sender
 {
 	[TLOpenLink openWithString:@"https://www.textualapp.com/standalone-store" inBackground:NO];
@@ -2374,7 +2367,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)contactSupport:(id)sender
 {
-	[TLOpenLink openWithString:@"https://github.com/bashgeek/Textual/issues" inBackground:NO];
+	[TLOpenLink openWithString:@"https://github.com/bashgeek/Textwerk/issues" inBackground:NO];
 }
 
 #pragma mark -

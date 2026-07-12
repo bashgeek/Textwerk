@@ -424,8 +424,6 @@ enum
 - (IBAction)centerMainWindow:(id)sender;
 - (IBAction)resetMainWindowFrame:(id)sender;
 
-- (IBAction)openAcknowledgements:(id)sender;
-
 - (IBAction)showAboutWindow:(id)sender;
 - (IBAction)showAddressBook:(id)sender;
 - (IBAction)showChannelBanExceptionList:(id)sender;

@@ -1714,7 +1714,7 @@ TEXTUAL_IGNORE_DEPRECATION_END
 					   otherButton:TXTLS(@"TDCServerPropertiesSheet[3ju-lo]")
 				   completionBlock:^(TDCAlertResponse buttonClicked, BOOL suppressed, id underlyingAlert) {
 			if (buttonClicked == TDCAlertResponseOther) {
-				[TLOpenLink openWithString:@"https://github.com/bashgeek/Textual/wiki" inBackground:NO];
+				[TLOpenLink openWithString:@"https://github.com/bashgeek/Textwerk/wiki" inBackground:NO];
 			}
 		}];
 

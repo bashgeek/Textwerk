@@ -917,12 +917,6 @@ CQ
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Help" id="1385">
                         <items>
-                            <menuItem title="Acknowledgements" tag="900" id="1796">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <connections>
-                                    <action selector="openAcknowledgements:" target="267" id="2556"/>
-                                </connections>
-                            </menuItem>
                             <menuItem title="Advanced" tag="910" id="2718">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Advanced" id="2719">

@@ -227,7 +227,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)checkForUpdatesFromGitHub:(BOOL)userInitiated
 {
-	NSURL *apiURL = [NSURL URLWithString:@"https://api.github.com/repos/bashgeek/Textual/releases/latest"];
+	NSURL *apiURL = [NSURL URLWithString:@"https://api.github.com/repos/bashgeek/Textwerk/releases/latest"];
 
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:apiURL
 	                                                       cachePolicy:NSURLRequestReloadIgnoringCacheData

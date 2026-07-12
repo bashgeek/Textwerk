@@ -63,10 +63,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 	Reserved tokens:
 
-	acknowledgements					— Open acknowledgements file
 	activate-license					— Activate a license key
 	application-support-folder			— Open the Application Support folder
-	contributors						— Open contributors file
 	custom-scripts-folder				– Open the custom scripts storage location folder
 	custom-style-folder					— Open the custom style storage location folder
 	custom-styles-folder				— Open the custom style storage location folder
@@ -80,18 +78,9 @@ NS_ASSUME_NONNULL_BEGIN
 	unsupervised-scripts-folder			— Open the custom scripts storage location folder
 */
 
-	if ([action isEqualToString:@"acknowledgements"])
-	{
-		[menuController() openAcknowledgements:nil];
-	}
-
-	else if ([action isEqualToString:@"application-support-folder"])
+	if ([action isEqualToString:@"application-support-folder"])
 	{
 		[RZWorkspace() openURL:[TPCPathInfo groupContainerApplicationSupportURL]];
-	}
-	else if ([action isEqualToString:@"contributors"])
-	{
-		[menuController() openAcknowledgements:nil];
 	}
 	else if ([action isEqualToString:@"custom-scripts-folder"] ||
 			 [action isEqualToString:@"unsupervised-script-folder"] ||
@@ -117,7 +106,7 @@ NS_ASSUME_NONNULL_BEGIN
 	}
 	else if ([action isEqualToString:@"newsletter"])
 	{
-		[TLOpenLink openWithString:@"https://github.com/bashgeek/Textual" inBackground:NO];
+		[TLOpenLink openWithString:@"https://github.com/bashgeek/Textwerk" inBackground:NO];
 	}
 }
 

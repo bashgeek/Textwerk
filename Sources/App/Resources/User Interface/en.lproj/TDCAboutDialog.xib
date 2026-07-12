@@ -59,15 +59,15 @@
                             <action selector="openGitHub:" target="-2" id="GHD-Lk-git"/>
                         </connections>
                     </button>
-                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="40">
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="WEB-Lk-web">
                         <rect key="frame" x="42" y="18" width="135" height="23"/>
-                        <buttonCell key="cell" type="roundTextured" title="Acknowledgements" bezelStyle="texturedRounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="41">
+                        <buttonCell key="cell" type="roundTextured" title="Visit Website" bezelStyle="texturedRounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="WEC-Lk-web">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
-                        <accessibility description="Acknowledgements"/>
+                        <accessibility description="Visit Website"/>
                         <connections>
-                            <action selector="displayAcknowledgements:" target="-2" id="44"/>
+                            <action selector="openWebsite:" target="-2" id="WED-Lk-web"/>
                         </connections>
                     </button>
                     <button hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MDL-oh-scd">
@@ -97,12 +97,13 @@ Gw
                     <constraint firstItem="5" firstAttribute="top" secondItem="3" secondAttribute="bottom" constant="18" id="LqP-v5-xwR"/>
                     <constraint firstAttribute="trailing" secondItem="MDL-oh-scd" secondAttribute="trailing" id="Oda-rS-ckT"/>
                     <constraint firstItem="3" firstAttribute="top" secondItem="2" secondAttribute="top" constant="20" symbolic="YES" id="TSu-8F-A7d"/>
-                    <constraint firstAttribute="bottom" secondItem="40" secondAttribute="bottom" constant="20" symbolic="YES" id="VzH-QN-2U2"/>
-                    <constraint firstItem="40" firstAttribute="centerX" secondItem="2" secondAttribute="centerX" id="cgP-eI-aZl"/>
+                    <constraint firstAttribute="bottom" secondItem="WEB-Lk-web" secondAttribute="bottom" constant="20" symbolic="YES" id="VzH-QN-2U2"/>
                     <constraint firstItem="7" firstAttribute="top" secondItem="5" secondAttribute="bottom" constant="8" symbolic="YES" id="eHu-4Q-o7e"/>
                     <constraint firstItem="GHB-Lk-git" firstAttribute="top" secondItem="7" secondAttribute="bottom" constant="8" id="GHE-Lk-git"/>
                     <constraint firstItem="GHB-Lk-git" firstAttribute="centerX" secondItem="2" secondAttribute="centerX" id="GHF-Lk-git"/>
                     <constraint firstItem="5" firstAttribute="centerX" secondItem="2" secondAttribute="centerX" id="vBb-oA-EXK"/>
+                    <constraint firstItem="WEB-Lk-web" firstAttribute="top" secondItem="GHB-Lk-git" secondAttribute="bottom" constant="8" id="WEE-Lk-web"/>
+                    <constraint firstItem="WEB-Lk-web" firstAttribute="centerX" secondItem="2" secondAttribute="centerX" id="WEF-Lk-web"/>
                 </constraints>
             </view>
             <connections>
