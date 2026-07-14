@@ -30,5 +30,10 @@
 		<string>$(PRODUCT_BUNDLE_IDENTIFIER)-spks</string>
 		<string>$(PRODUCT_BUNDLE_IDENTIFIER)-spki</string>
 	</array>
+	<key>com.apple.security.temporary-exception.files.home-relative-path.read-write</key>
+	<array>
+		<string>/Library/Group Containers/com.codeux.apps.textual/</string>
+		<string>/Library/Group Containers/8482Q6EPL6.com.codeux.irc.textual/</string>
+	</array>
 </dict>
 </plist>

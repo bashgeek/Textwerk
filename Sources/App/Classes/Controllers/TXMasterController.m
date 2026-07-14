@@ -323,6 +323,10 @@ NS_ASSUME_NONNULL_BEGIN
 	 for us which we can just do here. */
 	LogToConsoleDebug("Preparing notification controller singeton: %@",
 			sharedNotificationController().description);
+
+	/* Prevents AppKit from injecting its automatic search field into
+	 the Help menu. */
+	NSApp.helpMenu = nil;
 }
 
 - (void)applicationDidFinishLaunching

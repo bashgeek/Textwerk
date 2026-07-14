@@ -37,6 +37,7 @@
 
 #import "ICLInlineContentProtocol.h"
 #import "ICLPayload.h"
+#import "BuildConfig.h"
 #import "TXMasterController.h"
 #import "IRCClient.h"
 #import "IRCClientConfig.h"
@@ -99,7 +100,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)connectToService
 {
-	NSXPCConnection *serviceConnection = [[NSXPCConnection alloc] initWithServiceName:@"com.codeux.app-utilities.Textual-InlineContentLoader"];
+	NSString *serviceName = [TXBundleBuildProductIdentifier stringByAppendingString:@".InlineContentLoader"];
+
+	NSXPCConnection *serviceConnection = [[NSXPCConnection alloc] initWithServiceName:serviceName];
 
 	NSXPCInterface *remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:@protocol(ICLInlineContentServerProtocol)];
 

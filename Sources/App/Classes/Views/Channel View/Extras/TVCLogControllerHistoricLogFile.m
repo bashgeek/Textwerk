@@ -37,6 +37,7 @@
 
 #import "HLSHistoricLogProtocol.h"
 
+#import "BuildConfig.h"
 #import "TXMasterController.h"
 #import "IRCTreeItem.h"
 #import "IRCWorld.h"
@@ -140,7 +141,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)connectToService
 {
-	NSXPCConnection *serviceConnection = [[NSXPCConnection alloc] initWithServiceName:@"com.codeux.app-utilities.Textual-ScrollbackHistoryManager"];
+	NSString *serviceName = [TXBundleBuildProductIdentifier stringByAppendingString:@".ScrollbackHistoryManager"];
+
+	NSXPCConnection *serviceConnection = [[NSXPCConnection alloc] initWithServiceName:serviceName];
 
 	NSXPCInterface *remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:@protocol(HLSHistoricLogServerProtocol)];
 

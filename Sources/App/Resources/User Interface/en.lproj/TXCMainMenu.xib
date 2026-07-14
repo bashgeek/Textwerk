@@ -917,69 +917,56 @@ CQ
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Help" id="1385">
                         <items>
-                            <menuItem title="Advanced" tag="910" id="2718">
+                            <menuItem title="Enable Developer Mode" tag="9100000" id="2280">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="Advanced" id="2719">
-                                    <items>
-                                        <menuItem title="Enable Developer Mode" tag="9100000" id="2280">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="toggleDeveloperMode:" target="267" id="2281"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem isSeparatorItem="YES" tag="9100001" id="2721"/>
-                                        <menuItem title="Hidden Preferences…" tag="9100002" id="2725">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="showHiddenPreferences:" target="267" id="SSd-K5-dFp"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem isSeparatorItem="YES" tag="9100003" id="3085"/>
-                                        <menuItem title="Export Preferences" tag="9100004" id="3088">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="exportPreferences:" target="267" id="3091"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="Import Preferences" tag="9100005" id="3086">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="importPreferences:" target="267" id="3090"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="Import from Previous Textual…" tag="9100008" id="k9M-bA-xRf">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="importLegacySettings:" target="267" id="p3T-sQ-wNm"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem isSeparatorItem="YES" tag="9100006" id="gIQ-2m-VHD">
-                                            <connections>
-                                                <binding destination="TlT-Ik-3QP" name="hidden" keyPath="values.TextualDeveloperEnvironment" id="7wz-iv-L8K">
-                                                    <dictionary key="options">
-                                                        <string key="NSValueTransformerName">NSNegateBoolean</string>
-                                                    </dictionary>
-                                                </binding>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="Reset &quot;Don't Ask Me&quot; Warnings" tag="9100007" id="UfC-Uf-EFM">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="resetDoNotAskMePopupWarnings:" target="267" id="z5V-jK-Ms7"/>
-                                                <binding destination="TlT-Ik-3QP" name="hidden" keyPath="values.TextualDeveloperEnvironment" id="B8q-Zl-Mul">
-                                                    <dictionary key="options">
-                                                        <string key="NSValueTransformerName">NSNegateBoolean</string>
-                                                    </dictionary>
-                                                </binding>
-                                            </connections>
-                                        </menuItem>
-                                    </items>
-                                    <connections>
-                                        <outlet property="delegate" destination="267" id="Vke-2T-jD9"/>
-                                    </connections>
-                                </menu>
                                 <connections>
-                                    <action selector="emptyAction:" target="267" id="c1K-oo-2Iu"/>
+                                    <action selector="toggleDeveloperMode:" target="267" id="2281"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" tag="9100001" id="2721"/>
+                            <menuItem title="Hidden Preferences…" tag="9100002" id="2725">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="showHiddenPreferences:" target="267" id="SSd-K5-dFp"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" tag="9100003" id="3085"/>
+                            <menuItem title="Export Preferences" tag="9100004" id="3088">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="exportPreferences:" target="267" id="3091"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Import Preferences" tag="9100005" id="3086">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="importPreferences:" target="267" id="3090"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Import from Previous Textual…" tag="9100008" id="k9M-bA-xRf">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="importLegacySettings:" target="267" id="p3T-sQ-wNm"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" tag="9100006" id="gIQ-2m-VHD">
+                                <connections>
+                                    <binding destination="TlT-Ik-3QP" name="hidden" keyPath="values.TextualDeveloperEnvironment" id="7wz-iv-L8K">
+                                        <dictionary key="options">
+                                            <string key="NSValueTransformerName">NSNegateBoolean</string>
+                                        </dictionary>
+                                    </binding>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Reset &quot;Don't Ask Me&quot; Warnings" tag="9100007" id="UfC-Uf-EFM">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="resetDoNotAskMePopupWarnings:" target="267" id="z5V-jK-Ms7"/>
+                                    <binding destination="TlT-Ik-3QP" name="hidden" keyPath="values.TextualDeveloperEnvironment" id="B8q-Zl-Mul">
+                                        <dictionary key="options">
+                                            <string key="NSValueTransformerName">NSNegateBoolean</string>
+                                        </dictionary>
+                                    </binding>
                                 </connections>
                             </menuItem>
                         </items>

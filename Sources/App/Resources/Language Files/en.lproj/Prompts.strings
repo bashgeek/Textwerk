@@ -89,13 +89,13 @@ Do you want to add these channels to that connection or would you rather create 
 "x3e-ur" = "Open System Settings";
 
 "9mb-o5" = "An update is available for these addons: %@";
-“x4w-is” = “Would you like to open the “Textwerk Extras” installer to perform an update?”;
+"x4w-is" = "Would you like to open the “Textwerk Extras” installer to perform an update?";
 "ioq-nf" = "Open Installer";
 
 "ins-op" = "An update is required for these addons: %@";
-“34o-pk” = “These addons will not be available for use until they are updated.
+"34o-pk" = "These addons will not be available for use until they are updated.
 
-Would you like to open the “Textwerk Extras” installer to perform an update?”;
+Would you like to open the “Textwerk Extras” installer to perform an update?";
 "hd0-bf" = "Remind Me Next Launch";
 "467-5l" = "Open Installer";
 "h78-9e" = "View Files";
@@ -107,7 +107,7 @@ If you are the developer of one of these addons: In the Info.plist file of your 
 "324-5d" = "Remind Me Next Launch";
 "0ik-o9" = "View Files";
 
-“o9p-4n” = “The “Textwerk Extras” package must be installed to perform the command “%@””;
+"o9p-4n" = "The “Textwerk Extras” package must be installed to perform the command “%@”";
 "bpb-vv" = "Would you like to open the installer?";
 "6lr-02" = "Open Installer";
 
@@ -117,7 +117,7 @@ If you are the developer of one of these addons: In the Info.plist file of your 
 "hcb-3i" = "Preferences may become corrupted if you have more than one copy of Textwerk open";
 "kx4-q8" = "Are you sure you want to continue?";
 
-“py0-cr” = “The style named “%@” is not designed to work with this version of Textwerk”;
+"py0-cr" = "The style named “%@” is not designed to work with this version of Textwerk";
 "76t-pn" = "Some features will not work correctly with this style selected.";
 "2a3-5s" = "Choose Different Style";
 
@@ -153,7 +153,7 @@ Create this folder if it does not exist.";
 "xek-0t" = "The extension named “%@” has been successfully installed";
 "k69-q0" = "Restart Textwerk to load this extension.";
 
-“xfl-8e” = “Are you sure you want to open the file named “%@” with Textwerk?”;
+"xfl-8e" = "Are you sure you want to open the file named “%@” with Textwerk?";
 "6tj-yp" = "";
 
 "k55-19" = "No logs were found";
@@ -171,10 +171,10 @@ Create this folder if it does not exist.";
 "bi7-ah" = "Logging has been disabled because there is not enough space on your Mac";
 "v9e-jy" = "Logging will resume when there is free space available.";
 
-“m8b-58” = “Textwerk can’t verify the identity of the server “%@””;
+"m8b-58" = "Textwerk can’t verify the identity of the server “%@”";
 "85z-qw" = "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@”, which could put your confidential information at risk. Would you like to connect to the server anyway?";
 
-“sfx-xx” = “Textwerk is using an encrypted connection to “%@””;
+"sfx-xx" = "Textwerk is using an encrypted connection to “%@“";
 "ihy-mz" = "Encryption with a digital certificate keeps information private as it’s sent to or from the server “%1$@“";
 "iun-45" = "Encryption with a digital certificate keeps information private as it’s sent to or from the server “%1$@“
 

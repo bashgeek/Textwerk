@@ -212,8 +212,6 @@ enum
 	MTMMWindowBrightAllToFront = 819, // "Bring All to Front"
 
 	/* Main menu - Help menu */
-	MTMMHelpAcknowledgements = 900, // "Acknowledgements"
-	MTMMHelpAdvancedMenu = 910, // "Advanced"
 	MTMMHelpAdvancedMenuEnableDeveloperMode = 9100000, // "Enable Developer Mode"
 	MTMMHelpAdvancedMenuEnableDeveloperModeSeparator = 9100001, // "-"
 	MTMMHelpAdvancedMenuHiddenPreferences = 9100002, // "Hidden Preferences…"

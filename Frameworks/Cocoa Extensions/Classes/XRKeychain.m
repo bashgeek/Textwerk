@@ -49,7 +49,12 @@ NS_ASSUME_NONNULL_BEGIN
 		searchDictionary[(id)kSecClass] = (id)kSecClassGenericPassword;
 	}
 
-	searchDictionary[(id)kSecAttrLabel] = itemName;
+	/* The label is a display name, not a stable identifier — it changes
+	 whenever the app is rebranded (e.g. "Textual (...)" -> "Textwerk
+	 (...)"). Matching on it here would silently miss any item created
+	 or imported under an older label even though its service/account
+	 still uniquely identify it. It is set explicitly when creating new
+	 items instead; see -addKeychainItem:... */
 	searchDictionary[(id)kSecAttrDescription] = itemKind;
 
 	if (username.length > 0) {
@@ -135,6 +140,10 @@ NS_ASSUME_NONNULL_BEGIN
 	
 	NSMutableDictionary *newDictionary = [NSMutableDictionary dictionary];
 
+	/* Refresh the label on every successful update so items created or
+	 imported under an older display name pick up the current one. */
+	newDictionary[(id)kSecAttrLabel] = itemName;
+
 	if (newPassword) {
 		NSData *encodedPassword = [newPassword dataUsingEncoding:NSUTF8StringEncoding];
 
@@ -192,10 +201,12 @@ NS_ASSUME_NONNULL_BEGIN
 												 forUsername:username
 												 serviceName:service];
 
+	dictionary[(id)kSecAttrLabel] = itemName;
+
 	if (addToCloud) {
 		dictionary[(id)kSecAttrSynchronizable] = (id)kCFBooleanTrue;
 	}
-	
+
 	NSData *encodedPassword = [password dataUsingEncoding:NSUTF8StringEncoding];
 
 	dictionary[(id)kSecValueData] = encodedPassword;

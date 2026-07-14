@@ -293,8 +293,6 @@ NS_ASSUME_NONNULL_BEGIN
 			case MTMMEditPaste: // "Paste"
 			case MTMMViewToggleFullscreen: // "Toggle Fullscreen"
 			case MTMMWindowMainWindow: // "Main Window"
-			case MTMMHelpAcknowledgements: // "Acknowledgements"
-			case MTMMHelpAdvancedMenu: // "Advanced"
 			case MTMMHelpAdvancedMenuExportPreferences: // "Export Preferences"
 			case MTMMHelpAdvancedMenuImportLegacySettings: // "Import from Previous Textual…"
 			{

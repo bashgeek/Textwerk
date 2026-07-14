@@ -40,6 +40,7 @@
 
 #import <objc/message.h>
 
+#import "BuildConfig.h"
 #import "NSObjectHelperPrivate.h"
 #import "TLOLocalization.h"
 #import "TPCPreferencesLocal.h"
@@ -129,7 +130,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)warmProcess
 {
-	NSXPCConnection *serviceConnection = [[NSXPCConnection alloc] initWithServiceName:@"com.codeux.app-utilities.Textual-IRCConnectionHost"];
+	NSString *serviceName = [TXBundleBuildProductIdentifier stringByAppendingString:@".IRCConnectionHost"];
+
+	NSXPCConnection *serviceConnection = [[NSXPCConnection alloc] initWithServiceName:serviceName];
 
 	NSXPCInterface *remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:@protocol(RCMConnectionManagerServerProtocol)];
 

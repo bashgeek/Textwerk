@@ -58,10 +58,21 @@ final class HLSHistoricLogProcessMain: NSObject, HLSHistoricLogServerProtocol, @
 	private var maximumLineCount: UInt = 100
 	private var saveTimer: DispatchSourceTimer?
 
+	/* The host app calls -openDatabase asynchronously and, without waiting
+	 for its completion block, may immediately follow up with other calls
+	 (fetch, save, write, etc.) on this same connection. XPC does not
+	 guarantee those calls are processed strictly after -openDatabase
+	 returns, so callers that touch the Core Data stack wait on this group
+	 first to avoid racing the database's setup. */
+	private let databaseOpenGroup = DispatchGroup()
+	private var hasLeftDatabaseOpenGroup = false
+	private let databaseOpenGroupLock = NSLock()
+
 	init(connection: NSXPCConnection) {
 		serviceConnection = connection
 		super.init()
 		Logging.defaultSubsystem = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "General")
+		databaseOpenGroup.enter()
 	}
 
 	// MARK: - Database path management
@@ -84,7 +95,17 @@ final class HLSHistoricLogProcessMain: NSObject, HLSHistoricLogServerProtocol, @
 	}
 
 	private func setDatabasePath(inDirectory directory: String) {
-		databaseDirectory = directory
+		/* The directory suggested by the host app may live outside of this
+		 process's sandbox container (e.g. a shared group container this
+		 process has no entitlement to write to). Always store the database
+		 inside this process's own container instead, which is guaranteed
+		 to be writable regardless of what the host app passes in. */
+		let cachesURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first
+		let sandboxSafeDirectory = cachesURL?.path ?? directory
+
+		try? FileManager.default.createDirectory(atPath: sandboxSafeDirectory, withIntermediateDirectories: true)
+
+		databaseDirectory = sandboxSafeDirectory
 		setDatabasePath()
 	}
 
@@ -102,11 +123,22 @@ final class HLSHistoricLogProcessMain: NSObject, HLSHistoricLogServerProtocol, @
 
 		let success = createBaseModel()
 
+		signalDatabaseOpenGroupIfNeeded()
+
 		completionBlock?(success)
 
 		guard success else { return }
 
 		rescheduleSave()
+	}
+
+	private func signalDatabaseOpenGroupIfNeeded() {
+		databaseOpenGroupLock.lock()
+		defer { databaseOpenGroupLock.unlock() }
+
+		guard hasLeftDatabaseOpenGroup == false else { return }
+		hasLeftDatabaseOpenGroup = true
+		databaseOpenGroup.leave()
 	}
 
 	func openDatabase(inDirectory directory: String) async -> Bool {
@@ -182,6 +214,8 @@ final class HLSHistoricLogProcessMain: NSObject, HLSHistoricLogServerProtocol, @
 	}
 
 	func saveData(completionBlock: (@Sendable () -> Void)?) {
+		databaseOpenGroup.wait()
+
 		guard !isPerformingSave else { return }
 		isPerformingSave = true
 
@@ -596,6 +630,8 @@ final class HLSHistoricLogProcessMain: NSObject, HLSHistoricLogServerProtocol, @
 	// MARK: - Context management
 
 	private func context(forView viewId: String) -> HLSHistoricLogViewContext {
+		databaseOpenGroup.wait()
+
 		contextObjectsLock.lock()
 		defer { contextObjectsLock.unlock() }
 

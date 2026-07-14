@@ -146,9 +146,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (nullable NSURL *)groupContainerURL
 {
-	NSURL *baseURL = [RZFileManager() containerURLForSecurityApplicationGroupIdentifier:TXBundleBuildGroupContainerIdentifier];
-
-	return baseURL;
+	/* This build has no provisioned App Group entitlement (that requires
+	 an Apple Developer Program membership this project does not have),
+	 so -containerURLForSecurityApplicationGroupIdentifier: would hand
+	 back a URL this sandboxed process has no actual permission to read
+	 or write. Use this app's own sandbox container instead, which is
+	 always accessible. This means this location is no longer shared
+	 with the XPC services, which must manage their own storage. */
+	return [NSURL fileURLWithPath:NSHomeDirectory() isDirectory:YES];
 }
 
 + (nullable NSString *)groupContainerApplicationCaches
