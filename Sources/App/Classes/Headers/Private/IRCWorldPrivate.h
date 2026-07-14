@@ -67,6 +67,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (IRCChannel *)createPrivateMessage:(NSString *)nickname onClient:(IRCClient *)client asType:(IRCChannelType)type;
 
+/* Same as -createPrivateMessage:onClient:asType: but flags the new channel as
+ having been started by the other user before its view is created, so that the
+ flag is already in place by the time the view's initial HTML is rendered. */
+- (IRCChannel *)createPrivateMessage:(NSString *)nickname
+							 onClient:(IRCClient *)client
+				initiatedByRemoteUser:(NSString * _Nullable)hostmaskAddress;
+
 - (void)destroyClient:(IRCClient *)client;
 
 - (void)destroyChannel:(IRCChannel *)channel reload:(BOOL)reload;

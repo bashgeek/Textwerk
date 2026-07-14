@@ -44,6 +44,7 @@
 #import "IRCClientConfig.h"
 #import "IRCClientPrivate.h"
 #import "IRCChannel.h"
+#import "IRCChannelPrivate.h"
 #import "THOPluginDispatcherPrivate.h"
 #import "THOPluginManagerPrivate.h"
 #import "THOPluginProtocolPrivate.h"
@@ -384,9 +385,38 @@ NSString * const TVCLogControllerViewFinishedLoadingNotification = @"TVCLogContr
 
 - (void)setInitialTopic
 {
-	NSString *topic = self.associatedChannel.topic;
+	IRCChannel *channel = self.associatedChannel;
 
-	[self setTopic:topic];
+	if (channel.isPrivateMessage && channel.queryInitiatedByRemoteUser) {
+		[self setTopic:[self queryInfoBarText]];
+
+		return;
+	}
+
+	[self setTopic:channel.topic];
+}
+
+- (nullable NSString *)queryInfoBarText
+{
+	IRCChannel *channel = self.associatedChannel;
+
+	NSString *nickname = channel.name;
+
+	NSArray<IRCChannel *> *commonChannels = [self.associatedClient channelsSharedWithNickname:nickname];
+
+	if (commonChannels.count == 0) {
+		return [NSString stringWithFormat:@"No common channels with %@", nickname];
+	}
+
+	NSMutableArray<NSString *> *commonChannelNames = [NSMutableArray arrayWithCapacity:commonChannels.count];
+
+	for (IRCChannel *commonChannel in commonChannels) {
+		[commonChannelNames addObject:commonChannel.name];
+	}
+
+	NSString *channelWord = (commonChannels.count == 1) ? @"channel" : @"channels";
+
+	return [NSString stringWithFormat:@"Common %@ with %@: %@", channelWord, nickname, [commonChannelNames componentsJoinedByString:@", "]];
 }
 
 - (void)setTopic:(nullable NSString *)topic
@@ -1570,6 +1600,11 @@ NSString * const TVCLogControllerViewFinishedLoadingNotification = @"TVCLogContr
 		templateTokens[@"channelName"] = channel.name;
 
 		templateTokens[@"viewTypeToken"] = channel.channelTypeString;
+
+		/* Private message views do not normally show the topic bar since
+		 queries have no topic, but we reuse it to show a "who is this"
+		 summary when the other user started the conversation. */
+		templateTokens[@"showQueryInfoBar"] = @(channel.isPrivateMessage && channel.queryInitiatedByRemoteUser);
 	} else {
 		templateTokens[@"viewTypeToken"] = @"server";
 	}

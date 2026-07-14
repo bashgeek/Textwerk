@@ -50,6 +50,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) BOOL channelNamesReceived;
 @property (nonatomic, assign, readwrite) BOOL errorOnLastJoinAttempt;
 
+/* Set when this private message query was created because the other
+ user messaged us first, rather than by our own action (e.g. /query,
+ double-clicking a nickname). Not persisted — only reflects the state
+ of the current session. Used to show a one-time "who is this" banner. */
+@property (nonatomic, assign) BOOL queryInitiatedByRemoteUser;
+@property (nonatomic, copy, nullable) NSString *queryInitiatorHostmaskAddress;
+
 - (instancetype)initWithConfig:(IRCChannelConfig *)config NS_DESIGNATED_INITIALIZER;
 - (instancetype)initWithConfigDictionary:(NSDictionary<NSString *, id> *)dic;
 

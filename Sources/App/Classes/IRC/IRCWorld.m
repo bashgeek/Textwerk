@@ -577,12 +577,24 @@ NSString * const IRCWorldWillDestroyChannelNotification = @"IRCWorldWillDestroyC
 
 - (IRCChannel *)createChannelWithConfig:(IRCChannelConfig *)config onClient:(IRCClient *)client add:(BOOL)add adjust:(BOOL)adjust reload:(BOOL)reload
 {
+	return [self createChannelWithConfig:config onClient:client add:add adjust:adjust reload:reload beforeViewController:nil];
+}
+
+- (IRCChannel *)createChannelWithConfig:(IRCChannelConfig *)config onClient:(IRCClient *)client add:(BOOL)add adjust:(BOOL)adjust reload:(BOOL)reload beforeViewController:(void (^ _Nullable)(IRCChannel *channel))beforeViewController
+{
 	NSParameterAssert(config != nil);
 	NSParameterAssert(client != nil);
 
 	IRCChannel *channel = [[IRCChannel alloc] initWithConfig:config];
 
 	channel.associatedClient = client;
+
+	/* Any state the view's initial HTML needs to reflect (e.g. whether this
+	 query was started by the other user) must be set before the view
+	 controller below is created, since that is what renders the page. */
+	if (beforeViewController) {
+		beforeViewController(channel);
+	}
 
 	channel.viewController = [self createViewControllerWithClient:client channel:channel];
 
@@ -607,10 +619,23 @@ NSString * const IRCWorldWillDestroyChannelNotification = @"IRCWorldWillDestroyC
 
 - (IRCChannel *)createPrivateMessage:(NSString *)nickname onClient:(IRCClient *)client
 {
-	return [self createPrivateMessage:nickname onClient:client asType:IRCChannelTypePrivateMessage];
+	return [self createPrivateMessage:nickname onClient:client asType:IRCChannelTypePrivateMessage beforeViewController:nil];
 }
 
 - (IRCChannel *)createPrivateMessage:(NSString *)nickname onClient:(IRCClient *)client asType:(IRCChannelType)type
+{
+	return [self createPrivateMessage:nickname onClient:client asType:type beforeViewController:nil];
+}
+
+- (IRCChannel *)createPrivateMessage:(NSString *)nickname onClient:(IRCClient *)client initiatedByRemoteUser:(nullable NSString *)hostmaskAddress
+{
+	return [self createPrivateMessage:nickname onClient:client asType:IRCChannelTypePrivateMessage beforeViewController:^(IRCChannel *channel) {
+		channel.queryInitiatedByRemoteUser = YES;
+		channel.queryInitiatorHostmaskAddress = hostmaskAddress;
+	}];
+}
+
+- (IRCChannel *)createPrivateMessage:(NSString *)nickname onClient:(IRCClient *)client asType:(IRCChannelType)type beforeViewController:(void (^ _Nullable)(IRCChannel *channel))beforeViewController
 {
 	NSParameterAssert(nickname != nil);
 	NSParameterAssert(client != nil);
@@ -623,7 +648,7 @@ NSString * const IRCWorldWillDestroyChannelNotification = @"IRCWorldWillDestroyC
 
 	config.type = type;
 
-	IRCChannel *channel = [self createChannelWithConfig:config onClient:client add:YES adjust:YES reload:YES];
+	IRCChannel *channel = [self createChannelWithConfig:config onClient:client add:YES adjust:YES reload:YES beforeViewController:beforeViewController];
 
 	if (client.isLoggedIn && channel.isPrivateMessage) {
 		[channel activate];

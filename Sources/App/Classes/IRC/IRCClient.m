@@ -125,6 +125,7 @@
 #import "IRCAddressBookMatchCachePrivate.h"
 #import "IRCAddressBookUserTrackingPrivate.h"
 #import "IRCChannelConfig.h"
+#import "IRCChannelMemberList.h"
 #import "IRCChannelModePrivate.h"
 #import "IRCChannelUserPrivate.h"
 #import "IRCChannelPrivate.h"
@@ -1271,6 +1272,25 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 
 		[self updateStoredChannelList];
 	}
+}
+
+- (NSArray<IRCChannel *> *)channelsSharedWithNickname:(NSString *)nickname
+{
+	NSParameterAssert(nickname != nil);
+
+	NSMutableArray<IRCChannel *> *sharedChannels = [NSMutableArray array];
+
+	for (IRCChannel *channel in self.channelList) {
+		if (channel.isChannel == NO) {
+			continue;
+		}
+
+		if ([channel.memberInfo memberExists:nickname]) {
+			[sharedChannels addObject:channel];
+		}
+	}
+
+	return [sharedChannels copy];
 }
 
 #pragma mark -
@@ -6490,7 +6510,7 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 			if (isSelfMessage) {
 				query = [worldController() createPrivateMessage:target onClient:self];
 			} else {
-				query = [worldController() createPrivateMessage:sender onClient:self];
+				query = [worldController() createPrivateMessage:sender onClient:self initiatedByRemoteUser:m.senderAddress];
 			}
 		}
 

@@ -48,7 +48,8 @@ body {
 /* Only factor in height of topic bar when selected == true
  because that is only time the topic is displayed according
  to the logic defined by baseLayout.css */
-body[data-selected="true"][data-view-type="channel"] #body {
+body[data-selected="true"][data-view-type="channel"] #body,
+body[data-selected="true"][data-view-type="query"] #body {
 	max-height: calc(100% - 1.7em); /* height minus topic */
 }
 
