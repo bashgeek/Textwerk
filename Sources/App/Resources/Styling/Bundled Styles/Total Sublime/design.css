@@ -39,7 +39,6 @@ body {
 	z-index: 100;
 	position: absolute;
 	opacity: 0; /* Set by JavaScript */
-	transition: opacity 0.8s linear;
 }
 
 /* Only factor in height of topic bar when selected == true
@@ -71,7 +70,6 @@ body[dir="rtl"] .sender {
 	border-radius: 5px;
 	padding: 5px 10px;
 	opacity: 1; /* Set by JavaScript */
-	transition: opacity 0.8s linear;
 }
 
 /* Time */
@@ -126,7 +124,6 @@ a:hover {
 	padding: 2px 0.5em 3px;
 	border-bottom: 1px solid #222;
 	background: #171814;
-	transition: opacity 0.8s linear;
 	-webkit-font-smoothing: antialiased;
 	overflow: hidden;
 	white-space: nowrap;
