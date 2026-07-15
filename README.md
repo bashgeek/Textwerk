@@ -16,8 +16,8 @@ A community fork of [Textual](https://github.com/Codeux-Software/Textual), the m
 
 ## Screenshots
 
-[![Light](docs/screenshots/YosemiteLightThumbnail.png)](docs/screenshots/YosemiteLightFullscreen.png)
-[![Dark](docs/screenshots/YosemiteDarkThumbnail.png)](docs/screenshots/YosemiteDarkFullscreen.png)
+![Light](docs/screenshots/preview-light-general.png)
+![Dark](docs/screenshots/preview-dark-general.png)
 
 ## How to install
 
