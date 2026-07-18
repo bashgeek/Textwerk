@@ -997,6 +997,8 @@ NS_ASSUME_NONNULL_BEGIN
 			RZPasteboard().stringContent = selection;
 
 			context.completionBlock( @(YES) );
+
+			return;
 		}
 	}
 
