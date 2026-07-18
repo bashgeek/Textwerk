@@ -41,40 +41,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation NSWindow (TXWindowHelper)
 
-- (void)changeFrameToMin
-{
-	[self changeFrameToMinAndDisplay:YES animate:NO];
-}
-
-- (void)changeFrameToMinAndDisplay:(BOOL)display
-{
-	[self changeFrameToMinAndDisplay:display animate:NO];
-}
-
-- (void)changeFrameToMinAndDisplay:(BOOL)display animate:(BOOL)animate
-{
-	NSSize minSize = self.contentMinSize;
-
-	[self changeFrameTo:minSize display:display animate:NO];
-}
-
-- (void)changeFrameTo:(NSSize)minSize display:(BOOL)display animate:(BOOL)animate
-{
-	NSRect oldFrame = self.frame;
-	NSRect newFrame = oldFrame;
-
-	NSRect contentRect = [self contentRectForFrameRect:newFrame];
-
-	float bezelHeight = (newFrame.size.height - contentRect.size.height);
-
-	newFrame.size.width = minSize.width;
-	newFrame.size.height = (bezelHeight + minSize.height);
-
-	newFrame.origin.y = (NSMaxY(oldFrame) - newFrame.size.height);
-
-	[self setFrame:newFrame display:display animate:animate];
-}
-
 - (void)replaceContentView:(NSView *)withView
 {
 	self.contentView = nil;
