@@ -101,8 +101,6 @@ TEXTUAL_EXTERN NSStringEncoding const TXDefaultFallbackStringEncoding;
 
 - (nullable NSString *)padNicknameWithCharacter:(UniChar)padCharacter maximumLength:(NSUInteger)maximumLength;
 
-@property (readonly, copy, nullable) NSString *prettyLicenseKey;
-
 @property (readonly, copy) NSString *encodedMessageTagString;
 @property (readonly, copy) NSString *decodedMessageTagString;
 

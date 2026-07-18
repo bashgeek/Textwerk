@@ -670,11 +670,6 @@ return_method:
 	return nil;
 }
 
-- (nullable NSString *)prettyLicenseKey
-{
-	return nil;
-}
-
 /* Source: https://ircv3.net/specs/core/message-tags-3.2.html */
 - (NSString *)encodedMessageTagString
 {
