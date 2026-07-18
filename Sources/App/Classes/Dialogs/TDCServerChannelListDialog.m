@@ -40,7 +40,6 @@
 #import "NSObjectHelperPrivate.h"
 #import "NSStringHelper.h"
 #import "TXGlobalModels.h"
-#import "NSTableViewHelperPrivate.h"
 #import "TLOLocalization.h"
 #import "IRCClient.h"
 #import "TVCBasicTableView.h"
@@ -143,7 +142,7 @@ NS_ASSUME_NONNULL_BEGIN
 		newEntry.channelTopicUnformatted = topic;
 
 		NSAttributedString *topicFormatted =
-		[topic attributedStringWithIRCFormatting:[NSTableView preferredGlobalTableViewFont]
+		[topic attributedStringWithIRCFormatting:[NSFont systemFontOfSize:13.0]
 							  preferredFontColor:[NSColor controlTextColor]];
 
 		newEntry.channelTopicFormatted = topicFormatted;

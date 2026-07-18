@@ -375,7 +375,6 @@
 		4C06E5B520EC553A0055D09A /* NSColorHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3152E520EB673E00448776 /* NSColorHelper.m */; };
 		DD000001DDDDDDDDDDDDDD01 /* NSObjectHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD000001DDDDDDDDDDDDDD00 /* NSObjectHelper.swift */; };
 		4C06E5B720EC553A0055D09A /* NSStringHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3152E720EB673E00448776 /* NSStringHelper.m */; };
-		4C06E5B820EC553A0055D09A /* NSTableViewHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3152E820EB673E00448776 /* NSTableViewHelper.m */; };
 		4C06E5B920EC553A0055D09A /* NSViewHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3152E620EB673E00448776 /* NSViewHelper.m */; };
 		4C06E5BA20EC553A0055D09A /* TXAppearanceHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3152E920EB673E00448776 /* TXAppearanceHelper.m */; };
 		4C06E5BD20EC553A0055D09A /* THOPluginDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3152E120EB673E00448776 /* THOPluginDispatcher.m */; };
@@ -527,7 +526,6 @@
 		4C06E66E20EC55B90055D09A /* NSColorHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3152E520EB673E00448776 /* NSColorHelper.m */; };
 		DD000001DDDDDDDDDDDDDD02 /* NSObjectHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD000001DDDDDDDDDDDDDD00 /* NSObjectHelper.swift */; };
 		4C06E67020EC55B90055D09A /* NSStringHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3152E720EB673E00448776 /* NSStringHelper.m */; };
-		4C06E67120EC55B90055D09A /* NSTableViewHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3152E820EB673E00448776 /* NSTableViewHelper.m */; };
 		4C06E67220EC55B90055D09A /* NSViewHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3152E620EB673E00448776 /* NSViewHelper.m */; };
 		4C06E67320EC55B90055D09A /* TXAppearanceHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3152E920EB673E00448776 /* TXAppearanceHelper.m */; };
 		4C06E67620EC55B90055D09A /* THOPluginDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C3152E120EB673E00448776 /* THOPluginDispatcher.m */; };
@@ -844,7 +842,6 @@
 		4C3156FC20EB6D0500448776 /* IRCUserPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C3151E720EB673E00448776 /* IRCUserPrivate.h */; };
 		4C3156FD20EB6D0500448776 /* IRCUserRelationsPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C3151B420EB673E00448776 /* IRCUserRelationsPrivate.h */; };
 		4C3156FE20EB6D0500448776 /* IRCWorldPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C3151DB20EB673E00448776 /* IRCWorldPrivate.h */; };
-		4C31570020EB6D0500448776 /* NSTableVIewHelperPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C3151E220EB673E00448776 /* NSTableVIewHelperPrivate.h */; };
 		4C31570120EB6D0500448776 /* NSViewHelperPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C31521420EB673E00448776 /* NSViewHelperPrivate.h */; };
 		4C31570220EB6D0500448776 /* SwiftBridgingHeaderPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C31520A20EB673E00448776 /* SwiftBridgingHeaderPrivate.h */; };
 		4C31570320EB6D0500448776 /* TDCAboutDialogPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C31522820EB673E00448776 /* TDCAboutDialogPrivate.h */; };
@@ -961,7 +958,6 @@
 		4C31578F20EB6D0600448776 /* IRCUserPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C3151E720EB673E00448776 /* IRCUserPrivate.h */; };
 		4C31579020EB6D0600448776 /* IRCUserRelationsPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C3151B420EB673E00448776 /* IRCUserRelationsPrivate.h */; };
 		4C31579120EB6D0600448776 /* IRCWorldPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C3151DB20EB673E00448776 /* IRCWorldPrivate.h */; };
-		4C31579320EB6D0600448776 /* NSTableVIewHelperPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C3151E220EB673E00448776 /* NSTableVIewHelperPrivate.h */; };
 		4C31579420EB6D0600448776 /* NSViewHelperPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C31521420EB673E00448776 /* NSViewHelperPrivate.h */; };
 		4C31579520EB6D0600448776 /* SwiftBridgingHeaderPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C31520A20EB673E00448776 /* SwiftBridgingHeaderPrivate.h */; };
 		4C31579620EB6D0600448776 /* TDCAboutDialogPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C31522820EB673E00448776 /* TDCAboutDialogPrivate.h */; };
@@ -1548,7 +1544,6 @@
 		4C3151DF20EB673E00448776 /* TVCMainWindowTitlebarAccessoryViewPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TVCMainWindowTitlebarAccessoryViewPrivate.h; sourceTree = "<group>"; };
 		4C3151E020EB673E00448776 /* IRCAddressBookMatchCachePrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRCAddressBookMatchCachePrivate.h; sourceTree = "<group>"; };
 		4C3151E120EB673E00448776 /* IRCMessageBatchPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRCMessageBatchPrivate.h; sourceTree = "<group>"; };
-		4C3151E220EB673E00448776 /* NSTableVIewHelperPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSTableVIewHelperPrivate.h; sourceTree = "<group>"; };
 		4C3151E320EB673E00448776 /* IRCTreeItemPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRCTreeItemPrivate.h; sourceTree = "<group>"; };
 		4C3151E420EB673E00448776 /* TPCPreferencesImportExportPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TPCPreferencesImportExportPrivate.h; sourceTree = "<group>"; };
 		4C3151E620EB673E00448776 /* TDCNicknameColorSheetPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TDCNicknameColorSheetPrivate.h; sourceTree = "<group>"; };
@@ -1741,7 +1736,6 @@
 		4C3152E520EB673E00448776 /* NSColorHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSColorHelper.m; sourceTree = "<group>"; };
 		4C3152E620EB673E00448776 /* NSViewHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSViewHelper.m; sourceTree = "<group>"; };
 		4C3152E720EB673E00448776 /* NSStringHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSStringHelper.m; sourceTree = "<group>"; };
-		4C3152E820EB673E00448776 /* NSTableViewHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSTableViewHelper.m; sourceTree = "<group>"; };
 		4C3152E920EB673E00448776 /* TXAppearanceHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TXAppearanceHelper.m; sourceTree = "<group>"; };
 		4C31531920EB676400448776 /* TPWTB_Advanced@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TPWTB_Advanced@2x.png"; sourceTree = "<group>"; };
 		4C31531A20EB676400448776 /* TPWTB_Highlights.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TPWTB_Highlights.png; sourceTree = "<group>"; };
@@ -2495,7 +2489,6 @@
 				4C3151B420EB673E00448776 /* IRCUserRelationsPrivate.h */,
 				4C3151DB20EB673E00448776 /* IRCWorldPrivate.h */,
 				4C06E26220EC4C560055D09A /* NSObjectHelperPrivate.h */,
-				4C3151E220EB673E00448776 /* NSTableVIewHelperPrivate.h */,
 				4C31521420EB673E00448776 /* NSViewHelperPrivate.h */,
 				4C31520A20EB673E00448776 /* SwiftBridgingHeaderPrivate.h */,
 				4C31522820EB673E00448776 /* TDCAboutDialogPrivate.h */,
@@ -2871,7 +2864,6 @@
 				4C3152E520EB673E00448776 /* NSColorHelper.m */,
 				DD000001DDDDDDDDDDDDDD00 /* NSObjectHelper.swift */,
 				4C3152E720EB673E00448776 /* NSStringHelper.m */,
-				4C3152E820EB673E00448776 /* NSTableViewHelper.m */,
 				4C3152E620EB673E00448776 /* NSViewHelper.m */,
 				4C3152E920EB673E00448776 /* TXAppearanceHelper.m */,
 			);
@@ -3417,7 +3409,6 @@
 				4C31559820EB6CB300448776 /* TVCServerList.h in Headers */,
 				4C31558B20EB6CB300448776 /* TVCErrorMessagePopoverPrivate.h in Headers */,
 				4C3157FE20EB6D0600448776 /* TVCServerListPrivate.h in Headers */,
-				4C31579320EB6D0600448776 /* NSTableVIewHelperPrivate.h in Headers */,
 				4C31578520EB6D0600448776 /* IRCExtrasPrivate.h in Headers */,
 				4C31557320EB6CB300448776 /* TLOInternetAddressLookup.h in Headers */,
 				4C31556D20EB6CB300448776 /* Textual.h in Headers */,
@@ -3668,7 +3659,6 @@
 				4C3155EF20EB6CB400448776 /* TVCServerList.h in Headers */,
 				4C3155E220EB6CB400448776 /* TVCErrorMessagePopoverPrivate.h in Headers */,
 				4C31576B20EB6D0500448776 /* TVCServerListPrivate.h in Headers */,
-				4C31570020EB6D0500448776 /* NSTableVIewHelperPrivate.h in Headers */,
 				4C3156F220EB6D0500448776 /* IRCExtrasPrivate.h in Headers */,
 				4C3155CA20EB6CB400448776 /* TLOInternetAddressLookup.h in Headers */,
 				4C3155C420EB6CB400448776 /* Textual.h in Headers */,
@@ -4401,7 +4391,6 @@
 				4C06E5B520EC553A0055D09A /* NSColorHelper.m in Sources */,
 				DD000001DDDDDDDDDDDDDD01 /* NSObjectHelper.swift in Sources */,
 				4C06E5B720EC553A0055D09A /* NSStringHelper.m in Sources */,
-				4C06E5B820EC553A0055D09A /* NSTableViewHelper.m in Sources */,
 				4C06E5B920EC553A0055D09A /* NSViewHelper.m in Sources */,
 				4C06E5BA20EC553A0055D09A /* TXAppearanceHelper.m in Sources */,
 				4C06E5BD20EC553A0055D09A /* THOPluginDispatcher.m in Sources */,
@@ -4569,7 +4558,6 @@
 				4C06E66E20EC55B90055D09A /* NSColorHelper.m in Sources */,
 				DD000001DDDDDDDDDDDDDD02 /* NSObjectHelper.swift in Sources */,
 				4C06E67020EC55B90055D09A /* NSStringHelper.m in Sources */,
-				4C06E67120EC55B90055D09A /* NSTableViewHelper.m in Sources */,
 				4C06E67220EC55B90055D09A /* NSViewHelper.m in Sources */,
 				4C06E67320EC55B90055D09A /* TXAppearanceHelper.m in Sources */,
 				4C06E67620EC55B90055D09A /* THOPluginDispatcher.m in Sources */,

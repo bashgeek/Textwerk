@@ -37,7 +37,6 @@
 
 #import "NSColorHelper.h"
 #import "NSStringHelper.h"
-#import "NSTableViewHelperPrivate.h"
 #import "TXGlobalModels.h"
 #import "TXMasterController.h"
 #import "IRCChannel.h"
@@ -116,7 +115,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 	messageBody = [NSString stringWithFormat:messageBody, nicknameBody, logLine.messageBody];
 
-	return [messageBody attributedStringWithIRCFormatting:[NSTableView preferredGlobalTableViewFont]
+	return [messageBody attributedStringWithIRCFormatting:[NSFont systemFontOfSize:13.0]
 									   preferredFontColor:[NSColor controlTextColor]];
 }
 
