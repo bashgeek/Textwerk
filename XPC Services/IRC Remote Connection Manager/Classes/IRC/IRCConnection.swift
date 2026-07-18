@@ -125,8 +125,6 @@ final class Connection: NSObject, ConnectionSocketDelegate
 
 		startFloodControlTimer()
 
-		disconnectingManually = true
-
 		socket.open()
 	}
 
