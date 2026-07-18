@@ -108,36 +108,45 @@ NSString * const TPCPreferencesUserDefaultsDidChangeNotification = @"TPCPreferen
 {
 	NSParameterAssert(defaultName != nil);
 
-	id oldValue = [self objectForKey:defaultName];
+	/* This class is a singleton shared by the main app and, per its class
+	 comment, XPC services acting on the same suite. A lock here only
+	 serializes same-process callers (it cannot synchronize against a
+	 different process — that's already handled by the OS preferences
+	 daemon), but without it, concurrent same-process writers to the same
+	 key can interleave this read/willChange/write/didChange/notify
+	 sequence and produce out-of-order KVO notifications. */
+	@synchronized (self) {
+		id oldValue = [self objectForKey:defaultName];
 
-	if (oldValue && [oldValue isEqual:value]) {
-		return;
-	}
-
-	[self willChangeValueForKey:defaultName];
-
-	if (value == nil) {
-		if (oldValue) {
-			[self _setObject:nil forKey:defaultName];
+		if (oldValue && [oldValue isEqual:value]) {
+			return;
 		}
-	} else {
-		[self _setObject:value forKey:defaultName];
-	}
 
-	[self didChangeValueForKey:defaultName];
+		[self willChangeValueForKey:defaultName];
 
-	if (postNotification) {
-		[RZNotificationCenter() postNotificationName:TPCPreferencesUserDefaultsDidChangeNotification
-											  object:self
-											userInfo:@{@"changedKey" : defaultName}];
+		if (value == nil) {
+			if (oldValue) {
+				[self _setObject:nil forKey:defaultName];
+			}
+		} else {
+			[self _setObject:value forKey:defaultName];
+		}
 
-		/* We currently don't need to communicate preferences changes between the
-		 main app and XPC services, but if we do, then we should enable this code. */
+		[self didChangeValueForKey:defaultName];
+
+		if (postNotification) {
+			[RZNotificationCenter() postNotificationName:TPCPreferencesUserDefaultsDidChangeNotification
+												  object:self
+												userInfo:@{@"changedKey" : defaultName}];
+
+			/* We currently don't need to communicate preferences changes between the
+			 main app and XPC services, but if we do, then we should enable this code. */
 #if 0
-		[RZDistributedNotificationCenter() postNotificationName:TPCPreferencesUserDefaultsDidChangeNotification
-														 object:@"TPCPreferencesUserDefaults"
-													   userInfo:@{@"changedKey" : defaultName}];
+			[RZDistributedNotificationCenter() postNotificationName:TPCPreferencesUserDefaultsDidChangeNotification
+															 object:@"TPCPreferencesUserDefaults"
+														   userInfo:@{@"changedKey" : defaultName}];
 #endif
+		}
 	}
 }
 
