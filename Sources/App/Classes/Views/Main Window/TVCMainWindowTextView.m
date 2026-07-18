@@ -69,6 +69,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak) IBOutlet TVCMainWindowSegmentedControllerCell *segmentedControllerCell;
 @property (nonatomic, strong) TVCMainWindowTextViewAppearance *userInterfaceObjects;
 @property (readonly) NSArray<NSString *> *defaultSpellingIgnores;
+@property (nonatomic, assign) BOOL isObservingUserDefaults;
 @end
 
 @interface TVCMainWindowTextViewBackground ()
@@ -102,14 +103,22 @@ NS_ASSUME_NONNULL_BEGIN
 
 	if (window)
 	{
-		for (NSString *key in _KeyObservingArray) {
-			[RZUserDefaults() addObserver:self forKeyPath:key options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew) context:NULL];
+		if (self.isObservingUserDefaults == NO) {
+			self.isObservingUserDefaults = YES;
+
+			for (NSString *key in _KeyObservingArray) {
+				[RZUserDefaults() addObserver:self forKeyPath:key options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew) context:NULL];
+			}
 		}
 	}
 	else // window
 	{
-		for (NSString *key in _KeyObservingArray) {
-			[RZUserDefaults() removeObserver:self forKeyPath:key];
+		if (self.isObservingUserDefaults) {
+			self.isObservingUserDefaults = NO;
+
+			for (NSString *key in _KeyObservingArray) {
+				[RZUserDefaults() removeObserver:self forKeyPath:key];
+			}
 		}
 	}
 }
