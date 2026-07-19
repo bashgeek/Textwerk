@@ -308,7 +308,17 @@ inked bounds, so centering against it leaves symbols like "@", "+", "~", "×"
 sitting at different heights depending on their individual ascent/descent —
 which is what used to be patched with a pile of hardcoded per-glyph offsets
 below. Centering against the glyph path's tight bounds instead handles any
-symbol correctly without per-character tuning. */
+symbol correctly without per-character tuning.
+
+Getting this right takes two measurements, not one: CoreText's glyph path
+bounds are relative to the baseline (y=0 at the baseline, positive above,
+negative below), but -drawAtPoint: (used to actually draw this text below)
+positions its origin at the bottom-left of the string's *nominal* line-height
+box, not at the baseline. Centering the CoreText bounds directly against that
+origin — as an earlier version of this method did — ignores the gap between
+"bottom of the nominal box" and "the baseline", which is the descender (plus
+any leading), and drew every glyph too high by that amount. Correcting for it
+is what -font.descender/-font.leading below are for. */
 + (NSPoint)centeredDrawingPointForBadgeText:(NSAttributedString *)badgeText inFrame:(NSRect)frame
 {
 	CTLineRef line = CTLineCreateWithAttributedString((__bridge CFAttributedStringRef)badgeText);
@@ -317,8 +327,16 @@ symbol correctly without per-character tuning. */
 
 	CFRelease(line);
 
+	NSFont *font = [badgeText attribute:NSFontAttributeName atIndex:0 effectiveRange:NULL];
+
+	CGFloat baselineFromBoxBottom = 0.0;
+
+	if (font != nil) {
+		baselineFromBoxBottom = ((-font.descender) + font.leading);
+	}
+
 	CGFloat x = (NSMidX(frame) - (glyphBounds.size.width / 2.0)) - glyphBounds.origin.x;
-	CGFloat y = (NSMidY(frame) - (glyphBounds.size.height / 2.0)) - glyphBounds.origin.y;
+	CGFloat y = ((NSMidY(frame) - (glyphBounds.size.height / 2.0)) - glyphBounds.origin.y) - baselineFromBoxBottom;
 
 	return NSMakePoint(x, y);
 }
