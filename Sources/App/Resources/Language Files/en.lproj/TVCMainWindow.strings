@@ -45,6 +45,9 @@
 "jkr-ed" = "User is away";
 "gi6-wf" = "User is not away";
 
+"act-id" = "Identified as %1$@";
+"act-no" = "Not identified with services";
+
 "d85-9n" = "Information Not Available";
 
 "8r3-ih" = "Send message…";

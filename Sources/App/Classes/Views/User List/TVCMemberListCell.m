@@ -35,11 +35,15 @@
  *
  *********************************************************************** */
 
+#import <CoreText/CoreText.h>
+
 #import "NSStringHelper.h"
 #import "NSViewHelperPrivate.h"
 #import "TLOLocalization.h"
 #import "TPCPreferencesLocal.h"
+#import "IRCChannel.h"
 #import "IRCChannelUser.h"
+#import "IRCClient.h"
 #import "IRCUser.h"
 #import "TVCMainWindow.h"
 #import "TVCMemberListAppearance.h"
@@ -164,14 +168,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 	IRCChannelUser *cellItem = self.cellItem;
 
-	NSTextField *textField = self.cellTextField;
-
-	NSAttributedString *stringValue = textField.attributedStringValue;
-
-	NSMutableAttributedString *mutableStringValue = [stringValue mutableCopy];
-
-	[mutableStringValue beginEditing];
-
 	NSFont *controlFont = nil;
 
 	if (isSelected) {
@@ -202,7 +198,19 @@ NS_ASSUME_NONNULL_BEGIN
 		} // isWindowActive
 	}
 
-	NSRange stringValueRange = stringValue.range;
+	/* Rebuild from the model's plain nickname every time, rather than
+	 restyling whatever the text field currently displays — this method
+	 runs on every redraw (selection change, window activation, etc.), not
+	 just when the nickname actually changes, so if a trailing marker below
+	 were appended onto the field's existing (already-marked) content
+	 instead of a fresh string, it would pile up a new marker on every pass. */
+	NSString *nickname = cellItem.user.nickname;
+
+	NSMutableAttributedString *mutableStringValue = [[NSMutableAttributedString alloc] initWithString:nickname];
+
+	NSRange stringValueRange = NSMakeRange(0, nickname.length);
+
+	[mutableStringValue beginEditing];
 
 	if (controlFont) {
 		[mutableStringValue addAttribute:NSFontAttributeName value:controlFont range:stringValueRange];
@@ -213,6 +221,43 @@ NS_ASSUME_NONNULL_BEGIN
 	}
 
 	[mutableStringValue endEditing];
+
+	/* Flag members with a known, logged-in services account with a small
+	 trailing dot — deliberately the minority case, not the majority one.
+	 Most networks don't require auth, so flagging the *unauthenticated*
+	 side (the common case) turned the list into a wall of markers;
+	 flagging the smaller "verified" set instead keeps the list clean in
+	 the common case and still carries the same information (unmarked ==
+	 not logged in).
+	 A trailing glyph (not dimming, not underlining) because dimming is
+	 already "away"'s signal above, and an underline reads as too heavy for
+	 something this minor — a small dot after the name is easy to ignore
+	 at a glance but there when you look for it.
+	 Only applies when the network actually tracks accounts (account-notify
+	 or extended-join) — otherwise a nil account just means "unknown", not
+	 "not logged in", and this couldn't be trusted either way. */
+	if (isSelected == NO && cellItem.user.account != nil) {
+		IRCClient *client = self.mainWindow.selectedChannel.associatedClient;
+
+		BOOL isAuthenticated = ([client isCapabilityEnabled:ClientIRCv3SupportedCapabilityAccountNotify] ||
+								 [client isCapabilityEnabled:ClientIRCv3SupportedCapabilityExtendedJoin]);
+
+		if (isAuthenticated) {
+			NSMutableDictionary<NSAttributedStringKey, id> *markerAttributes = [NSMutableDictionary dictionary];
+
+			if (controlFont) {
+				markerAttributes[NSFontAttributeName] = controlFont;
+			}
+
+			if (controlColor) {
+				markerAttributes[NSForegroundColorAttributeName] = [controlColor colorWithAlphaComponent:0.5];
+			}
+
+			NSAttributedString *marker = [[NSAttributedString alloc] initWithString:@" ·" attributes:markerAttributes];
+
+			[mutableStringValue appendAttributedString:marker];
+		}
+	}
 
 	return mutableStringValue;
 }
@@ -256,6 +301,26 @@ NS_ASSUME_NONNULL_BEGIN
 	NSAttributedString *stringToDraw = [NSAttributedString attributedStringWithString:modeSymbol attributes:attributes];
 
 	return stringToDraw;
+}
+
+/* NSAttributedString's -size is the font's line-height box, not the glyph's
+inked bounds, so centering against it leaves symbols like "@", "+", "~", "×"
+sitting at different heights depending on their individual ascent/descent —
+which is what used to be patched with a pile of hardcoded per-glyph offsets
+below. Centering against the glyph path's tight bounds instead handles any
+symbol correctly without per-character tuning. */
++ (NSPoint)centeredDrawingPointForBadgeText:(NSAttributedString *)badgeText inFrame:(NSRect)frame
+{
+	CTLineRef line = CTLineCreateWithAttributedString((__bridge CFAttributedStringRef)badgeText);
+
+	CGRect glyphBounds = CTLineGetBoundsWithOptions(line, kCTLineBoundsUseGlyphPathBounds);
+
+	CFRelease(line);
+
+	CGFloat x = (NSMidX(frame) - (glyphBounds.size.width / 2.0)) - glyphBounds.origin.x;
+	CGFloat y = (NSMidY(frame) - (glyphBounds.size.height / 2.0)) - glyphBounds.origin.y;
+
+	return NSMakePoint(x, y);
 }
 
 - (void)updateMarkBadgeWithAppearance:(TVCMemberListAppearance *)appearance inContext:(TVCMemberListCellDrawingContext *)drawingContext
@@ -369,68 +434,7 @@ NS_ASSUME_NONNULL_BEGIN
 	if (stringToDraw.length > 0) {
 		NSAttributedString *badgeText = [self markBadgeTextForModeSymbol:stringToDraw isSelected:isSelected withAppearance:appearance inContext:drawingContext];
 
-		NSSize badgeTextSize = badgeText.size;
-
-		NSPoint badgeTextPoint = NSMakePoint((NSMidX(badgeFrame) - (badgeTextSize.width / 2.0)),
-											 (NSMidY(badgeFrame) - (badgeTextSize.height / 2.0)));
-
-		if (appearance.isHighResolutionAppearance)
-		{
-			if ([stringToDraw isEqualToString:@"+"] ||
-				[stringToDraw isEqualToString:@"~"] ||
-				[stringToDraw isEqualToString:@"×"])
-			{
-				badgeTextPoint.y += 1.0;
-			}
-			else if ([stringToDraw isEqualToString:@"^"])
-			{
-				badgeTextPoint.y -= 2.0;
-			}
-			else if ([stringToDraw isEqualToString:@"*"])
-			{
-				badgeTextPoint.y -= 2.5;
-			}
-/*			else if ([stringToDraw isEqualToString:@"@"] ||
-					 [stringToDraw isEqualToString:@"!"] ||
-					 [stringToDraw isEqualToString:@"%"] ||
-					 [stringToDraw isEqualToString:@"&"] ||
-					 [stringToDraw isEqualToString:@"#"] ||
-					 [stringToDraw isEqualToString:@"?"] ||
-					 [stringToDraw isEqualToString:@"$"])
-			{
-				badgeTextPoint.y -= 0.0;
-			} */
-		}
-		else // isDrawingForRetina
-		{
-			if ([stringToDraw isEqualToString:@"+"] ||
-				[stringToDraw isEqualToString:@"~"] ||
-				[stringToDraw isEqualToString:@"×"])
-			{
-				badgeTextPoint.y += 2.0;
-			}
-			else if ([stringToDraw isEqualToString:@"@"] ||
-					 [stringToDraw isEqualToString:@"!"] ||
-					 [stringToDraw isEqualToString:@"%"] ||
-					 [stringToDraw isEqualToString:@"&"] ||
-					 [stringToDraw isEqualToString:@"#"] ||
-					 [stringToDraw isEqualToString:@"?"])
-			{
-				badgeTextPoint.y += 1.0;
-			}
-/*			else if ([stringToDraw isEqualToString:@"^"])
-			{
-				badgeTextPoint.y -= 0.0;
-			} */
-			else if ([stringToDraw isEqualToString:@"*"])
-			{
-				badgeTextPoint.y -= 1.0;
-			}
-			else if ([stringToDraw isEqualToString:@"$"])
-			{
-				badgeTextPoint.y += 1.0;
-			}
-		}
+		NSPoint badgeTextPoint = [self.class centeredDrawingPointForBadgeText:badgeText inFrame:badgeFrame];
 
 		[badgeText drawAtPoint:badgeTextPoint];
 	}
@@ -511,6 +515,24 @@ NS_ASSUME_NONNULL_BEGIN
 		userInfoPopover.awayStatusField.stringValue = TXTLS(@"TVCMainWindow[jkr-ed]");
 	} else {
 		userInfoPopover.awayStatusField.stringValue = TXTLS(@"TVCMainWindow[gi6-wf]");
+	}
+
+	/* =============================================== */
+
+	IRCClient *infoPopoverClient = self.mainWindow.selectedChannel.associatedClient;
+
+	if ([infoPopoverClient isCapabilityEnabled:ClientIRCv3SupportedCapabilityAccountNotify] ||
+		[infoPopoverClient isCapabilityEnabled:ClientIRCv3SupportedCapabilityExtendedJoin])
+	{
+		NSString *accountName = cellItem.user.account;
+
+		if (accountName.length > 0) {
+			userInfoPopover.accountField.stringValue = TXTLS(@"TVCMainWindow[act-id]", accountName);
+		} else {
+			userInfoPopover.accountField.stringValue = TXTLS(@"TVCMainWindow[act-no]");
+		}
+	} else {
+		userInfoPopover.accountField.stringValue = TXTLS(@"TVCMainWindow[d85-9n]");
 	}
 
 	/* =============================================== */

@@ -44,6 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, weak) NSTextField *realNameField;
 @property (readonly, weak) NSTextField *privilegesField;
 @property (readonly, weak) NSTextField *awayStatusField;
+@property (readonly, weak) NSTextField *accountField;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -401,10 +401,10 @@
         </window>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView translatesAutoresizingMaskIntoConstraints="NO" id="Oh2-zJ-yiT" userLabel="User Info Popover View">
-            <rect key="frame" x="0.0" y="0.0" width="358" height="125"/>
+            <rect key="frame" x="0.0" y="0.0" width="358" height="143"/>
             <subviews>
                 <gridView xPlacement="fill" yPlacement="fill" rowAlignment="firstBaseline" rowSpacing="3" columnSpacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="ICd-wA-BP1">
-                    <rect key="frame" x="15" y="10" width="328" height="105"/>
+                    <rect key="frame" x="15" y="10" width="328" height="123"/>
                     <rows>
                         <gridRow id="krD-PF-8kY"/>
                         <gridRow id="WIU-yG-MVI"/>
@@ -412,6 +412,7 @@
                         <gridRow id="yEF-a5-wiQ"/>
                         <gridRow id="EmQ-MG-Vbq"/>
                         <gridRow id="V1J-y2-JcM"/>
+                        <gridRow id="txw-ac-row"/>
                     </rows>
                     <columns>
                         <gridColumn id="2YH-Ed-b3H"/>
@@ -556,6 +557,29 @@
                                 </connections>
                             </textField>
                         </gridCell>
+                        <gridCell row="txw-ac-row" column="2YH-Ed-b3H" id="txw-ac-lbl-cell">
+                            <textField key="contentView" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="txw-ac-lbl">
+                                <rect key="frame" x="-2" y="-18" width="82" height="15"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Account:" id="txw-ac-lbl-cell-c">
+                                    <font key="font" metaFont="systemBold" size="12"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                        </gridCell>
+                        <gridCell row="txw-ac-row" column="rpa-b6-KdN" id="txw-ac-val-cell">
+                            <textField key="contentView" focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="txw-ac-9F1">
+                                <rect key="frame" x="80" y="-18" width="246" height="15"/>
+                                <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="################################" id="txw-ac-val-cell-c">
+                                    <font key="font" metaFont="cellTitle"/>
+                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                                <connections>
+                                    <accessibilityConnection property="title" destination="txw-ac-lbl" id="txw-ac-a11y"/>
+                                </connections>
+                            </textField>
+                        </gridCell>
                     </gridCells>
                 </gridView>
             </subviews>
@@ -570,6 +594,7 @@
         </customView>
         <popover id="iYh-l7-KsB" userLabel="User Info Popover" customClass="TVCMemberListUserInfoPopover">
             <connections>
+                <outlet property="accountField" destination="txw-ac-9F1" id="txw-ac-conn"/>
                 <outlet property="addressField" destination="gx5-KC-Pkt" id="sjn-pL-XM1"/>
                 <outlet property="awayStatusField" destination="6vR-3K-Yh7" id="1j1-Im-HsZ"/>
                 <outlet property="contentViewController" destination="hJd-My-gQw" id="6X4-yG-whE"/>
