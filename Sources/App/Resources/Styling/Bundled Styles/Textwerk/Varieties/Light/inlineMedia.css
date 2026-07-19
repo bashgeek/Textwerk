@@ -1,0 +1,36 @@
+
+/* Images */
+
+.inlineImage .content,
+.inlineVideo .content,
+.inlineVideoService .content,
+.inlineHTML .content {
+	display: inline-block;
+	float: left;
+	margin-right: 12px;
+	margin-left: 10px;
+	min-width: 40px;
+	max-width: 90%;
+	border-radius: 6px;
+	overflow: hidden;
+}
+
+.inlineImage .closeButton,
+.inlineVideo .closeButton,
+.inlineVideoService .closeButton,
+.inlineHTML .closeButton {
+	cursor: pointer;
+	border-radius: 5px;
+	border: 2px solid #9a9aa0;
+	color: #9a9aa0;
+	display: inline-block;
+	line-height: 14px;
+	font-size: 15px;
+	font-family: -apple-system, "Helvetica Neue", sans-serif !important;
+	text-indent: 7px;
+	width: 16px;
+	height: 16px;
+	float: left;
+	padding-right: 7px;
+	padding-left: 0px;
+}

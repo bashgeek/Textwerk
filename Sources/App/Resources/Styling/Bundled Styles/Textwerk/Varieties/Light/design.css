@@ -1,0 +1,446 @@
+
+/* Inline media */
+
+@import "inlineMedia.css";
+
+/* Basic Body Structure */
+
+:root {
+	supported-color-schemes: light;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	font-size: 100%;
+	word-wrap: break-word;
+	word-break: break-word;
+}
+
+body {
+	color: #1c1c1e;
+	height: 100%;
+	z-index: 100;
+	font-size: 13px;
+	line-height: 1.5;
+	overflow: hidden;
+	background-color: #ffffff;
+	font-family: -apple-system, "SF Pro Text", "Helvetica Neue", sans-serif;
+	-webkit-font-smoothing: antialiased;
+}
+
+#body {
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	max-height: 100%;
+	overflow-y: auto;
+	z-index: 100;
+	position: absolute;
+	opacity: 0; /* Set by JavaScript */
+}
+
+/* Only factor in height of topic bar when selected == true
+ because that is only time the topic is displayed according
+ to the logic defined by baseLayout.css */
+body[data-selected="true"][data-view-type="channel"] #body,
+body[data-selected="true"][data-view-type="query"] #body {
+	max-height: calc(100% - 2.2em); /* height minus topic */
+}
+
+div.line {
+	clear: both;
+}
+
+body[dir="rtl"] .sender {
+	display: inline-block;
+}
+
+/* Loading Screen */
+
+#loadingScreen {
+	position: absolute;
+	top: 45%;
+	left: calc(50% - (320px / 2)); /* half of width + padding */
+	width: 300px;
+	font-size: 16px;
+	background: #f5f5f7;
+	border: 1px solid #e2e2e5;
+	border-radius: 8px;
+	padding: 6px 12px;
+	opacity: 1; /* Set by JavaScript */
+}
+
+/* Time */
+
+body[dir="ltr"] .time {
+	color: #9a9aa0;
+	white-space: nowrap;
+	font-variant-numeric: tabular-nums;
+	transition: opacity 0.15s ease;
+}
+
+body[dir="rtl"] .time {
+	color: #9a9aa0;
+	white-space: nowrap;
+	font-variant-numeric: tabular-nums;
+	padding-left: 0.4em;
+	display: inline-block;
+	transition: opacity 0.15s ease;
+}
+
+/* Encryption Lock */
+
+.encryptionLock img {
+	float: right;
+	margin: 0;
+	padding: 0;
+	height: 11px;
+	margin-top: 2px;
+	padding-left: 10px;
+}
+
+/* Links */
+
+a {
+	color: #0a6cff;
+	border-color: transparent;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #0a84ff;
+	border-bottom: 1px solid currentColor;
+}
+
+/* Topic Bar */
+
+#topicBar {
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 400;
+	opacity: 0; /* Set by JavaScript */
+	color: #1c1c1e;
+	position: fixed;
+	padding: 4px 14px 5px;
+	border-bottom: 1px solid #e5e5e7;
+	background-color: rgba(255, 255, 255, 0.82);
+	-webkit-backdrop-filter: blur(20px) saturate(1.6);
+	backdrop-filter: blur(20px) saturate(1.6);
+	-webkit-font-smoothing: antialiased;
+	font-weight: 500;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+#topicBar:hover {
+	overflow: visible;
+	white-space: normal;
+}
+
+#topicBar a,
+#topicBar span.channel {
+	color: #0a6cff;
+	border-color: #0a6cff;
+}
+
+/* Remember Line */
+
+#mark {
+	clear: both;
+	position: relative;
+	z-index: 295;
+	margin-top: -1px;
+	border-bottom: 1px dashed #ff9f0a;
+}
+
+/* Message buffer loading animation */
+
+.message_buffer_loading_indicator {
+	text-align: center;
+	height: 42px;
+}
+
+.message_buffer_loading_indicator span {
+	font-family: -apple-system, "Helvetica Neue", sans-serif;
+	font-size: 30px;
+	font-weight: 600;
+	letter-spacing: 4px;
+	line-height: 43px;
+	color: #c7c7cc;
+	-webkit-animation: ellipsis-period 1.5s infinite;
+	animation: ellipsis-period 1.5s infinite;
+}
+
+.message_buffer_loading_indicator span:nth-child(1) {
+	-webkit-animation-delay: 0.0s;
+	animation-delay: 0.0s;
+}
+
+.message_buffer_loading_indicator span:nth-child(2) {
+	-webkit-animation-delay: 0.1s;
+	animation-delay: 0.1s;
+}
+
+.message_buffer_loading_indicator span:nth-child(3) {
+	-webkit-animation-delay: 0.2s;
+	animation-delay: 0.2s;
+}
+
+@keyframes ellipsis-period {
+	0% { opacity: 0.2; }
+	20% { opacity: 1.0; }
+	100% { opacity: 0.2; }
+}
+
+/* Message buffer session indicator */
+
+.date_indicator,
+.session_indicator {
+	display: flex;
+	display: -webkit-flex;
+	align-items: center;
+	padding: 0.9em 0 0.6em;
+}
+
+.date_indicator > hr,
+.session_indicator > hr {
+	background: #e5e5e7;
+	border: 0;
+	height: 1px;
+	margin-top: 0;
+	flex: 1;
+	-webkit-flex: 1;
+}
+
+.date_indicator > span,
+.session_indicator > span {
+	font-size: 0.85em;
+	font-weight: 600;
+	margin: 0 1em;
+	color: #9a9aa0;
+	white-space: nowrap;
+}
+
+.date_indicator + #mark,
+.session_indicator + #mark {
+	display: none;
+}
+
+/* Base message row */
+
+div.line {
+	padding: 2px 16px;
+	border-left: 3px solid transparent;
+}
+
+div.line[data-line-type="privmsg"],
+div.line[data-line-type="action"] {
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+div.line[data-line-type="privmsg"]:hover,
+div.line[data-line-type="action"]:hover {
+	background-color: rgba(0, 0, 0, 0.035);
+}
+
+/* Consecutive-message grouping (see scripts.js) */
+
+div.line.grouped {
+	padding-top: 0;
+	margin-top: -1px;
+}
+
+div.line.grouped .senderContainer {
+	display: none;
+}
+
+div.line.grouped .time {
+	opacity: 0;
+}
+
+div.line.grouped:hover .time {
+	opacity: 1;
+}
+
+/* NOTICE/CTCP/WALLOPS */
+
+div.line[data-line-type="ctcp"],
+div.line[data-line-type="notice"],
+div.line[data-line-type="wallops"] {
+	border-left-color: #ff9f0a;
+	background-color: rgba(255, 159, 10, 0.08);
+}
+
+div.line[data-line-type="notice"] .sender {
+	color: #c76f00;
+	font-weight: 600;
+}
+
+/* Selected User Messages */
+
+.sender {
+	cursor: pointer;
+}
+
+div.line[data-line-type="privmsg"]:not(.selectedUser),
+div.line[data-line-type="action"]:not(.selectedUser) {
+	transition-property: border-left-color, background-color;
+	transition-duration: 0.4s, 0.4s;
+}
+
+div.line.selectedUser[data-highlight="false"] {
+	transition-property: border-left-color, background-color;
+	transition-duration: 0.4s, 0.4s;
+	border-left-color: #5e5ce6;
+	background-color: rgba(94, 92, 230, 0.08);
+}
+
+/* PRIVMSG */
+
+div.line[data-line-type="privmsg"][data-highlight="true"],
+div.line[data-line-type="action"][data-highlight="true"] {
+	font-weight: normal;
+	border-left-color: #f2b400;
+	background-color: rgba(242, 180, 0, 0.10);
+}
+
+div.line[data-line-type="privmsg"] .message {
+	color: #1c1c1e;
+}
+
+div.line[data-line-type="privmsg"] .sender {
+	font-weight: 600;
+	white-space: pre-wrap;
+}
+
+/* ACTION */
+
+div.line[data-line-type="action"] .message {
+	color: #1c1c1e;
+	font-style: italic;
+}
+
+div.line[data-line-type="action"] .sender {
+	font-weight: 600;
+	font-style: italic;
+}
+
+div.line[data-line-type="action"][data-member-type="myself"] .sender,
+div.line[data-line-type="action"][data-member-type="myself"] .message {
+	color: #5e5ce6;
+}
+
+body[dir="ltr"] div.line[data-line-type="action"] .sender:before {
+	content: "\2022";
+	margin-right: 0.4em;
+}
+
+body[dir="rtl"] div.line[data-line-type="action"] .sender:before {
+	content: "\2022";
+	margin-left: 0.4em;
+}
+
+/* DEBUG/INVITE */
+
+div.line[data-line-type="invite"],
+div.line[data-line-type="debug"],
+div.line[data-line-type="dcc-file-transfer"],
+div.line[data-line-type="off-the-record-encryption-status"] {
+	color: #8e8e93;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+div.line[data-line-type="off-the-record-encryption-status"] .message {
+	color: #ff3b30;
+	font-weight: 600;
+}
+
+/* Message of the Day (MOTD) */
+/* 720, 721, 722 are used by ShadowIRCd for Oper MOTD. */
+/* 372, 375, 376 are normal MOTD shared by several IRCds. */
+
+div.line[data-command="372"],
+div.line[data-command="375"],
+div.line[data-command="376"],
+div.line[data-command="720"],
+div.line[data-command="721"],
+div.line[data-command="722"] {
+	color: #6e6e73;
+}
+
+div.line[data-command="372"] .message,
+div.line[data-command="375"] .message,
+div.line[data-command="376"] .message,
+div.line[data-command="720"] .message,
+div.line[data-command="721"] .message,
+div.line[data-command="722"] .message {
+	font-family: "Menlo" !important;
+	font-size: 0.95em;
+}
+
+/* GENERAL EVENT */
+
+div.line[data-line-type="join"],
+div.line[data-line-type="part"],
+div.line[data-line-type="kick"],
+div.line[data-line-type="quit"],
+div.line[data-line-type="kill"],
+div.line[data-line-type="nick"],
+div.line[data-line-type="mode"],
+div.line[data-line-type="topic"],
+div.line[data-line-type="website"] {
+	padding-top: 2px;
+	padding-bottom: 2px;
+	color: #9a9aa0;
+	font-size: 0.93em;
+}
+
+body[dir="ltr"] div.line[data-line-type="join"] .message:before {
+	content: "→";
+	color: #34c759;
+}
+
+body[dir="ltr"] div.line[data-line-type="kick"] .message:before,
+body[dir="ltr"] div.line[data-line-type="part"] .message:before,
+body[dir="ltr"] div.line[data-line-type="quit"] .message:before {
+	content: "←";
+	color: #ff3b30;
+}
+
+body[dir="ltr"] div.line[data-line-type="nick"] .message:before {
+	content: "•";
+	color: #34c759;
+}
+
+body[dir="rtl"] div.line[data-line-type="join"] .message:before {
+	content: "→";
+	color: #34c759;
+}
+
+body[dir="rtl"] div.line[data-line-type="kick"] .message:before,
+body[dir="rtl"] div.line[data-line-type="part"] .message:before,
+body[dir="rtl"] div.line[data-line-type="quit"] .message:before {
+	content: "←";
+	color: #ff3b30;
+}
+
+body[dir="rtl"] div.line[data-line-type="nick"] .message:before {
+	content: "•";
+	color: #34c759;
+}
+
+/* Nickname Colors */
+
+.inlineSender {
+	font-weight: 600;
+}
+
+div.line[data-line-type="privmsg"] .sender[data-member-type="myself"] {
+	color: #ea0d68;
+}

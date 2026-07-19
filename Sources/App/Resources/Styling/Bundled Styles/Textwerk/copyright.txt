@@ -1,0 +1,3 @@
+Textwerk, the default style for the Textwerk IRC client.
+
+Copyright (c) 2026, Textwerk contributors.
