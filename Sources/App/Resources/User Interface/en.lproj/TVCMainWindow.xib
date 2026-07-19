@@ -387,6 +387,7 @@
             <connections>
                 <outlet property="channelView" destination="dCp-Wp-aIX" id="SRq-MD-Vzk"/>
                 <outlet property="contentSplitView" destination="dVR-2U-X51" id="UTS-m3-2nd"/>
+                <outlet property="contentSplitViewTopConstraint" destination="2ro-j0-acT" id="txw-cs-top"/>
                 <outlet property="formattingMenu" destination="j7v-mc-UwU" id="4X3-MP-pDp"/>
                 <outlet property="inputTextField" destination="Ub5-no-pBU" id="mCF-mM-bHc"/>
                 <outlet property="loadingScreen" destination="Se1-ja-hFN" id="niK-Fq-MHr"/>

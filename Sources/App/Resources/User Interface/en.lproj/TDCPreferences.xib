@@ -1600,6 +1600,7 @@
                                         <rows>
                                             <gridRow id="mZ9-hx-ewv"/>
                                             <gridRow id="XiR-N0-kUX"/>
+                                            <gridRow id="txw-ut-row"/>
                                         </rows>
                                         <columns>
                                             <gridColumn id="fVa-ZO-Yb4"/>
@@ -1694,6 +1695,23 @@
                                                         <real value="3.4028234663852886e+38"/>
                                                     </customSpacing>
                                                 </stackView>
+                                            </gridCell>
+                                            <gridCell row="txw-ut-row" column="fVa-ZO-Yb4" id="txw-ut-lbl-cell">
+                                                <customView key="contentView" translatesAutoresizingMaskIntoConstraints="NO" id="txw-ut-lbl-spacer">
+                                                    <rect key="frame" x="0.0" y="0.0" width="1" height="1"/>
+                                                </customView>
+                                            </gridCell>
+                                            <gridCell row="txw-ut-row" column="Lzf-OU-P1K" id="txw-ut-val-cell">
+                                                <button key="contentView" translatesAutoresizingMaskIntoConstraints="NO" id="txw-ut-btn">
+                                                    <rect key="frame" x="171" y="0.0" width="250" height="18"/>
+                                                    <buttonCell key="cell" type="check" title="Use unified titlebar (experimental)" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="off" inset="2" id="txw-ut-btn-cell">
+                                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <binding destination="G2Q-fc-ddg" name="value" keyPath="values.MainWindowUsesUnifiedTitlebar" id="txw-ut-bind"/>
+                                                    </connections>
+                                                </button>
                                             </gridCell>
                                         </gridCells>
                                     </gridView>

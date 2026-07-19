@@ -250,6 +250,8 @@ typedef NS_ENUM(NSUInteger, TXPreferredAppearance) {
 
 + (CGFloat)mainWindowTransparency;
 
++ (BOOL)mainWindowUsesUnifiedTitlebar;
+
 + (nullable NSFont *)themeChannelViewFont;
 + (NSString *)themeChannelViewFontName;
 + (NSString *)themeChannelViewFontNameDefault;

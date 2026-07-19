@@ -666,6 +666,11 @@ NSUInteger const TPCPreferencesDictionaryVersion = 602;
 	return [RZUserDefaults() doubleForKey:@"MainWindowTransparencyLevel"];
 }
 
++ (BOOL)mainWindowUsesUnifiedTitlebar
+{
+	return [RZUserDefaults() boolForKey:@"MainWindowUsesUnifiedTitlebar"];
+}
+
 + (BOOL)automaticallyReloadCustomThemesWhenTheyChange
 {
 	return [RZUserDefaults() boolForKey:@"AutomaticallyReloadCustomThemesWhenTheyChange"];

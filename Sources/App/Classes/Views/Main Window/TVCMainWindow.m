@@ -96,7 +96,10 @@ NSString * const TVCMainWindowSelectionChangedNotification = @"TVCMainWindowSele
 @property (nonatomic, strong, readwrite) IBOutlet TVCTextViewIRCFormattingMenu *formattingMenu;
 @property (nonatomic, unsafe_unretained, readwrite) IBOutlet TVCMainWindowTextView *inputTextField;
 @property (nonatomic, weak, readwrite) IBOutlet TVCMainWindowSplitView *contentSplitView;
+@property (nonatomic, weak, readwrite) IBOutlet NSLayoutConstraint *contentSplitViewTopConstraint;
 @property (nonatomic, weak, readwrite) IBOutlet TVCMainWindowLoadingScreenView *loadingScreen;
+@property (nonatomic, strong, nullable) NSVisualEffectView *unifiedTitlebarBackgroundView;
+@property (nonatomic, strong, nullable) NSLayoutConstraint *unifiedTitlebarBackgroundViewHeightConstraint;
 @property (nonatomic, weak, readwrite) IBOutlet TVCMemberList *memberList;
 @property (nonatomic, weak, readwrite) IBOutlet TVCServerList *serverList;
 @property (nonatomic, strong) TLOInputHistory *inputHistoryManager;
@@ -170,6 +173,8 @@ NSString * const TVCMainWindowSelectionChangedNotification = @"TVCMainWindowSele
 	self.alphaValue = [TPCPreferences mainWindowTransparency];
 
 	[self addAccessoryViewsToTitlebar];
+
+	[self updateTitlebarStyleToReflectPreferences];
 
 	[self updateAppearance];
 
@@ -314,6 +319,85 @@ NSString * const TVCMainWindowSelectionChangedNotification = @"TVCMainWindowSele
 		[self animator].alphaValue = alphaValue;
 	} else {
 		self.alphaValue = alphaValue;
+	}
+}
+
+/* Unified titlebar (opt-in, off by default): makes the titlebar transparent
+and lets it visually blend into the sidebar below it instead of sitting as a
+separate opaque strip, matching how apps like Mail/Messages present their
+chrome. This exact feature was attempted once before and reverted, because
+each theme's topic bar uses "position: fixed; top: 0" in its WebView, and
+just flipping on NSWindowStyleMaskFullSizeContentView pushes the whole
+content split view - server list, channel view, member list, all of it -
+up into the space the titlebar used to occupy on its own, since the split
+view's top constraint is pinned to the content view's top edge, and that
+edge itself moves once full-size-content-view is enabled. The fix here
+doesn't touch any theme or WebView content at all: the split view's top
+constraint is given a constant offset equal to the titlebar's height (so it
+lands exactly where it always sat), and a separate NSVisualEffectView fills
+just that newly-exposed strip above it with the same kind of vibrancy the
+sidebar already uses. Nothing under the split view moves, so there is
+nothing for a theme's CSS to collide with. */
+- (void)updateTitlebarStyleToReflectPreferences
+{
+	BOOL useUnifiedTitlebar = [TPCPreferences mainWindowUsesUnifiedTitlebar];
+
+	if (useUnifiedTitlebar) {
+		self.styleMask = (self.styleMask | NSWindowStyleMaskFullSizeContentView);
+	} else {
+		self.styleMask = (self.styleMask & (~NSWindowStyleMaskFullSizeContentView));
+	}
+
+	self.titlebarAppearsTransparent = useUnifiedTitlebar;
+
+	if (useUnifiedTitlebar) {
+		self.titleVisibility = NSWindowTitleHidden;
+	} else {
+		self.titleVisibility = NSWindowTitleVisible;
+	}
+
+	CGFloat titlebarHeight = 0.0;
+
+	if (useUnifiedTitlebar) {
+		titlebarHeight = (NSHeight(self.contentView.frame) - NSHeight(self.contentLayoutRect));
+	}
+
+	self.contentSplitViewTopConstraint.constant = titlebarHeight;
+
+	if (useUnifiedTitlebar == NO) {
+		[self.unifiedTitlebarBackgroundView removeFromSuperview];
+
+		self.unifiedTitlebarBackgroundView = nil;
+		self.unifiedTitlebarBackgroundViewHeightConstraint = nil;
+
+		return;
+	}
+
+	NSVisualEffectView *backgroundView = self.unifiedTitlebarBackgroundView;
+
+	if (backgroundView == nil) {
+		backgroundView = [NSVisualEffectView new];
+
+		backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
+		backgroundView.material = NSVisualEffectMaterialTitlebar;
+		backgroundView.blendingMode = NSVisualEffectBlendingModeBehindWindow;
+		backgroundView.state = NSVisualEffectStateFollowsWindowActiveState;
+
+		[self.contentView addSubview:backgroundView];
+
+		NSLayoutConstraint *heightConstraint = [backgroundView.heightAnchor constraintEqualToConstant:titlebarHeight];
+
+		[NSLayoutConstraint activateConstraints:@[
+			[backgroundView.topAnchor constraintEqualToAnchor:self.contentView.topAnchor],
+			[backgroundView.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor],
+			[backgroundView.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor],
+			heightConstraint
+		]];
+
+		self.unifiedTitlebarBackgroundView = backgroundView;
+		self.unifiedTitlebarBackgroundViewHeightConstraint = heightConstraint;
+	} else {
+		self.unifiedTitlebarBackgroundViewHeightConstraint.constant = titlebarHeight;
 	}
 }
 

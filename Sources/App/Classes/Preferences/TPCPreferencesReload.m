@@ -124,6 +124,11 @@ NS_ASSUME_NONNULL_BEGIN
 		reloadAction |= TPCPreferencesReloadActionMainWindowTransparencyLevel;
 	}
 
+	/* Main window titlebar style */
+	if ([keys containsObject:@"MainWindowUsesUnifiedTitlebar"]) {
+		reloadAction |= TPCPreferencesReloadActionMainWindowTitlebarStyle;
+	}
+
 	/* Dock icon */
 	if ([keys containsObject:@"DisplayDockBadges"] ||
 		[keys containsObject:@"DisplayPublicMessageCountInDockBadge"])
@@ -293,6 +298,11 @@ NS_ASSUME_NONNULL_BEGIN
 	/* Main window alpha level */
 	if ((reloadAction & TPCPreferencesReloadActionMainWindowTransparencyLevel) == TPCPreferencesReloadActionMainWindowTransparencyLevel) {
 		[mainWindow() updateAlphaValueToReflectPreferences];
+	}
+
+	/* Main window titlebar style */
+	if ((reloadAction & TPCPreferencesReloadActionMainWindowTitlebarStyle) == TPCPreferencesReloadActionMainWindowTitlebarStyle) {
+		[mainWindow() updateTitlebarStyleToReflectPreferences];
 	}
 
 	/* Highlight keywords */
