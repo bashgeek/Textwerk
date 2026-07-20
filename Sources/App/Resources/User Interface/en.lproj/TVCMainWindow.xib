@@ -413,7 +413,6 @@
                         <gridRow id="yEF-a5-wiQ"/>
                         <gridRow id="EmQ-MG-Vbq"/>
                         <gridRow id="V1J-y2-JcM"/>
-                        <gridRow id="txw-ac-row"/>
                     </rows>
                     <columns>
                         <gridColumn id="2YH-Ed-b3H"/>
@@ -558,37 +557,39 @@
                                 </connections>
                             </textField>
                         </gridCell>
-                        <gridCell row="txw-ac-row" column="2YH-Ed-b3H" id="txw-ac-lbl-cell">
-                            <textField key="contentView" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="txw-ac-lbl">
-                                <rect key="frame" x="-2" y="-18" width="82" height="15"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Account:" id="txw-ac-lbl-cell-c">
-                                    <font key="font" metaFont="systemBold" size="12"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
-                        </gridCell>
-                        <gridCell row="txw-ac-row" column="rpa-b6-KdN" id="txw-ac-val-cell">
-                            <textField key="contentView" focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="txw-ac-9F1">
-                                <rect key="frame" x="80" y="-18" width="246" height="15"/>
-                                <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="################################" id="txw-ac-val-cell-c">
-                                    <font key="font" metaFont="cellTitle"/>
-                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                                <connections>
-                                    <accessibilityConnection property="title" destination="txw-ac-lbl" id="txw-ac-a11y"/>
-                                </connections>
-                            </textField>
-                        </gridCell>
                     </gridCells>
                 </gridView>
+                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="txw-ac-lbl">
+                    <rect key="frame" x="15" y="139" width="82" height="15"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Account:" id="txw-ac-lbl-cell-c">
+                        <font key="font" metaFont="systemBold" size="12"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="txw-ac-9F1">
+                    <rect key="frame" x="97" y="139" width="246" height="15"/>
+                    <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="################################" id="txw-ac-val-cell-c">
+                        <font key="font" metaFont="cellTitle"/>
+                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <accessibilityConnection property="title" destination="txw-ac-lbl" id="txw-ac-a11y"/>
+                    </connections>
+                </textField>
             </subviews>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="ICd-wA-BP1" secondAttribute="trailing" constant="15" id="9Av-pM-CUr"/>
                 <constraint firstItem="ICd-wA-BP1" firstAttribute="leading" secondItem="Oh2-zJ-yiT" secondAttribute="leading" constant="15" id="ZEs-b0-afv"/>
                 <constraint firstItem="ICd-wA-BP1" firstAttribute="top" secondItem="Oh2-zJ-yiT" secondAttribute="top" constant="10" id="ptT-xX-rbc"/>
-                <constraint firstAttribute="bottom" secondItem="ICd-wA-BP1" secondAttribute="bottom" constant="10" id="yMQ-OZ-wLN"/>
+                <constraint firstItem="txw-ac-lbl" firstAttribute="top" secondItem="ICd-wA-BP1" secondAttribute="bottom" constant="12" id="txw-ac-top"/>
+                <constraint firstItem="txw-ac-lbl" firstAttribute="leading" secondItem="Oh2-zJ-yiT" secondAttribute="leading" constant="15" id="txw-ac-lbl-lead"/>
+                <constraint firstItem="txw-ac-lbl" firstAttribute="width" secondItem="ThT-Me-8qg" secondAttribute="width" id="txw-ac-lbl-width"/>
+                <constraint firstItem="txw-ac-9F1" firstAttribute="leading" secondItem="txw-ac-lbl" secondAttribute="trailing" constant="8" id="txw-ac-val-lead"/>
+                <constraint firstItem="txw-ac-9F1" firstAttribute="firstBaseline" secondItem="txw-ac-lbl" secondAttribute="firstBaseline" id="txw-ac-baseline"/>
+                <constraint firstAttribute="trailing" secondItem="txw-ac-9F1" secondAttribute="trailing" constant="15" id="txw-ac-val-trail"/>
+                <constraint firstAttribute="bottom" secondItem="txw-ac-9F1" secondAttribute="bottom" constant="10" id="txw-ac-bottom"/>
             </constraints>
             <accessibility description="User Information Popover"/>
             <point key="canvasLocation" x="32" y="261"/>
