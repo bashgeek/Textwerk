@@ -26,11 +26,16 @@ fi
 gitBundle=`which git`
 
 if [ -z "${gitBundle}" ]; then
-	bundleVersionNew="000000.00"
-else 
+	bundleVersionNew="000000.000000"
+else
 	gitDateOfLastCommit=`"${gitBundle}" log -n1 --format="%at"`
 
-	bundleVersionNew=`/bin/date -u -r "${gitDateOfLastCommit}" "+%y%m%d.%H"`
+	# Hour-only precision let two releases whose triggering commits land in
+	# the same clock hour ship with an identical CFBundleVersion, which made
+	# Sparkle (comparing CFBundleVersion, not the marketing version) treat
+	# the newer one as "not an update". Seconds-level precision makes that
+	# collision practically impossible.
+	bundleVersionNew=`/bin/date -u -r "${gitDateOfLastCommit}" "+%y%m%d.%H%M%S"`
 fi;
 
 bundleVersionOld=$(/usr/libexec/PlistBuddy -c "Print \"CFBundleVersion\"" Info.plist)
