@@ -13572,6 +13572,18 @@ present_error:
 	}
 
 	[self.whoTimer start:_whoCheckInterval onRepeat:YES];
+
+	/* A repeating timer's first fire doesn't happen until a full interval
+	 (2 minutes) has elapsed, so without this, WHO/WHOX requests - including
+	 the ones that populate account status for members already in a channel
+	 at connect - wouldn't go out until well after login. That's especially
+	 noticeable on a bouncer, where every buffered channel is already
+	 populated within seconds of connecting. Firing once immediately here
+	 still goes through the same batching in -onWhoTimer (a handful of
+	 channels at a time), so this doesn't reintroduce a WHO flood on connect
+	 for accounts with many channels - it just starts the existing batching
+	 right away instead of after an arbitrary two-minute wait. */
+	[self onWhoTimer];
 }
 
 - (void)stopWhoTimer
