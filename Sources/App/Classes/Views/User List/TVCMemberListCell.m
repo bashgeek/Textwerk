@@ -44,6 +44,7 @@
 #import "IRCChannel.h"
 #import "IRCChannelUser.h"
 #import "IRCClient.h"
+#import "IRCISupportInfo.h"
 #import "IRCUser.h"
 #import "TVCMainWindow.h"
 #import "TVCMemberListAppearance.h"
@@ -240,7 +241,8 @@ NS_ASSUME_NONNULL_BEGIN
 		IRCClient *client = self.mainWindow.selectedChannel.associatedClient;
 
 		BOOL isAuthenticated = ([client isCapabilityEnabled:ClientIRCv3SupportedCapabilityAccountNotify] ||
-								 [client isCapabilityEnabled:ClientIRCv3SupportedCapabilityExtendedJoin]);
+								 [client isCapabilityEnabled:ClientIRCv3SupportedCapabilityExtendedJoin] ||
+								 client.supportInfo.whoxSupported);
 
 		if (isAuthenticated) {
 			NSMutableDictionary<NSAttributedStringKey, id> *markerAttributes = [NSMutableDictionary dictionary];
@@ -540,7 +542,8 @@ is what -font.descender/-font.leading below are for. */
 	IRCClient *infoPopoverClient = self.mainWindow.selectedChannel.associatedClient;
 
 	if ([infoPopoverClient isCapabilityEnabled:ClientIRCv3SupportedCapabilityAccountNotify] ||
-		[infoPopoverClient isCapabilityEnabled:ClientIRCv3SupportedCapabilityExtendedJoin])
+		[infoPopoverClient isCapabilityEnabled:ClientIRCv3SupportedCapabilityExtendedJoin] ||
+		infoPopoverClient.supportInfo.whoxSupported)
 	{
 		NSString *accountName = cellItem.user.account;
 

@@ -168,6 +168,12 @@ typedef void (^TLOEncryptionManagerInjectCallbackBlock)(NSString *encodedString)
 #define _timeoutInterval			360
 #define _whoCheckInterval			120
 
+/* WHOX request: t=token (echoed back so the reply is identifiable as ours),
+c=channel, u=username, h=host, n=nick, f=flags, a=account, r=realname. The
+token value itself is arbitrary - it just needs to be present since it's a
+required field whenever a querytype is requested. */
+#define _whoxFieldsAndQueryType		@"%tcuhnfar,152"
+
 NSString * const IRCClientConfigurationWasUpdatedNotification = @"IRCClientConfigurationWasUpdatedNotification";
 
 NSString * const IRCClientChannelListWasModifiedNotification = @"IRCClientChannelListWasModifiedNotification";
@@ -10106,6 +10112,143 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 
 			break;
 		}
+		case RPL_WHOSPCRPL:
+		{
+			/* Reply to the WHOX-formatted WHO request built with
+			 _whoxFieldsAndQueryType ("%tcuhnfar,152"): fields arrive in the
+			 exact order requested, after the leading target param. This is
+			 what lets the account field of already-present channel members
+			 be discovered at all - account-notify and extended-join only
+			 report changes witnessed live, never the current state of
+			 someone who was already in the channel before we joined. */
+			NSAssertReturn([m paramsCount] > 8);
+
+			if (self.requestedCommands.visibleWhoRequest) {
+				if (printMessage) {
+					[self printReplyToHiddenCommandResponsesQuery:m];
+				}
+
+				break;
+			}
+
+			NSString *channelName = [m paramAt:2];
+
+			IRCChannel *channel = [self findChannel:channelName];
+
+			if (channel == nil) {
+				break;
+			}
+
+			NSString *username = [m paramAt:3];
+			NSString *address = [m paramAt:4];
+			NSString *nickname = [m paramAt:5];
+			NSString *flags = [m paramAt:6];
+			NSString *accountName = [m paramAt:7];
+			NSString *realName = [m paramAt:8];
+
+			/* Unlike the ACCOUNT command (which uses "*"), WHOX represents
+			 "not logged in" as a literal "0" in the account field. */
+			if ([accountName isEqualToString:@"0"]) {
+				accountName = nil;
+			}
+
+			BOOL isAway = NO;
+			BOOL isIRCop = NO;
+
+			NSMutableString *userModes = [NSMutableString string];
+
+			for (NSUInteger i = 0; i < flags.length; i++) {
+				NSString *character = [flags stringCharacterAtIndex:i];
+
+				if ([character isEqualToString:@"G"]) {
+					isAway = self.monitorAwayStatus;
+
+					continue;
+				} else if ([character isEqualToString:@"*"]) {
+					isIRCop = YES;
+
+					continue;
+				}
+
+				NSString *modeSymbol = [self.supportInfo modeSymbolForUserPrefix:character];
+
+				if (modeSymbol == nil) {
+					continue;
+				}
+
+				[userModes appendString:modeSymbol];
+			}
+
+			IRCUser *user = [self findUser:nickname];
+
+			IRCUserMutable *userMutable = nil;
+
+			if (user == nil) {
+				userMutable = [[IRCUserMutable alloc] initWithNickname:nickname onClient:self];
+			} else {
+				userMutable = [user mutableCopy];
+			}
+
+			userMutable.nickname = nickname;
+			userMutable.username = username;
+			userMutable.address = address;
+
+			userMutable.isAway = isAway;
+			userMutable.isIRCop = isIRCop;
+
+			userMutable.realName = realName;
+			userMutable.account = accountName;
+
+			BOOL userChanged = (user != nil && [user isEqual:userMutable] == NO);
+
+			IRCUser *userAdded = nil;
+
+			if (user == nil || userChanged) {
+				userAdded = [self addUserAndReturn:userMutable];
+			} else {
+				userAdded = user;
+			}
+
+			IRCChannelUser *member = [user userAssociatedWithChannel:channel];
+
+			if (member == nil)
+			{
+				IRCChannelUserMutable *memberMutable = [[IRCChannelUserMutable alloc] initWithUser:userAdded];
+
+				memberMutable.modes = userModes;
+
+				[channel addMember:memberMutable];
+			}
+			else if (userChanged)
+			{
+				BOOL IRCopStatusChanged = (user.isIRCop != userAdded.isIRCop);
+
+				BOOL resortMember = IRCopStatusChanged;
+
+				BOOL replaceInAllChannels = (IRCopStatusChanged && [TPCPreferences memberListSortFavorsServerStaff]);
+
+				if (resortMember) {
+					[channel replaceMember:member
+								withMember:member
+									resort:resortMember
+					  replaceInAllChannels:replaceInAllChannels];
+				}
+				else if (user.isAway != userAdded.isAway ||
+						 ((user.account == nil && userAdded.account == nil) ||
+						  [user.account isEqualToString:userAdded.account]) == NO)
+				{
+					[mainWindow() updateDrawingForUserInUserList:userAdded];
+				}
+			}
+
+			if ([self nicknameIsMyself:nickname]) {
+				NSString *hostmask = [NSString stringWithFormat:@"%@!%@@%@", nickname, username, address];
+
+				self.userHostmask = hostmask;
+			}
+
+			break;
+		}
 		case RPL_ENDOFWHO:
 		{
 			BOOL visibleWhoRequest = self.requestedCommands.visibleWhoRequest;
@@ -12317,7 +12460,11 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 		[self.requestedCommands recordWhoRequestOpened];
 	}
 
-	[self send:@"WHO", channel, nil];
+	if (self.supportInfo.whoxSupported) {
+		[self send:@"WHO", channel, _whoxFieldsAndQueryType, nil];
+	} else {
+		[self send:@"WHO", channel, nil];
+	}
 }
 
 - (void)sendWhois:(NSString *)nickname

@@ -55,6 +55,7 @@ typedef NS_ENUM(NSUInteger, IRCISupportInfoListType)
 
 @interface IRCISupportInfo : NSObject
 @property (readonly) BOOL configurationReceived;
+@property (readonly) BOOL whoxSupported;
 @property (readonly) NSUInteger maximumAwayLength; // 0 = no limit
 @property (readonly) NSUInteger maximumChannelNameLength; // 0 = no limit - unused
 @property (readonly) NSUInteger maximumKeyLength; // 0 = no limit

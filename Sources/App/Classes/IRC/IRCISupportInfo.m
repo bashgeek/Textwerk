@@ -66,6 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, readwrite, nullable) NSString *inviteExceptionModeSymbol;
 @property (nonatomic, copy, readwrite, nullable) NSString *networkName;
 @property (nonatomic, copy, readwrite, nullable) NSString *networkNameFormatted;
+@property (nonatomic, assign, readwrite) BOOL whoxSupported;
 @end
 
 @implementation IRCISupportInfo
@@ -122,6 +123,8 @@ NS_ASSUME_NONNULL_BEGIN
 	};
 
 	self.statusMessageModeSymbols = @[];
+
+	self.whoxSupported = NO;
 }
 
 - (void)processConfigurationData:(NSString *)configurationData
@@ -269,6 +272,8 @@ NS_ASSUME_NONNULL_BEGIN
 			}
 		} else if ([segmentKey isEqualToStringIgnoringCase:@"WATCH"]) {
 			[client enableCapability:ClientIRCv3SupportedCapabilityWatchCommand];
+		} else if ([segmentKey isEqualToStringIgnoringCase:@"WHOX"]) {
+			self.whoxSupported = YES;
 		}
 	} // while()
 

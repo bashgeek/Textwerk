@@ -402,7 +402,7 @@
         </window>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView translatesAutoresizingMaskIntoConstraints="NO" id="Oh2-zJ-yiT" userLabel="User Info Popover View">
-            <rect key="frame" x="0.0" y="0.0" width="358" height="143"/>
+            <rect key="frame" x="0.0" y="0.0" width="358" height="135"/>
             <subviews>
                 <gridView xPlacement="fill" yPlacement="fill" rowAlignment="firstBaseline" rowSpacing="3" columnSpacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="ICd-wA-BP1">
                     <rect key="frame" x="15" y="10" width="328" height="123"/>
@@ -583,7 +583,7 @@
                 <constraint firstAttribute="trailing" secondItem="ICd-wA-BP1" secondAttribute="trailing" constant="15" id="9Av-pM-CUr"/>
                 <constraint firstItem="ICd-wA-BP1" firstAttribute="leading" secondItem="Oh2-zJ-yiT" secondAttribute="leading" constant="15" id="ZEs-b0-afv"/>
                 <constraint firstItem="ICd-wA-BP1" firstAttribute="top" secondItem="Oh2-zJ-yiT" secondAttribute="top" constant="10" id="ptT-xX-rbc"/>
-                <constraint firstItem="txw-ac-lbl" firstAttribute="top" secondItem="ICd-wA-BP1" secondAttribute="bottom" constant="12" id="txw-ac-top"/>
+                <constraint firstItem="txw-ac-lbl" firstAttribute="top" secondItem="ICd-wA-BP1" secondAttribute="bottom" constant="4" id="txw-ac-top"/>
                 <constraint firstItem="txw-ac-lbl" firstAttribute="leading" secondItem="Oh2-zJ-yiT" secondAttribute="leading" constant="15" id="txw-ac-lbl-lead"/>
                 <constraint firstItem="txw-ac-lbl" firstAttribute="width" secondItem="ThT-Me-8qg" secondAttribute="width" id="txw-ac-lbl-width"/>
                 <constraint firstItem="txw-ac-9F1" firstAttribute="leading" secondItem="txw-ac-lbl" secondAttribute="trailing" constant="8" id="txw-ac-val-lead"/>
