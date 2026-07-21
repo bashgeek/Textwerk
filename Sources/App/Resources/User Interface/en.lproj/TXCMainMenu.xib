@@ -1245,6 +1245,12 @@ CA
                         <action selector="memberModeGiveVoice:" target="267" id="szn-vu-CME"/>
                     </connections>
                 </menuItem>
+                <menuItem title="Give Owner (+q)" tag="1625" id="txw-give-owner">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="memberModeGiveOwner:" target="267" id="txw-give-owner-a"/>
+                    </connections>
+                </menuItem>
                 <menuItem title="All Modes Given" tag="1612" id="2553">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
@@ -1267,6 +1273,11 @@ CA
                 <menuItem title="Take Voice (-v)" tag="1616" keyEquivalent="V" id="1324">
                     <connections>
                         <action selector="memberModeTakeVoice:" target="267" id="RdX-Vb-1ia"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Take Owner (-q)" tag="1626" id="txw-take-owner">
+                    <connections>
+                        <action selector="memberModeTakeOwner:" target="267" id="txw-take-owner-a"/>
                     </connections>
                 </menuItem>
                 <menuItem title="All Modes Taken" tag="1617" id="2552">

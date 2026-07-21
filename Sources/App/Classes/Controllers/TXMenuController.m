@@ -761,9 +761,11 @@ NS_ASSUME_NONNULL_BEGIN
 		case MTUserControlsGiveOp: // "Give Op (+o)"
 		case MTUserControlsGiveHalfop: // "Give Halfop (+h)"
 		case MTUserControlsGiveVoice: // "Give Voice (+v)"
+		case MTUserControlsGiveOwner: // "Give Owner (+q)"
 		case MTUserControlsTakeOp: // "Take Op (-o)"
 		case MTUserControlsTakeHalfop: // "Take Halfop (-h)"
 		case MTUserControlsTakeVoice: // "Take Voice (-v)"
+		case MTUserControlsTakeOwner: // "Take Owner (-q)"
 		{
 			return (u.isLoggedIn && c.isActive);
 		}
@@ -779,9 +781,11 @@ NS_ASSUME_NONNULL_BEGIN
 				_setHidden(MTUserControlsGiveOp, YES);
 				_setHidden(MTUserControlsGiveHalfop, YES);
 				_setHidden(MTUserControlsGiveVoice, YES);
+				_setHidden(MTUserControlsGiveOwner, YES);
 				_setHidden(MTUserControlsTakeOp, YES);
 				_setHidden(MTUserControlsTakeHalfop, YES);
 				_setHidden(MTUserControlsTakeVoice, YES);
+				_setHidden(MTUserControlsTakeOwner, YES);
 
 				_setHidden(MTUserControlsAllModesGiven, YES);
 				_setHidden(MTUserControlsAllModesGivenSeparator, YES);
@@ -805,6 +809,7 @@ NS_ASSUME_NONNULL_BEGIN
 				BOOL UserHasModeO = ((userRanks & IRCUserRankNormalOperator) == IRCUserRankNormalOperator);
 				BOOL UserHasModeH = NO;
 				BOOL UserHasModeV = ((userRanks & IRCUserRankVoiced) == IRCUserRankVoiced);
+				BOOL UserHasModeQ = NO;
 
 				_setHidden(MTUserControlsGiveOp, UserHasModeO);
 				_setHidden(MTUserControlsGiveVoice, UserHasModeV);
@@ -823,11 +828,25 @@ NS_ASSUME_NONNULL_BEGIN
 					_setHidden(MTUserControlsTakeHalfop, (UserHasModeH == NO));
 				}
 
-				BOOL hideGiveSepItem = ((UserHasModeO == NO || UserHasModeV == NO) || (UserHasModeH == NO && halfOpModeSupported));
+				BOOL ownerModeSupported = [u.supportInfo modeSymbolIsUserPrefix:@"q"];
+
+				if (ownerModeSupported == NO) {
+					_setHidden(MTUserControlsGiveOwner, YES);
+					_setHidden(MTUserControlsTakeOwner, YES);
+				} else {
+					UserHasModeQ = ((userRanks & IRCUserRankChannelOwner) == IRCUserRankChannelOwner);
+
+					_setHidden(MTUserControlsGiveOwner, UserHasModeQ);
+					_setHidden(MTUserControlsTakeOwner, (UserHasModeQ == NO));
+				}
+
+				BOOL hideGiveSepItem = ((UserHasModeO == NO || UserHasModeV == NO) ||
+										 (UserHasModeH == NO && halfOpModeSupported) ||
+										 (UserHasModeQ == NO && ownerModeSupported));
 
 				_setHidden(MTUserControlsAllModesGiven, hideGiveSepItem);
 
-				BOOL hideTakenSepItem = (UserHasModeO || UserHasModeH || UserHasModeV);
+				BOOL hideTakenSepItem = (UserHasModeO || UserHasModeH || UserHasModeV || UserHasModeQ);
 
 				_setHidden(MTUserControlsAllModesTaken, hideTakenSepItem);
 			}
@@ -836,9 +855,11 @@ NS_ASSUME_NONNULL_BEGIN
 				_setHidden(MTUserControlsGiveOp, NO);
 				_setHidden(MTUserControlsGiveHalfop, NO);
 				_setHidden(MTUserControlsGiveVoice, NO);
+				_setHidden(MTUserControlsGiveOwner, NO);
 				_setHidden(MTUserControlsTakeOp, NO);
 				_setHidden(MTUserControlsTakeHalfop, NO);
 				_setHidden(MTUserControlsTakeVoice, NO);
+				_setHidden(MTUserControlsTakeOwner, NO);
 
 				_setHidden(MTUserControlsAllModesGiven, YES);
 				_setHidden(MTUserControlsAllModesTaken, YES);
@@ -2023,13 +2044,23 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)memberModeGiveVoice:(id)sender
-{ 
+{
 	[self _processModeChange:sender usingCommand:@"VOICE"];
 }
 
 - (void)memberModeTakeVoice:(id)sender
-{ 
+{
 	[self _processModeChange:sender usingCommand:@"DEVOICE"];
+}
+
+- (void)memberModeGiveOwner:(id)sender
+{
+	[self _processModeChange:sender usingCommand:@"OWNER"];
+}
+
+- (void)memberModeTakeOwner:(id)sender
+{
+	[self _processModeChange:sender usingCommand:@"DEOWNER"];
 }
 
 - (void)memberKickFromChannel:(id)sender

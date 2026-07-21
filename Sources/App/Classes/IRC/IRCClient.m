@@ -3238,16 +3238,19 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 		}
 		case IRCLocalCommandDehalfop: // Command: DEHALFOP
 		case IRCLocalCommandDeop: // Command: DEOP
+		case IRCLocalCommandDeowner: // Command: DEOWNER
 		case IRCLocalCommandDevoice: // Command: DEVOICE
 		case IRCLocalCommandHalfop: // Command: HALFOP
 		case IRCLocalCommandOp: // Command: OP
+		case IRCLocalCommandOwner: // Command: OWNER
 		case IRCLocalCommandVoice: // Command: VOICE
 		{
 			NSAssertReturnLoopBreak(self.isLoggedIn);
-			
+
 			BOOL modeIsSet = (commandNumeric == IRCLocalCommandOp ||
 							  commandNumeric == IRCLocalCommandHalfop ||
-							  commandNumeric == IRCLocalCommandVoice);
+							  commandNumeric == IRCLocalCommandVoice ||
+							  commandNumeric == IRCLocalCommandOwner);
 
 			NSString *modeSymbol = nil;
 
@@ -3257,6 +3260,8 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 				modeSymbol = @"h";
 			} else if (commandNumeric == IRCLocalCommandVoice || commandNumeric == IRCLocalCommandDevoice) {
 				modeSymbol = @"v";
+			} else if (commandNumeric == IRCLocalCommandOwner || commandNumeric == IRCLocalCommandDeowner) {
+				modeSymbol = @"q";
 			}
 
 			if ([self.supportInfo modeSymbolIsUserPrefix:modeSymbol] == NO) {
