@@ -1944,18 +1944,23 @@ nothing for a theme's CSS to collide with. */
 
 	self.titlebarAccessoryViewLockButton.title = @"";
 
-	/* Set the icon unconditionally, even while the accessory stays hidden
-	 below - -sizeToFit derives the reserved titlebar width from the
-	 button's own frame, and a button with no image ever set sizes down to
-	 nearly nothing. Without an icon in the unsecured case, the reserved
-	 width (and therefore the title's centering) differed depending on
-	 whether the lock had ever been shown, even after making -sizeToFit
-	 run unconditionally below. Giving it the same icon either way keeps
-	 the reserved width - and the title's position - identical regardless
-	 of whether the connection is currently secured. */
+	/* Set the icon unconditionally - -sizeToFit derives the reserved
+	 titlebar width from the button's own frame, and a button with no
+	 image ever set sizes down to nearly nothing. Giving it the same icon
+	 regardless of secured state keeps the reserved width consistent. */
 	[self.titlebarAccessoryViewLockButton setIconAsLocked];
 
-	self.titlebarAccessoryView.hidden = (u.isSecured == NO);
+	/* The accessory view itself must stay visible at all times. Hiding
+	 the top-level accessory view removes it from the titlebar's layout
+	 entirely, which collapses its reserved width to zero - no matter
+	 what -sizeToFit below computes - and that reserved width is what the
+	 private title-centering math keys off of. So instead of hiding the
+	 accessory view when unsecured, only the lock button within it is
+	 hidden, which keeps the reserved width - and therefore the title's
+	 position - identical whether or not the lock is currently shown. */
+	self.titlebarAccessoryView.hidden = NO;
+
+	self.titlebarAccessoryViewLockButton.hidden = (u.isSecured == NO);
 
 	/* -sizeToFit resizes the accessory's reserved width in the titlebar to
 	 match the button's own frame - it used to only run while the button
