@@ -1,9 +1,30 @@
+<img src="docs/screenshots/icon-256.png" alt="Textwerk icon" width="128" height="128">
+
 # Textwerk
 
 A community fork of [Textual](https://github.com/Codeux-Software/Textual), the macOS IRC client originally built by Codeux Software. The upstream project is archived. Textwerk modernizes the codebase and targets macOS 26+.
 
-**What changed from upstream:**
-- Renamed from Textual to Textwerk — the original project is archived; this is a separate community fork
+## Features
+
+- Multi-server, multi-channel IRC client with a single sidebar for all your networks
+- ZNC bouncer aware, with auto-join handling, message playback, and self-message support tuned for bouncer setups
+- SASL authentication
+- Chat history backfill after reconnecting, with read-marker sync so unread badges stay consistent across other clients on the same account/bouncer
+- Small nickname indicator for users who aren't logged into services, once the server confirms account status
+- Inline previews for links (YouTube, Twitch, Vimeo, Streamable, Imgur, Gyazo, Dailymotion, images)
+- DCC file transfers
+- AppleScript-based plugin/scripting support
+- Multiple bundled themes, switchable live, including a default theme with grouped consecutive messages, so there's no repeated timestamp/nickname when someone sends several messages in a row
+- Native macOS notifications
+- Automatic upgrade to a secure connection on networks that advertise support for it
+- Server errors and warnings shown as readable messages instead of raw numeric codes
+- Give/Take Op, Halfop, Voice, and Owner (+q) from the member list, when supported by the server
+- Query windows show a "common channels" info bar when someone messages you first
+- Unified title bar, with the secure-connection lock and channel title inline with the traffic-light buttons
+
+## What changed from the Textual codebase
+
+- Renamed from Textual to Textwerk, since the original project is archived; this is a separate community fork
 - Requires macOS 26 (Tahoe) or later
 - Fixed blank/frozen channel views and connection crashes on macOS 26
 - Fixed the scrollback history service crashing on every launch, and saved keychain passwords disappearing after the rename
@@ -11,7 +32,6 @@ A community fork of [Textual](https://github.com/Codeux-Software/Textual), the m
 - Real automatic updates: Sparkle now checks GitHub Releases directly instead of a broken placeholder
 - Detects and offers to import your settings from an existing Textual install on first launch (see "Migrating from Textual" below)
 - Flatter, more modern look: reworked topic bar, no gradients or drop shadows, updated default font, taller sidebar rows, instant theme switching with no fade delay
-- Query windows show a "common channels" info bar when someone messages you first
 - Network name stays bold in the server list while that server is active or selected
 - Removed OTR and Blowfish message encryption support
 - Removed dead Help menu items pointing to Codeux Software's now-defunct FAQ, support, and license pages
@@ -157,7 +177,7 @@ Textwerk bundles or links against the following third-party components:
 | [GRMustache](https://github.com/groue/GRMustache) | MIT | (c) 2014 Gwendal Roué |
 | [AutoHyperlinks Framework](https://github.com/Codeux-Software/AutoHyperlinks) | BSD 3-Clause | (c) 2005-2011 The Adium Team, (c) 2011 Codeux Software, LLC |
 | [CocoaAsyncSocket](https://github.com/robbiehanson/CocoaAsyncSocket) (`GCDAsyncSocket`) | Public Domain | Originally by Robbie Hanson; maintained by Deusty LLC |
-| [Colloquy](https://github.com/Colloquy/colloquy) (Chat Core) | BSD-style | (c) 2000-2012 the Colloquy IRC Client — used for a portion of SASL authentication handling in `IRCClient.m` |
+| [Colloquy](https://github.com/Colloquy/colloquy) (Chat Core) | BSD-style | (c) 2000-2012 the Colloquy IRC Client, used for a portion of SASL authentication handling in `IRCClient.m` |
 | [Sparkle](https://github.com/sparkle-project/Sparkle) | MIT (plus bundled bsdiff, sais-lite, ed25519, and `SUSignatureVerifier` components under their own permissive licenses) | (c) 2006-2017 Andy Matuschak and contributors |
 
-The "Cocoa Extensions" internal helper framework also carries a small number of third-party snippets (Dave Dribin's MIT-licensed code, an Apple sample-code snippet, and a Chromium-derived NSString helper) — see `Frameworks/Cocoa Extensions/ACKNOWLEDGEMENT.txt`, which ships inside the app bundle alongside the framework.
+The "Cocoa Extensions" internal helper framework also carries a small number of third-party snippets (Dave Dribin's MIT-licensed code, an Apple sample-code snippet, and a Chromium-derived NSString helper); see `Frameworks/Cocoa Extensions/ACKNOWLEDGEMENT.txt`, which ships inside the app bundle alongside the framework.
