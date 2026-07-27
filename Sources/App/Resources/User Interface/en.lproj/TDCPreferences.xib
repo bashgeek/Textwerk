@@ -2079,12 +2079,12 @@
             <point key="canvasLocation" x="325" y="-5533"/>
         </customView>
         <customView translatesAutoresizingMaskIntoConstraints="NO" id="oeR-nv-slx" userLabel="Style">
-            <rect key="frame" x="0.0" y="0.0" width="670" height="346"/>
+            <rect key="frame" x="0.0" y="0.0" width="670" height="371"/>
             <subviews>
                 <tabView translatesAutoresizingMaskIntoConstraints="NO" id="lpz-77-UDw">
-                    <rect key="frame" x="13" y="10" width="644" height="326"/>
+                    <rect key="frame" x="13" y="10" width="644" height="351"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="310" id="g8B-Bz-RFb"/>
+                        <constraint firstAttribute="height" constant="335" id="g8B-Bz-RFb"/>
                     </constraints>
                     <font key="font" metaFont="system"/>
                     <tabViewItems>
@@ -2256,6 +2256,17 @@
                                                     <binding destination="G2Q-fc-ddg" name="value" keyPath="values.DisplayEventInLogView -&gt; Join, Part, Quit" id="Jwb-Rk-nuD"/>
                                                 </connections>
                                             </button>
+                                            <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="I3x-2t-PYn">
+                                                <rect key="frame" x="-2" y="-16" width="257" height="15"/>
+                                                <textFieldCell key="cell" selectable="YES" sendsActionOnEndEditing="YES" title="These include join, part, and quit messages. " id="Lfm-fL-lVE">
+                                                    <font key="font" metaFont="cellTitle"/>
+                                                    <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                                <connections>
+                                                    <accessibilityConnection property="link" destination="7LB-4e-2Po" id="Bd1-he-n9U"/>
+                                                </connections>
+                                            </textField>
                                             <button translatesAutoresizingMaskIntoConstraints="NO" id="aB3-xK9-mQ2">
                                                 <rect key="frame" x="-2" y="-31" width="210" height="18"/>
                                                 <buttonCell key="cell" type="check" title="Group consecutive messages" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="off" inset="2" id="aB3-xK9-cQ3">
@@ -2272,25 +2283,16 @@
                                             <integer value="1000"/>
                                             <integer value="1000"/>
                                             <integer value="1000"/>
+                                            <integer value="1000"/>
                                         </visibilityPriorities>
                                         <customSpacing>
                                             <real value="3.4028234663852886e+38"/>
                                             <real value="3.4028234663852886e+38"/>
+                                            <real value="4"/>
                                             <real value="3.4028234663852886e+38"/>
                                             <real value="3.4028234663852886e+38"/>
                                         </customSpacing>
                                     </stackView>
-                                    <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="I3x-2t-PYn">
-                                        <rect key="frame" x="203" y="36" width="257" height="15"/>
-                                        <textFieldCell key="cell" selectable="YES" sendsActionOnEndEditing="YES" title="These include join, part, and quit messages. " id="Lfm-fL-lVE">
-                                            <font key="font" metaFont="cellTitle"/>
-                                            <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                        <connections>
-                                            <accessibilityConnection property="link" destination="7LB-4e-2Po" id="Bd1-he-n9U"/>
-                                        </connections>
-                                    </textField>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="Mpf-VK-Ftr" firstAttribute="top" secondItem="bCO-56-p1h" secondAttribute="top" constant="30" id="0vd-Yj-7tF"/>
@@ -2300,12 +2302,10 @@
                                     <constraint firstItem="Mpf-VK-Ftr" firstAttribute="leading" secondItem="bCO-56-p1h" secondAttribute="leading" constant="112" id="8Sa-hn-VYQ"/>
                                     <constraint firstItem="yk4-L0-S54" firstAttribute="centerX" secondItem="bCO-56-p1h" secondAttribute="centerX" id="8bF-Co-Wx1"/>
                                     <constraint firstItem="j2v-v4-NVg" firstAttribute="top" secondItem="Mpf-VK-Ftr" secondAttribute="bottom" constant="18" id="9Xx-Fw-4FG"/>
-                                    <constraint firstItem="I3x-2t-PYn" firstAttribute="leading" secondItem="7LB-4e-2Po" secondAttribute="leading" constant="18" id="I7d-gL-zJK"/>
                                     <constraint firstItem="yk4-L0-S54" firstAttribute="top" secondItem="FAp-of-4TG" secondAttribute="bottom" constant="18" id="L1x-hg-vqa"/>
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="I3x-2t-PYn" secondAttribute="trailing" constant="20" id="MnT-ef-fUY"/>
                                     <constraint firstItem="FAp-of-4TG" firstAttribute="leading" secondItem="j2v-v4-NVg" secondAttribute="leading" id="aNx-3X-Uc8"/>
                                     <constraint firstItem="j2v-v4-NVg" firstAttribute="centerX" secondItem="bCO-56-p1h" secondAttribute="centerX" id="gL6-or-0Xm"/>
-                                    <constraint firstItem="I3x-2t-PYn" firstAttribute="top" secondItem="7LB-4e-2Po" secondAttribute="bottom" constant="8" symbolic="YES" id="l21-wT-1fL"/>
                                     <constraint firstItem="EC4-0b-hiq" firstAttribute="leading" secondItem="bCO-56-p1h" secondAttribute="leading" constant="170" id="l3l-8q-kwa"/>
                                     <constraint firstItem="EC4-0b-hiq" firstAttribute="top" secondItem="j2v-v4-NVg" secondAttribute="bottom" constant="17.5" id="lrG-6c-jOZ"/>
                                     <constraint firstItem="FAp-of-4TG" firstAttribute="trailing" secondItem="j2v-v4-NVg" secondAttribute="trailing" id="rUN-Oi-OMq"/>

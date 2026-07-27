@@ -72,6 +72,8 @@
 	<false/>
 	<key>DisplayEventInLogView -&gt; Join, Part, Quit</key>
 	<true/>
+	<key>DisplayEventInLogView -&gt; Message Grouping Style</key>
+	<integer>0</integer>
 	<key>DisplayPublicMessageCountInDockBadge</key>
 	<false/>
 	<key>DisplayServerMessageOfTheDayOnConnect</key>
