@@ -5,7 +5,7 @@
  *                   | |  __/>  <| |_| |_| | (_| | |
  *                   |_|\___/_/\_\\__|\__,_|\__,_|_|
  *
- * Copyright (c) 2017, 2018 Codeux Software, LLC & respective contributors.
+ * Copyright (c) 2026 Codeux Software, LLC & respective contributors.
  *       Please see Acknowledgements.pdf for additional information.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,74 +35,11 @@
  *
  *********************************************************************** */
 
-#import "ICPCoreMediaPrivate.h"
-
-#import "ICMBandcamp.h"
-#import "ICMCodePen.h"
-#import "ICMCommonInlineImages.h"
-#import "ICMCommonInlineVideos.h"
-#import "ICMDailymotion.h"
-#import "ICMGiphy.h"
-#import "ICMGitHub.h"
-#import "ICMGyazo.h"
-#import "ICMImgurGifv.h"
-#import "ICMPornhub.h"
-#import "ICMReddit.h"
-#import "ICMSoundCloud.h"
-#import "ICMSpotify.h"
-#import "ICMStreamable.h"
-#import "ICMTweet.h"
-#import "ICMTwitchClips.h"
-#import "ICMTwitchLive.h"
-#import "ICMVimeo.h"
-#import "ICMWikipedia.h"
-#import "ICMXkcd.h"
-#import "ICMYouTube.h"
+#import "ICMLinkPreviewCard.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation ICPCoreMedia
-
-+ (NSArray<Class> *)modules
-{
-	return
-	@[
-		[ICMCodePen class],
-		[ICMDailymotion class],
-		[ICMGiphy class],
-		[ICMGitHub class],
-		[ICMGyazo class],
-		[ICMImgurGifv class],
-		[ICMPornhub class],
-		[ICMReddit class],
-		[ICMSoundCloud class],
-		[ICMSpotify class],
-		[ICMStreamable class],
-		[ICMTweet class],
-
-		/* Twitch now requires a parent= argument when embedding content.
-		 This argument acts as the domain that the content will be embedded in the
-		 context of to allow security headers to be set. Textual is not a
-		 web server. It loads files using file:// scheme. Even using "localhost"
-		 will not allow embeds to work. Is embedding Twitch really worth the
-		 cost of hosting a local server to spoof a localhost? Probably not.  */
-//		[ICMTwitchClips class],
-//		[ICMTwitchLive class],
-
-		[ICMVimeo class],
-		[ICMXkcd class],
-		[ICMYouTube class],
-
-		/* Wildcard-domain modules: no exact-host match, so these are only
-		 tried once no other module has already claimed the URL. */
-		[ICMBandcamp class],
-		[ICMWikipedia class],
-
-		[ICMCommonInlineVideos class],
-		[ICMCommonInlineImages class]
-	];
-}
-
+@interface ICMSoundCloud : ICMLinkPreviewCard
 @end
 
 NS_ASSUME_NONNULL_END

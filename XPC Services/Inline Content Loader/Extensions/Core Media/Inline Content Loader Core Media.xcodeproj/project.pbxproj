@@ -21,6 +21,17 @@
 		4C469EE220EC600900094EA4 /* ICMTwitchLive.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469ECD20EC600900094EA4 /* ICMTwitchLive.m */; };
 		4C469EE320EC600900094EA4 /* ICMCommonInlineImages.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469ED020EC600900094EA4 /* ICMCommonInlineImages.m */; };
 		4C469EE420EC600900094EA4 /* ICMXkcd.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469ED320EC600900094EA4 /* ICMXkcd.m */; };
+		424846CACEC9BE830A30E8CF /* ICMLinkPreviewCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 02E14F0A270ACF16F8BC9E02 /* ICMLinkPreviewCard.m */; };
+		54C30A91B8F1472E027C7BE8 /* ICMGitHub.m in Sources */ = {isa = PBXBuildFile; fileRef = 7810346438E8C1A8591E52C0 /* ICMGitHub.m */; };
+		1B8F78E7F6D6FD9CFA26F8AD /* ICMReddit.m in Sources */ = {isa = PBXBuildFile; fileRef = D121B54C692F778F6D40EC5E /* ICMReddit.m */; };
+		30C1CB3BEFCC636C0079E3C2 /* ICMLinkPreviewCard.mustache in Resources */ = {isa = PBXBuildFile; fileRef = B4DCE587D6EFDFD5C34D1E2B /* ICMLinkPreviewCard.mustache */; };
+		092E272411A4884560869FA7 /* ICMLinkPreviewCard.css in Resources */ = {isa = PBXBuildFile; fileRef = 4DA459A1320BE005E5DE8FB5 /* ICMLinkPreviewCard.css */; };
+		011B29054D7EBD48159ACEF5 /* ICMWikipedia.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8A5FA36C8D5E0CF2DC8B6 /* ICMWikipedia.m */; };
+		33DC81C6CEE724CA41A3529A /* ICMSpotify.m in Sources */ = {isa = PBXBuildFile; fileRef = AE826E8A97FCE2E144A1FC36 /* ICMSpotify.m */; };
+		B851DA32F4FE3B6DE2388C9B /* ICMSoundCloud.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D76E382E8E8ABD4BE20E49F /* ICMSoundCloud.m */; };
+		F45D2952B112222313A3AADF /* ICMGiphy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1850990256D6648C5D2C2FD6 /* ICMGiphy.m */; };
+		D838EF160164A22E9ECF7D69 /* ICMCodePen.m in Sources */ = {isa = PBXBuildFile; fileRef = B32C4CFA0208003C6BE35419 /* ICMCodePen.m */; };
+		152DEFD5DA9B33566D84172B /* ICMBandcamp.m in Sources */ = {isa = PBXBuildFile; fileRef = E2645B54F0F8BE0DC3C764AE /* ICMBandcamp.m */; };
 		4C469F3720EC608E00094EA4 /* ICMTweet.js in Resources */ = {isa = PBXBuildFile; fileRef = 4C469F2620EC608E00094EA4 /* ICMTweet.js */; };
 		4C469F3920EC608E00094EA4 /* ICMVimeo.mustache in Resources */ = {isa = PBXBuildFile; fileRef = 4C469F2A20EC608E00094EA4 /* ICMVimeo.mustache */; };
 		4C469F3A20EC608E00094EA4 /* ICMPornhub.mustache in Resources */ = {isa = PBXBuildFile; fileRef = 4C469F2C20EC608E00094EA4 /* ICMPornhub.mustache */; };
@@ -61,6 +72,26 @@
 		4C469ED120EC600900094EA4 /* ICMCommonInlineImages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICMCommonInlineImages.h; sourceTree = "<group>"; };
 		4C469ED320EC600900094EA4 /* ICMXkcd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICMXkcd.m; sourceTree = "<group>"; };
 		4C469ED420EC600900094EA4 /* ICMXkcd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICMXkcd.h; sourceTree = "<group>"; };
+		5B363A6C7CC4F444B53B3C11 /* ICMLinkPreviewCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICMLinkPreviewCard.h; sourceTree = "<group>"; };
+		02E14F0A270ACF16F8BC9E02 /* ICMLinkPreviewCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICMLinkPreviewCard.m; sourceTree = "<group>"; };
+		B014D4E93460FC1F4A755A73 /* ICMGitHub.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICMGitHub.h; sourceTree = "<group>"; };
+		7810346438E8C1A8591E52C0 /* ICMGitHub.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICMGitHub.m; sourceTree = "<group>"; };
+		2DA2712DF77F7DFE0F481A15 /* ICMReddit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICMReddit.h; sourceTree = "<group>"; };
+		D121B54C692F778F6D40EC5E /* ICMReddit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICMReddit.m; sourceTree = "<group>"; };
+		B4DCE587D6EFDFD5C34D1E2B /* ICMLinkPreviewCard.mustache */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ICMLinkPreviewCard.mustache; sourceTree = "<group>"; };
+		4DA459A1320BE005E5DE8FB5 /* ICMLinkPreviewCard.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = ICMLinkPreviewCard.css; sourceTree = "<group>"; };
+		08A8A9EACE0B58EBD773DE92 /* ICMWikipedia.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICMWikipedia.h; sourceTree = "<group>"; };
+		CAE8A5FA36C8D5E0CF2DC8B6 /* ICMWikipedia.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICMWikipedia.m; sourceTree = "<group>"; };
+		9B971194AF5854159BE01A53 /* ICMSpotify.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICMSpotify.h; sourceTree = "<group>"; };
+		AE826E8A97FCE2E144A1FC36 /* ICMSpotify.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICMSpotify.m; sourceTree = "<group>"; };
+		A94DF6F60728FFCB6B353EBB /* ICMSoundCloud.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICMSoundCloud.h; sourceTree = "<group>"; };
+		5D76E382E8E8ABD4BE20E49F /* ICMSoundCloud.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICMSoundCloud.m; sourceTree = "<group>"; };
+		A5009076F8B2FFB9047FA378 /* ICMGiphy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICMGiphy.h; sourceTree = "<group>"; };
+		1850990256D6648C5D2C2FD6 /* ICMGiphy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICMGiphy.m; sourceTree = "<group>"; };
+		D6A7AAE032FBB51FCD0E37DA /* ICMCodePen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICMCodePen.h; sourceTree = "<group>"; };
+		B32C4CFA0208003C6BE35419 /* ICMCodePen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICMCodePen.m; sourceTree = "<group>"; };
+		DF262D5E7505221A183C231C /* ICMBandcamp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICMBandcamp.h; sourceTree = "<group>"; };
+		E2645B54F0F8BE0DC3C764AE /* ICMBandcamp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICMBandcamp.m; sourceTree = "<group>"; };
 		4C469F0120EC601B00094EA4 /* TPCPreferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPCPreferences.h; sourceTree = "<group>"; };
 		4C469F2620EC608E00094EA4 /* ICMTweet.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = ICMTweet.js; sourceTree = "<group>"; };
 		4C469F2A20EC608E00094EA4 /* ICMVimeo.mustache */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ICMVimeo.mustache; sourceTree = "<group>"; };
@@ -143,17 +174,26 @@
 		4C469EA720EC600900094EA4 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				7FA9B7F0528CA862E89E3CDD /* Bandcamp */,
+				DBFF15BF9428FA049172BF06 /* CodePen */,
 				4C469ECF20EC600900094EA4 /* Common Images */,
 				4C469EA820EC600900094EA4 /* Common Videos */,
 				4C469EC620EC600900094EA4 /* Dailymotion */,
+				A6503F0545954A7D17045DD2 /* Giphy */,
+				374F48E6506D74CB0F85F7AB /* GitHub */,
 				4C469EB420EC600900094EA4 /* Gyazo */,
 				4C469EC020EC600900094EA4 /* Imgur .gifv */,
+				1AB79770D6B55746CB0985F5 /* Link Preview Card */,
 				4C469EBD20EC600900094EA4 /* Pornhub */,
+				F02149A98409D9A641D7313A /* Reddit */,
+				3E9ADF74F5C0BA2B459E2027 /* SoundCloud */,
+				48E12202D440D475C2A12BAB /* Spotify */,
 				4C469EB720EC600900094EA4 /* Streamable */,
 				4C469EC920EC600900094EA4 /* Twitch Clips */,
 				4C469ECC20EC600900094EA4 /* Twitch Live */,
 				4C469EAB20EC600900094EA4 /* Twitter */,
 				4C469EBA20EC600900094EA4 /* Vimeo */,
+				EB4DF9C1ECC2B66750986598 /* Wikipedia */,
 				4C469ED220EC600900094EA4 /* xkcd */,
 				4C469EC320EC600900094EA4 /* YouTube */,
 			);
@@ -277,6 +317,87 @@
 			path = xkcd;
 			sourceTree = "<group>";
 		};
+		374F48E6506D74CB0F85F7AB /* GitHub */ = {
+			isa = PBXGroup;
+			children = (
+				B014D4E93460FC1F4A755A73 /* ICMGitHub.h */,
+				7810346438E8C1A8591E52C0 /* ICMGitHub.m */,
+			);
+			path = GitHub;
+			sourceTree = "<group>";
+		};
+		F02149A98409D9A641D7313A /* Reddit */ = {
+			isa = PBXGroup;
+			children = (
+				2DA2712DF77F7DFE0F481A15 /* ICMReddit.h */,
+				D121B54C692F778F6D40EC5E /* ICMReddit.m */,
+			);
+			path = Reddit;
+			sourceTree = "<group>";
+		};
+		1AB79770D6B55746CB0985F5 /* Link Preview Card */ = {
+			isa = PBXGroup;
+			children = (
+				5B363A6C7CC4F444B53B3C11 /* ICMLinkPreviewCard.h */,
+				02E14F0A270ACF16F8BC9E02 /* ICMLinkPreviewCard.m */,
+			);
+			path = "Link Preview Card";
+			sourceTree = "<group>";
+		};
+		EB4DF9C1ECC2B66750986598 /* Wikipedia */ = {
+			isa = PBXGroup;
+			children = (
+				08A8A9EACE0B58EBD773DE92 /* ICMWikipedia.h */,
+				CAE8A5FA36C8D5E0CF2DC8B6 /* ICMWikipedia.m */,
+			);
+			path = Wikipedia;
+			sourceTree = "<group>";
+		};
+		48E12202D440D475C2A12BAB /* Spotify */ = {
+			isa = PBXGroup;
+			children = (
+				9B971194AF5854159BE01A53 /* ICMSpotify.h */,
+				AE826E8A97FCE2E144A1FC36 /* ICMSpotify.m */,
+			);
+			path = Spotify;
+			sourceTree = "<group>";
+		};
+		3E9ADF74F5C0BA2B459E2027 /* SoundCloud */ = {
+			isa = PBXGroup;
+			children = (
+				A94DF6F60728FFCB6B353EBB /* ICMSoundCloud.h */,
+				5D76E382E8E8ABD4BE20E49F /* ICMSoundCloud.m */,
+			);
+			path = SoundCloud;
+			sourceTree = "<group>";
+		};
+		A6503F0545954A7D17045DD2 /* Giphy */ = {
+			isa = PBXGroup;
+			children = (
+				A5009076F8B2FFB9047FA378 /* ICMGiphy.h */,
+				1850990256D6648C5D2C2FD6 /* ICMGiphy.m */,
+			);
+			path = Giphy;
+			sourceTree = "<group>";
+		};
+		DBFF15BF9428FA049172BF06 /* CodePen */ = {
+			isa = PBXGroup;
+			children = (
+				D6A7AAE032FBB51FCD0E37DA /* ICMCodePen.h */,
+				B32C4CFA0208003C6BE35419 /* ICMCodePen.m */,
+			);
+			path = CodePen;
+			sourceTree = "<group>";
+		};
+		7FA9B7F0528CA862E89E3CDD /* Bandcamp */ = {
+			isa = PBXGroup;
+			children = (
+				DF262D5E7505221A183C231C /* ICMBandcamp.h */,
+				E2645B54F0F8BE0DC3C764AE /* ICMBandcamp.m */,
+			);
+			path = Bandcamp;
+			sourceTree = "<group>";
+		};
 		4C469EE520EC601B00094EA4 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
@@ -304,8 +425,18 @@
 				4C469F2F20EC608E00094EA4 /* Dailymotion */,
 				4C469F3120EC608E00094EA4 /* Twitch Clips */,
 				4C469F3320EC608E00094EA4 /* Twitch Live */,
+				7B2E95B93368CEEC435924D3 /* Link Preview Card */,
 			);
 			path = Modules;
+			sourceTree = "<group>";
+		};
+		7B2E95B93368CEEC435924D3 /* Link Preview Card */ = {
+			isa = PBXGroup;
+			children = (
+				B4DCE587D6EFDFD5C34D1E2B /* ICMLinkPreviewCard.mustache */,
+				4DA459A1320BE005E5DE8FB5 /* ICMLinkPreviewCard.css */,
+			);
+			path = "Link Preview Card";
 			sourceTree = "<group>";
 		};
 		4C469F2520EC608E00094EA4 /* Twitter */ = {
@@ -534,6 +665,8 @@
 				4C469F3720EC608E00094EA4 /* ICMTweet.js in Resources */,
 				4C469F3D20EC608E00094EA4 /* ICMTwitchClips.mustache in Resources */,
 				4C469F3C20EC608E00094EA4 /* ICMDailymotion.mustache in Resources */,
+				30C1CB3BEFCC636C0079E3C2 /* ICMLinkPreviewCard.mustache in Resources */,
+				092E272411A4884560869FA7 /* ICMLinkPreviewCard.css in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -558,6 +691,15 @@
 				4C469EDD20EC600900094EA4 /* ICMPornhub.m in Sources */,
 				4C469EDE20EC600900094EA4 /* ICMImgurGifv.m in Sources */,
 				4C469ED620EC600900094EA4 /* ICMCommonInlineVideos.m in Sources */,
+				424846CACEC9BE830A30E8CF /* ICMLinkPreviewCard.m in Sources */,
+				54C30A91B8F1472E027C7BE8 /* ICMGitHub.m in Sources */,
+				1B8F78E7F6D6FD9CFA26F8AD /* ICMReddit.m in Sources */,
+				011B29054D7EBD48159ACEF5 /* ICMWikipedia.m in Sources */,
+				33DC81C6CEE724CA41A3529A /* ICMSpotify.m in Sources */,
+				B851DA32F4FE3B6DE2388C9B /* ICMSoundCloud.m in Sources */,
+				F45D2952B112222313A3AADF /* ICMGiphy.m in Sources */,
+				D838EF160164A22E9ECF7D69 /* ICMCodePen.m in Sources */,
+				152DEFD5DA9B33566D84172B /* ICMBandcamp.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
