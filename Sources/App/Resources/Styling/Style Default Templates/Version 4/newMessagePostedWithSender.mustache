@@ -54,25 +54,7 @@
 	</p>
 	{{/isGroupedWithPrevious}}
 
-	<p class="messageBody message"
-
-	{{#isGroupedWithPrevious}}
-		{{^ isEmpty(localizedTimestamp) }}
-		title="{{localizedTimestamp}}"
-		{{/ isEmpty(localizedTimestamp) }}
-	{{/isGroupedWithPrevious}}>
-
-{{#isEncrypted}}
-	{{> encryptedMessageLock}}
-{{/isEncrypted}}
-
-		<span class="innerMessage">
-			{{{formattedMessage}}}
-
-			{{#inlineMediaEnabled}}
-				<span class="inlineMediaContainer"></span>
-			{{/inlineMediaEnabled}}
-		</span>
+	<p class="messageBody message">{{#isEncrypted}}{{> encryptedMessageLock}}{{/isEncrypted}}<span class="innerMessage">{{{formattedMessage}}}{{#inlineMediaEnabled}}<span class="inlineMediaContainer"></span>{{/inlineMediaEnabled}}</span>{{#isGroupedWithPrevious}}<span class="hoverTimestamp">{{formattedTimestamp}}</span>{{/isGroupedWithPrevious}}
 	</p>
 
 {{/groupedDisplayEnabled}}

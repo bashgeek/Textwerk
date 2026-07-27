@@ -248,9 +248,11 @@ typedef NS_ENUM(NSUInteger, TVCLogLineGroupingStyle) {
 
 + (NSString *)themeNicknameFormat;
 + (NSString *)themeNicknameFormatDefault;
++ (void)setThemeNicknameFormat:(NSString *)value;
 
 + (NSString *)themeTimestampFormat;
 + (NSString *)themeTimestampFormatDefault;
++ (void)setThemeTimestampFormat:(NSString *)value;
 
 + (nullable NSString *)themeUserStyleSheetRules;
 

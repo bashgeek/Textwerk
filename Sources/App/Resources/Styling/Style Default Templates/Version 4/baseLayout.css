@@ -226,6 +226,24 @@ tt {
 .effect[data-background-color='97'] { background-color: #e2e2e2; }
 .effect[data-background-color='98'] { background-color: #ffffff; }
 
+/* Grouped display fallback: hides the trailing per-message timestamp
+(see newMessagePostedWithSender.mustache) until the line is hovered, so
+styles with no styling of their own for it don't show a permanently-
+visible time. Uses low-specificity selectors on purpose so a style's own,
+more specific rules (e.g. div.line[data-grouped="true"] .hoverTimestamp)
+still take priority despite loading before this stylesheet. */
+.hoverTimestamp {
+	display: none;
+	margin-left: 0.5em;
+	font-size: 0.85em;
+	opacity: 0.6;
+	white-space: nowrap;
+}
+
+div.line:hover .hoverTimestamp {
+	display: inline;
+}
+
 /* Selection */
 body[data-selected="false"] {
 	pointer-events: none;

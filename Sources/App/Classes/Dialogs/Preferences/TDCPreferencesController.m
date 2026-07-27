@@ -530,6 +530,58 @@ NS_ASSUME_NONNULL_BEGIN
 	return;
 }
 
+- (BOOL)displayStyleIsChat
+{
+	return ([TPCPreferences messageGroupingStyle] == TVCLogLineGroupingStyleGrouped &&
+			[[TPCPreferences themeNicknameFormat] isEqualToString:@"%@%n"] &&
+			[[TPCPreferences themeTimestampFormat] isEqualToString:@"%H:%M:%S"]);
+}
+
+- (BOOL)displayStyleIsClassicIRC
+{
+	return ([TPCPreferences messageGroupingStyle] == TVCLogLineGroupingStyleClassic &&
+			[[TPCPreferences themeNicknameFormat] isEqualToString:@"<%@%n>"] &&
+			[[TPCPreferences themeTimestampFormat] isEqualToString:@"[%H:%M:%S]"]);
+}
+
+- (void)setDisplayStyleIsChat:(BOOL)value
+{
+	if (value == NO) {
+		return;
+	}
+
+	[self willChangeValueForKey:@"displayStyleIsChat"];
+	[self willChangeValueForKey:@"displayStyleIsClassicIRC"];
+
+	[TPCPreferences setMessageGroupingStyle:TVCLogLineGroupingStyleGrouped];
+	[TPCPreferences setThemeNicknameFormat:@"%@%n"];
+	[TPCPreferences setThemeTimestampFormat:@"%H:%M:%S"];
+
+	[self didChangeValueForKey:@"displayStyleIsChat"];
+	[self didChangeValueForKey:@"displayStyleIsClassicIRC"];
+
+	[self onChangedTheme:nil];
+}
+
+- (void)setDisplayStyleIsClassicIRC:(BOOL)value
+{
+	if (value == NO) {
+		return;
+	}
+
+	[self willChangeValueForKey:@"displayStyleIsChat"];
+	[self willChangeValueForKey:@"displayStyleIsClassicIRC"];
+
+	[TPCPreferences setMessageGroupingStyle:TVCLogLineGroupingStyleClassic];
+	[TPCPreferences setThemeNicknameFormat:@"<%@%n>"];
+	[TPCPreferences setThemeTimestampFormat:@"[%H:%M:%S]"];
+
+	[self didChangeValueForKey:@"displayStyleIsChat"];
+	[self didChangeValueForKey:@"displayStyleIsClassicIRC"];
+
+	[self onChangedTheme:nil];
+}
+
 - (NSString *)fileTransferPortRangeStart
 {
 	return _unsignedIntegerString([TPCPreferences fileTransferPortRangeStart]);

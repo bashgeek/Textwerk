@@ -2079,18 +2079,18 @@
             <point key="canvasLocation" x="325" y="-5533"/>
         </customView>
         <customView translatesAutoresizingMaskIntoConstraints="NO" id="oeR-nv-slx" userLabel="Style">
-            <rect key="frame" x="0.0" y="0.0" width="670" height="371"/>
+            <rect key="frame" x="0.0" y="0.0" width="670" height="516"/>
             <subviews>
                 <tabView translatesAutoresizingMaskIntoConstraints="NO" id="lpz-77-UDw">
-                    <rect key="frame" x="13" y="10" width="644" height="351"/>
+                    <rect key="frame" x="13" y="10" width="644" height="496"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="335" id="g8B-Bz-RFb"/>
+                        <constraint firstAttribute="height" constant="480" id="g8B-Bz-RFb"/>
                     </constraints>
                     <font key="font" metaFont="system"/>
                     <tabViewItems>
                         <tabViewItem label="General" identifier="1" id="yKL-ON-PSA">
                             <view key="view" id="bCO-56-p1h">
-                                <rect key="frame" x="10" y="33" width="624" height="280"/>
+                                <rect key="frame" x="10" y="33" width="624" height="425"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <stackView distribution="fill" orientation="horizontal" alignment="firstBaseline" horizontalStackHuggingPriority="250" verticalStackHuggingPriority="250" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EC4-0b-hiq">
@@ -2267,18 +2267,56 @@
                                                     <accessibilityConnection property="link" destination="7LB-4e-2Po" id="Bd1-he-n9U"/>
                                                 </connections>
                                             </textField>
-                                            <button translatesAutoresizingMaskIntoConstraints="NO" id="aB3-xK9-mQ2">
-                                                <rect key="frame" x="-2" y="-31" width="210" height="18"/>
-                                                <buttonCell key="cell" type="check" title="Group consecutive messages" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="off" inset="2" id="aB3-xK9-cQ3">
+                                            <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dsm-01-hdr">
+                                                <rect key="frame" x="-2" y="90" width="150" height="16"/>
+                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Display Style" id="dsm-01-cel">
+                                                    <font key="font" metaFont="systemBold"/>
+                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                            <button translatesAutoresizingMaskIntoConstraints="NO" id="dsm-02-rd1">
+                                                <rect key="frame" x="-2" y="60" width="120" height="18"/>
+                                                <buttonCell key="cell" type="radio" title="Chat" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="off" inset="2" id="dsm-02-cel">
                                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                     <font key="font" metaFont="system"/>
                                                 </buttonCell>
                                                 <connections>
-                                                    <binding destination="G2Q-fc-ddg" name="value" keyPath="values.DisplayEventInLogView -&gt; Message Grouping Style" id="aB3-xK9-bnd"/>
+                                                    <binding destination="-2" name="value" keyPath="self.displayStyleIsChat" id="dsm-02-bnd"/>
                                                 </connections>
                                             </button>
+                                            <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dsm-03-de1">
+                                                <rect key="frame" x="-2" y="45" width="257" height="28"/>
+                                                <textFieldCell key="cell" selectable="YES" sendsActionOnEndEditing="YES" title="Groups messages from the same person and hides IRC-style brackets for a cleaner look." id="dsm-03-cel">
+                                                    <font key="font" metaFont="cellTitle"/>
+                                                    <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                            <button translatesAutoresizingMaskIntoConstraints="NO" id="dsm-04-rd2">
+                                                <rect key="frame" x="-2" y="15" width="150" height="18"/>
+                                                <buttonCell key="cell" type="radio" title="Classic IRC" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="off" inset="2" id="dsm-04-cel">
+                                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                    <font key="font" metaFont="system"/>
+                                                </buttonCell>
+                                                <connections>
+                                                    <binding destination="-2" name="value" keyPath="self.displayStyleIsClassicIRC" id="dsm-04-bnd"/>
+                                                </connections>
+                                            </button>
+                                            <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dsm-05-de2">
+                                                <rect key="frame" x="-2" y="0" width="257" height="15"/>
+                                                <textFieldCell key="cell" selectable="YES" sendsActionOnEndEditing="YES" title="Shows a bracketed nickname and timestamp on every line, like a traditional IRC client." id="dsm-05-cel">
+                                                    <font key="font" metaFont="cellTitle"/>
+                                                    <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
                                         </subviews>
                                         <visibilityPriorities>
+                                            <integer value="1000"/>
+                                            <integer value="1000"/>
+                                            <integer value="1000"/>
+                                            <integer value="1000"/>
                                             <integer value="1000"/>
                                             <integer value="1000"/>
                                             <integer value="1000"/>
@@ -2289,7 +2327,11 @@
                                             <real value="3.4028234663852886e+38"/>
                                             <real value="3.4028234663852886e+38"/>
                                             <real value="4"/>
+                                            <real value="20"/>
+                                            <real value="8"/>
+                                            <real value="4"/>
                                             <real value="3.4028234663852886e+38"/>
+                                            <real value="4"/>
                                             <real value="3.4028234663852886e+38"/>
                                         </customSpacing>
                                     </stackView>
@@ -2460,9 +2502,13 @@ Messages are not saved between app launches unless “Restore scrollback from pr
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <objectValues>
                                                 <string>[%H:%M]</string>
+                                                <string>%H:%M</string>
                                                 <string>[%H:%M:%S]</string>
+                                                <string>%H:%M:%S</string>
                                                 <string>[%I:%M:%S %p]</string>
+                                                <string>%I:%M:%S %p</string>
                                                 <string>[%m/%d/%Y -:- %I:%M:%S %p]</string>
+                                                <string>%m/%d/%Y -:- %I:%M:%S %p</string>
                                             </objectValues>
                                         </comboBoxCell>
                                         <connections>
@@ -2607,6 +2653,7 @@ Messages are not saved between app launches unless “Restore scrollback from pr
                                                 <string>(%n) </string>
                                                 <string>&lt;%n&gt; </string>
                                                 <string>&lt;%@%n&gt; </string>
+                                                <string>%@%-9n</string>
                                                 <string>&lt;%@%-9n&gt;</string>
                                             </objectValues>
                                         </comboBoxCell>

@@ -1696,7 +1696,11 @@ NSString * const TVCLogControllerViewFinishedLoadingNotification = @"TVCLogContr
 
 	double indentOffset = themeSettings().indentationOffset;
 
-	if (round(indentOffset) < 0.0 || [TPCPreferences rightToLeftFormatting]) {
+	BOOL groupedDisplayEnabled = ([TPCPreferences messageGroupingStyle] == TVCLogLineGroupingStyleGrouped);
+
+	if (groupedDisplayEnabled ||
+		round(indentOffset) < 0.0 || [TPCPreferences rightToLeftFormatting])
+	{
 		templateTokens[@"nicknameIndentationAvailable"] = @(NO);
 	} else {
 		templateTokens[@"nicknameIndentationAvailable"] = @(YES);

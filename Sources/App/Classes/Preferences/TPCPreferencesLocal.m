@@ -631,6 +631,13 @@ NSUInteger const TPCPreferencesDictionaryVersion = 602;
 	return [RZUserDefaults() objectForKey:@"Theme -> Nickname Format"];
 }
 
++ (void)setThemeNicknameFormat:(NSString *)value
+{
+	NSParameterAssert(value != nil);
+
+	[RZUserDefaults() setObject:value forKey:@"Theme -> Nickname Format"];
+}
+
 + (BOOL)themeNicknameFormatPreferenceUserConfigurable
 {
 	return [RZUserDefaults() boolForKey:@"Theme -> Nickname Format Preference Enabled"];
@@ -649,6 +656,13 @@ NSUInteger const TPCPreferencesDictionaryVersion = 602;
 + (NSString *)themeTimestampFormat
 {
 	return [RZUserDefaults() objectForKey:@"Theme -> Timestamp Format"];
+}
+
++ (void)setThemeTimestampFormat:(NSString *)value
+{
+	NSParameterAssert(value != nil);
+
+	[RZUserDefaults() setObject:value forKey:@"Theme -> Timestamp Format"];
 }
 
 + (BOOL)themeTimestampFormatPreferenceUserConfigurable
@@ -1253,13 +1267,16 @@ static NSArray<NSString *> *_matchKeywords = nil;
 	/* applicationRunCount is incremented before this is called, so a
 	 value of 1 means this is the first launch of a fresh installation
 	 rather than an upgrade of an existing one. Only new installations
-	 get the grouped message display turned on so existing users are
+	 get the chat-style message display turned on so existing users are
 	 never silently switched over. */
 	if ([TPCApplicationInfo applicationRunCount] != 1) {
 		return;
 	}
 
 	[self setMessageGroupingStyle:TVCLogLineGroupingStyleGrouped];
+
+	[self setThemeNicknameFormat:@"%@%n"];
+	[self setThemeTimestampFormat:@"%H:%M:%S"];
 }
 
 #pragma mark -

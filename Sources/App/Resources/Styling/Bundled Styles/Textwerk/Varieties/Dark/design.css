@@ -287,6 +287,7 @@ div.line .header {
 	align-items: baseline;
 	gap: 0.5em;
 	margin-bottom: 1px;
+	margin-top: 10px;
 }
 
 div.line .header .time {
@@ -300,11 +301,24 @@ div.line .messageBody {
 }
 
 /* Consecutive messages from the same sender collapse their repeated
-header; the message itself keeps its timestamp available as a tooltip. */
+header; the message reveals its own timestamp, trailing the text,
+when hovered. */
 
 div.line[data-grouped="true"] {
 	padding-top: 0;
 	margin-top: -2px;
+}
+
+div.line[data-grouped="true"] .hoverTimestamp {
+	display: none;
+	margin-left: 0.5em;
+	font-size: 0.75em;
+	color: #6e6e73;
+	white-space: nowrap;
+}
+
+div.line[data-grouped="true"]:hover .hoverTimestamp {
+	display: inline;
 }
 
 /* NOTICE/CTCP/WALLOPS */
