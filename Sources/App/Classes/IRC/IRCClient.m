@@ -2174,6 +2174,55 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 }
 
 #pragma mark -
+#pragma mark Typing Notifications (draft/typing)
+
+#define _typingNotificationActiveThrottleInterval		3.0
+
+- (void)sendTypingNotificationActiveForChannel:(IRCChannel *)channel
+{
+	NSParameterAssert(channel != nil);
+
+	if ([self isCapabilityEnabled:ClientIRCv3SupportedCapabilityTyping] == NO) {
+		return;
+	}
+
+	if (channel.isUtility) {
+		return;
+	}
+
+	NSDate *lastSentAt = channel.lastOutgoingTypingActiveSentAt;
+
+	if (lastSentAt != nil &&
+		[[NSDate date] timeIntervalSinceDate:lastSentAt] < _typingNotificationActiveThrottleInterval)
+	{
+		return;
+	}
+
+	channel.lastOutgoingTypingActiveSentAt = [NSDate date];
+
+	[self sendLine:[NSString stringWithFormat:@"@+typing=active TAGMSG %@", channel.name]];
+}
+
+- (void)sendTypingNotificationDoneForChannel:(IRCChannel *)channel
+{
+	NSParameterAssert(channel != nil);
+
+	if ([self isCapabilityEnabled:ClientIRCv3SupportedCapabilityTyping] == NO) {
+		return;
+	}
+
+	if (channel.lastOutgoingTypingActiveSentAt == nil) {
+		return; // We never told them we were typing, no need to say we stopped.
+	}
+
+	channel.lastOutgoingTypingActiveSentAt = nil;
+
+	[self sendLine:[NSString stringWithFormat:@"@+typing=done TAGMSG %@", channel.name]];
+}
+
+#undef _typingNotificationActiveThrottleInterval
+
+#pragma mark -
 #pragma mark ZNC Bouncer Accessories
 
 - (void)zncPlaybackClearChannel:(IRCChannel *)channel
@@ -6003,6 +6052,12 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 
 				break;
 			}
+			case IRCRemoteCommandTagmsg: // Command: TAGMSG (draft/typing)
+			{
+				[self receiveTagmsg:message];
+
+				break;
+			}
 			case IRCRemoteCommandInvite: // Command: INVITE
 			{
 				[self receiveInvite:message];
@@ -8248,6 +8303,62 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 }
 
 #pragma mark -
+#pragma mark TAGMSG Command (draft/typing)
+
+- (void)receiveTagmsg:(IRCMessage *)m
+{
+	NSParameterAssert(m != nil);
+
+	if ([self isCapabilityEnabled:ClientIRCv3SupportedCapabilityTyping] == NO) {
+		return;
+	}
+
+	NSAssertReturn([m paramsCount] > 0);
+
+	NSString *typingState = m.messageTags[@"+typing"];
+
+	if (typingState == nil) {
+		return;
+	}
+
+	NSString *sender = m.senderNickname;
+
+	if (sender == nil || m.senderIsServer || [self nicknameIsMyself:sender]) {
+		return;
+	}
+
+	NSString *target = [m paramAt:0];
+
+	/* Same target resolution as a regular PRIVMSG/NOTICE: a channel name
+	 refers to that channel directly, anything else is a private message
+	 and the relevant query is keyed by the sender, not the target (which
+	 for a private TAGMSG is just our own nickname). Deliberately does not
+	 create a new query if one doesn't already exist - a typing signal
+	 alone isn't reason enough to pop a conversation into existence. */
+	IRCChannel *channel = nil;
+
+	if ([self stringIsChannelName:target]) {
+		channel = [self findChannel:target];
+	} else {
+		channel = [self findChannel:sender];
+	}
+
+	if (channel == nil) {
+		return;
+	}
+
+	if ([typingState isEqualToString:@"active"]) {
+		[channel markNicknameAsTyping:sender];
+	} else {
+		// "paused" and "done" are both treated as "stop showing this user as typing" -
+		// there's no separate visual state for "was typing, then paused".
+		[channel clearTypingStatusForNickname:sender];
+	}
+
+	[mainWindow() updateTypingIndicatorForChannel:channel];
+}
+
+#pragma mark -
 #pragma mark BATCH Command
 
 - (id)queuedBatchMessageWithToken:(NSString *)batchToken
@@ -8413,6 +8524,12 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 
 			break;
 		}
+		case ClientIRCv3SupportedCapabilityTyping:
+		{
+			stringValue = @"draft/typing";
+
+			break;
+		}
 		case ClientIRCv3SupportedCapabilityMessageTags:
 		{
 			stringValue = @"message-tags";
@@ -8560,6 +8677,8 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 		return ClientIRCv3SupportedCapabilityChatHistory;
 	} else if ([capabilityString isEqualToStringIgnoringCase:@"draft/read-marker"]) {
 		return ClientIRCv3SupportedCapabilityReadMarker;
+	} else if ([capabilityString isEqualToStringIgnoringCase:@"draft/typing"]) {
+		return ClientIRCv3SupportedCapabilityTyping;
 	} else if ([capabilityString isEqualToStringIgnoringCase:@"labeled-response"]) {
 		return ClientIRCv3SupportedCapabilityLabeledResponse;
 	} else if ([capabilityString isEqualToStringIgnoringCase:@"message-tags"]) {
@@ -8635,6 +8754,7 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 	appendValue(ClientIRCv3SupportedCapabilityServerTime);
 	appendValue(ClientIRCv3SupportedCapabilitySetname);
 	appendValue(ClientIRCv3SupportedCapabilityStandardReplies);
+	appendValue(ClientIRCv3SupportedCapabilityTyping);
 	appendValue(ClientIRCv3SupportedCapabilityUserhostInNames);
 	appendValue(ClientIRCv3SupportedCapabilityZNCCertInfoModule);
 	appendValue(ClientIRCv3SupportedCapabilityZNCPlaybackModule);
@@ -8678,6 +8798,7 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 			 capability == ClientIRCv3SupportedCapabilityMessageTags			||
 			 capability == ClientIRCv3SupportedCapabilityMultiPrefix			||
 			 capability == ClientIRCv3SupportedCapabilityReadMarker				||
+			 capability == ClientIRCv3SupportedCapabilityTyping					||
 			 capability == ClientIRCv3SupportedCapabilitySASLGeneric			||
 			 capability == ClientIRCv3SupportedCapabilitySetname				||
 			 capability == ClientIRCv3SupportedCapabilityStandardReplies		||
@@ -8741,6 +8862,7 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 	 [capabilityString isEqualToStringIgnoringCase:@"chghost"]					||
 	 [capabilityString isEqualToStringIgnoringCase:@"draft/chathistory"]		||
 	 [capabilityString isEqualToStringIgnoringCase:@"draft/read-marker"]		||
+	 [capabilityString isEqualToStringIgnoringCase:@"draft/typing"]				||
 	 [capabilityString isEqualToStringIgnoringCase:@"extended-join"]			||
 	 [capabilityString isEqualToStringIgnoringCase:@"invite-notify"]			||
 	 [capabilityString isEqualToStringIgnoringCase:@"labeled-response"]			||

@@ -41,6 +41,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class IRCChannel;
 @class IRCUser;
 @class TLOInputHistory;
 @class TVCMainWindowChannelView;
@@ -112,6 +113,9 @@ typedef NS_OPTIONS(NSUInteger, TVCMainWindowMouseLocation) {
 - (void)channelViewSelectionChangeTo:(IRCTreeItem *)selectedItem;
 
 - (void)updateDrawingForUserInUserList:(IRCUser *)user;
+
+- (void)updateTypingIndicatorForChannel:(IRCChannel *)channel;
+- (void)inputTextViewValueDidChange;
 @end
 
 NS_ASSUME_NONNULL_END

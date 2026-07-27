@@ -84,6 +84,9 @@ TEXTUAL_EXTERN NSNotificationName const TVCLogControllerViewFinishedLoadingNotif
 
 - (void)goToMark;
 
+- (void)setTypingIndicatorText:(NSString *)text;
+- (void)removeTypingIndicator;
+
 - (void)clear;
 
 - (void)changeTextSize:(BOOL)bigger;

@@ -77,6 +77,32 @@ NS_ASSUME_NONNULL_BEGIN
  value — nothing currently needs to parse it into an NSDate. */
 @property (nonatomic, copy, nullable) NSString *lastReadMarkerTimestamp;
 
+/* Nicknames currently signaling draft/typing "active" for this channel,
+ mapped to the time that signal expires. Not persisted - purely a live
+ session concept. Expiration (rather than trusting a "done"/"paused" to
+ always arrive) matches the IRCv3 spec's guidance that a typing signal
+ should be assumed stale after a few seconds without a refresh, since
+ the other client could disconnect or crash without ever sending "done". */
+@property (nonatomic, strong, nullable) NSMutableDictionary<NSString *, NSDate *> *typingUserExpirationDates;
+
+/* Throttles our own outgoing draft/typing "active" notifications for this
+ channel to roughly once per few seconds, per the spec's rate-limiting
+ recommendation, instead of firing on every keystroke. */
+@property (nonatomic, strong, nullable) NSDate *lastOutgoingTypingActiveSentAt;
+
+/* Marks nickname as actively typing in this channel, refreshing its
+ expiration. Returns YES if this changed the set of currently-typing
+ users (i.e. the caller should refresh any visible indicator). */
+- (BOOL)markNicknameAsTyping:(NSString *)nickname;
+
+/* Clears nickname's typing status immediately (draft/typing "done" or
+ "paused"). Returns YES if this changed the set of currently-typing users. */
+- (BOOL)clearTypingStatusForNickname:(NSString *)nickname;
+
+/* Returns the nicknames currently signaling as typing, purging any whose
+ expiration has passed. Order is not guaranteed. */
+- (NSArray<NSString *> *)currentlyTypingNicknames;
+
 - (instancetype)initWithConfig:(IRCChannelConfig *)config NS_DESIGNATED_INITIALIZER;
 - (instancetype)initWithConfigDictionary:(NSDictionary<NSString *, id> *)dic;
 

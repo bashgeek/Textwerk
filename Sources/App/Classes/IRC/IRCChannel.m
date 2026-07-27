@@ -357,6 +357,8 @@ NSString * const IRCChannelConfigurationWasUpdatedNotification = @"IRCChannelCon
 	self.sentInitialWhoRequest = NO;
 	self.receivedWhoxAccountData = NO;
 
+	self.typingUserExpirationDates = nil;
+
 	self.channelJoinTime = 0;
 
 	self.modeInfo = nil;
@@ -717,6 +719,64 @@ NSString * const IRCChannelConfigurationWasUpdatedNotification = @"IRCChannelCon
 {
 	return self;
 }
+
+#pragma mark -
+#pragma mark Typing Status (draft/typing)
+
+#define _typingStatusExpirationInterval		6.0
+
+- (BOOL)markNicknameAsTyping:(NSString *)nickname
+{
+	NSParameterAssert(nickname != nil);
+
+	BOOL wasAlreadyTyping = (self.typingUserExpirationDates[nickname] != nil);
+
+	if (self.typingUserExpirationDates == nil) {
+		self.typingUserExpirationDates = [NSMutableDictionary dictionary];
+	}
+
+	self.typingUserExpirationDates[nickname] = [NSDate dateWithTimeIntervalSinceNow:_typingStatusExpirationInterval];
+
+	return (wasAlreadyTyping == NO);
+}
+
+- (BOOL)clearTypingStatusForNickname:(NSString *)nickname
+{
+	NSParameterAssert(nickname != nil);
+
+	if (self.typingUserExpirationDates[nickname] == nil) {
+		return NO;
+	}
+
+	[self.typingUserExpirationDates removeObjectForKey:nickname];
+
+	return YES;
+}
+
+- (NSArray<NSString *> *)currentlyTypingNicknames
+{
+	if (self.typingUserExpirationDates.count == 0) {
+		return @[];
+	}
+
+	NSDate *now = [NSDate date];
+
+	NSMutableArray<NSString *> *expiredNicknames = [NSMutableArray array];
+
+	[self.typingUserExpirationDates enumerateKeysAndObjectsUsingBlock:^(NSString *nickname, NSDate *expirationDate, BOOL *stop) {
+		if ([expirationDate compare:now] != NSOrderedDescending) {
+			[expiredNicknames addObject:nickname];
+		}
+	}];
+
+	if (expiredNicknames.count > 0) {
+		[self.typingUserExpirationDates removeObjectsForKeys:expiredNicknames];
+	}
+
+	return self.typingUserExpirationDates.allKeys;
+}
+
+#undef _typingStatusExpirationInterval
 
 @end
 

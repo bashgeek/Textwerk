@@ -115,6 +115,8 @@ NSString * const TVCMainWindowSelectionChangedNotification = @"TVCMainWindowSele
 @property (nonatomic, copy, nullable) NSValue *cachedSwipeOriginPoint;
 @property (nonatomic, assign, readwrite) double textSizeMultiplier;
 @property (nonatomic, assign, readwrite) BOOL reloadingTheme;
+@property (nonatomic, assign) BOOL typingIndicatorVisible;
+@property (nonatomic, strong, nullable) NSTimer *typingIndicatorSweepTimer;
 @end
 
 #define _treeDragItemType		TVCServerListDragType
@@ -1342,7 +1344,139 @@ nothing for a theme's CSS to collide with. */
 
 	[self.inputHistoryManager add:stringValue];
 
+	if ([self.selectedItem isKindOfClass:[IRCChannel class]]) {
+		[self.selectedClient sendTypingNotificationDoneForChannel:(IRCChannel *)self.selectedItem];
+	}
+
 	[self inputText:stringValue asCommand:command];
+}
+
+#pragma mark -
+#pragma mark Typing Indicator (draft/typing)
+
+#define _typingIndicatorSweepInterval		2.0
+
+- (void)updateTypingIndicatorForChannel:(IRCChannel *)channel
+{
+	NSParameterAssert(channel != nil);
+
+	if (channel != self.selectedChannel) {
+		return; // Only the on-screen channel's typing state is ever shown.
+	}
+
+	[self refreshTypingIndicatorDisplay];
+}
+
+- (void)refreshTypingIndicatorDisplay
+{
+	IRCChannel *channel = self.selectedChannel;
+
+	NSArray<NSString *> *typingNicknames = [channel currentlyTypingNicknames];
+
+	if (typingNicknames.count == 0) {
+		[self hideTypingIndicator];
+
+		return;
+	}
+
+	self.typingIndicatorVisible = YES;
+
+	NSString *text = [self.class formattedTypingIndicatorTextForNicknames:typingNicknames];
+
+	/* Rendered as a line in the message view itself (like other chat
+	 clients show it), not as chrome floating over the window - an earlier
+	 version drew this as a native overlay pinned above the input field,
+	 but that ended up covering the last couple lines of real messages,
+	 which was worse than not having it. */
+	[channel.viewController setTypingIndicatorText:text];
+
+	[self startTypingIndicatorSweepTimerIfNeeded];
+}
+
+- (void)hideTypingIndicator
+{
+	if (self.typingIndicatorVisible == NO) {
+		return;
+	}
+
+	self.typingIndicatorVisible = NO;
+
+	[self.selectedChannel.viewController removeTypingIndicator];
+
+	[self.typingIndicatorSweepTimer invalidate];
+
+	self.typingIndicatorSweepTimer = nil;
+}
+
+- (void)startTypingIndicatorSweepTimerIfNeeded
+{
+	/* While the indicator is visible, nothing guarantees another TAGMSG will
+	 ever arrive to tell us the typing users' signals have expired (their
+	 client could crash, lose connection, etc.) - this timer periodically
+	 re-checks so a stale indicator doesn't just sit there forever. */
+	if (self.typingIndicatorSweepTimer != nil) {
+		return;
+	}
+
+	self.typingIndicatorSweepTimer =
+	[NSTimer scheduledTimerWithTimeInterval:_typingIndicatorSweepInterval
+									  target:self
+									selector:@selector(typingIndicatorSweepTimerFired:)
+									userInfo:nil
+									 repeats:YES];
+}
+
+- (void)typingIndicatorSweepTimerFired:(NSTimer *)sender
+{
+	[self refreshTypingIndicatorDisplay];
+}
+
++ (NSString *)formattedTypingIndicatorTextForNicknames:(NSArray<NSString *> *)nicknames
+{
+	/* No trailing ellipsis here - the rendered indicator already appends its
+	 own animated dots (see typingIndicator.mustache/.typingIndicatorDots),
+	 so ending this text in "…" too just doubled up visually. */
+	NSUInteger count = nicknames.count;
+
+	if (count == 1) {
+		return [NSString stringWithFormat:@"%@ is typing", nicknames.firstObject];
+	}
+
+	if (count == 2) {
+		return [NSString stringWithFormat:@"%@ and %@ are typing", nicknames[0], nicknames[1]];
+	}
+
+	return [NSString stringWithFormat:@"%lu people are typing", (unsigned long)count];
+}
+
+#undef _typingIndicatorSweepInterval
+
+- (void)inputTextViewValueDidChange
+{
+	if ([self.selectedItem isKindOfClass:[IRCChannel class]] == NO) {
+		return;
+	}
+
+	IRCChannel *channel = (IRCChannel *)self.selectedItem;
+
+	IRCClient *client = self.selectedClient;
+
+	NSUInteger textLength = self.inputTextField.attributedStringValue.length;
+
+	if (textLength == 0) {
+		[client sendTypingNotificationDoneForChannel:channel];
+
+		return;
+	}
+
+	/* Don't announce typing while composing a local slash command - the
+	 command itself (its args, who it targets) isn't something meant to be
+	 broadcast as "message in progress" the way real conversation text is. */
+	if ([self.inputTextField.string hasPrefix:@"/"]) {
+		return;
+	}
+
+	[client sendTypingNotificationActiveForChannel:channel];
 }
 
 - (void)inputText:(id)string asCommand:(IRCRemoteCommand)command
@@ -1765,6 +1899,23 @@ nothing for a theme's CSS to collide with. */
 			[itemChangedTo.associatedClient sendMarkReadForChannel:(IRCChannel *)itemChangedTo];
 		}
 	}
+
+	/* Tell whoever we were typing to in the previous channel that we've
+	 stopped (switching away from a conversation implicitly ends it), and
+	 clear any typing indicator left showing in its own message view -
+	 refreshTypingIndicatorDisplay below only ever touches the newly
+	 selected channel, so the one we're leaving needs this explicitly or
+	 it'd sit there stale in its own scrollback until revisited. Then
+	 reflect whatever typing state already exists for the newly-selected one. */
+	if ([itemChangedFrom isKindOfClass:[IRCChannel class]]) {
+		IRCChannel *previousChannel = (IRCChannel *)itemChangedFrom;
+
+		[previousChannel.associatedClient sendTypingNotificationDoneForChannel:previousChannel];
+
+		[previousChannel.viewController removeTypingIndicator];
+	}
+
+	[self refreshTypingIndicatorDisplay];
 
 	/* Notify WebKit its selection status has changed */
 	if (itemChangedFrom) {

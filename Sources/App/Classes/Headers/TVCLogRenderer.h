@@ -68,6 +68,7 @@ TEXTUAL_EXTERN TVCLogRendererResultsAttribute const TVCLogRendererResultsOrigina
 
 @interface TVCLogRenderer : NSObject
 + (NSString *)escapeHTML:(NSString *)html;
++ (NSString *)escapeString:(NSString *)string;
 
 + (nullable NSColor *)mapColor:(id)color;
 + (NSColor *)mapColorCode:(NSUInteger)colorCode;

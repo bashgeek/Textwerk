@@ -86,6 +86,13 @@ enum {
 
 - (void)sendMarkReadForChannel:(IRCChannel *)channel;
 
+/* draft/typing: tells other clients we're actively composing a message to
+ this target (rate-limited internally), or that we've stopped (message
+ sent, input cleared, or navigated away). Both are no-ops if the CAP
+ wasn't negotiated. */
+- (void)sendTypingNotificationActiveForChannel:(IRCChannel *)channel;
+- (void)sendTypingNotificationDoneForChannel:(IRCChannel *)channel;
+
 /* Channels (not queries) on this connection, that we are joined to, in
  which the given nickname is also present. */
 - (NSArray<IRCChannel *> *)channelsSharedWithNickname:(NSString *)nickname;

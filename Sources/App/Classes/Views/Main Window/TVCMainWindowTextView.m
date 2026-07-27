@@ -42,6 +42,7 @@
 #import "TPCPreferencesLocalPrivate.h"
 #import "TPCPreferencesUserDefaults.h"
 #import "TVCMainWindow.h"
+#import "TVCMainWindowPrivate.h"
 #import "TVCMainWindowSegmentedControlPrivate.h"
 #import "TVCTextViewWithIRCFormatterPrivate.h"
 #import "TVCMainWindowTextViewAppearancePrivate.h"
@@ -251,6 +252,8 @@ NS_ASSUME_NONNULL_BEGIN
 	[super textDidChange:aNotification];
 
 	[self recalculateTextViewSize];
+
+	[self.mainWindow inputTextViewValueDidChange];
 }
 
 - (void)paste:(nullable id)sender
