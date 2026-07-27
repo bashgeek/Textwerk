@@ -72,6 +72,11 @@ NS_ASSUME_NONNULL_BEGIN
 #define _enqueueBlockStandalone(operationBlock)			\
 	[self.printingQueue enqueueMessageBlock:(operationBlock) for:self isStandalone:YES];
 
+/* Maximum gap, in seconds, between two consecutive messages from the
+same sender for them to still be grouped under one message header when
+TVCLogLineGroupingStyleGrouped is active. */
+static const NSTimeInterval TVCLogControllerMessageGroupingWindow = (5 * 60);
+
 @interface TVCLogControllerPrintOperationContext ()
 @property (nonatomic, weak, readwrite) IRCClient *client;
 @property (nonatomic, weak, readwrite) IRCChannel *channel;
@@ -499,11 +504,15 @@ NSString * const TVCLogControllerViewFinishedLoadingNotification = @"TVCLogContr
 
 	NSMutableArray<THOPluginDidPostNewMessageConcreteObject *> *pluginObjects = nil;
 
+	TVCLogLine *previousLine = self.lastLine;
+
 	for (TVCLogLine *logLine in oldLines) {
 		/* Render result info HTML */
 		NSDictionary<NSString *, id> *resultInfo = nil;
 
-		NSString *html = [self renderLogLine:logLine resultInfo:&resultInfo];
+		NSString *html = [self renderLogLine:logLine previousLine:previousLine resultInfo:&resultInfo];
+
+		previousLine = logLine;
 
 		if (html == nil) {
 			LogToConsoleError("Failed to render log line %{public}@", logLine.description);
@@ -1155,11 +1164,15 @@ NSString * const TVCLogControllerViewFinishedLoadingNotification = @"TVCLogContr
 
 	NSMutableArray<THOPluginDidPostNewMessageConcreteObject *> *pluginObjects = nil;
 
+	TVCLogLine *previousLine = self.lastLine;
+
 	for (TVCLogLine *logLine in logLines) {
 		/* Render result info HTML */
 		NSDictionary<NSString *, id> *resultInfo = nil;
 
-		NSString *html = [self renderLogLine:logLine resultInfo:&resultInfo];
+		NSString *html = [self renderLogLine:logLine previousLine:previousLine resultInfo:&resultInfo];
+
+		previousLine = logLine;
 
 		if (html == nil) {
 			LogToConsoleError("Failed to render log line %{public}@", logLine.description);
@@ -1219,12 +1232,14 @@ NSString * const TVCLogControllerViewFinishedLoadingNotification = @"TVCLogContr
 		logLine = [logLine copy];
 	}
 
+	TVCLogLine *previousLine = self.lastLine;
+
 	self.lastLine = logLine;
 
 	TVCLogControllerPrintingBlock printBlock = ^(id operation) {
 		NSDictionary<NSString *, id> *resultInfo = nil;
 
-		NSString *html = [self renderLogLine:logLine resultInfo:&resultInfo];
+		NSString *html = [self renderLogLine:logLine previousLine:previousLine resultInfo:&resultInfo];
 
 		if (html == nil) {
 			LogToConsoleError("Failed to render log line %{public}@", logLine.description);
@@ -1323,7 +1338,7 @@ NSString * const TVCLogControllerViewFinishedLoadingNotification = @"TVCLogContr
 	_enqueueBlock(printBlock)
 }
 
-- (nullable NSString *)renderLogLine:(TVCLogLine *)logLine resultInfo:(NSDictionary<NSString *, id> ** _Nullable)resultInfo
+- (nullable NSString *)renderLogLine:(TVCLogLine *)logLine previousLine:(nullable TVCLogLine *)previousLine resultInfo:(NSDictionary<NSString *, id> ** _Nullable)resultInfo
 {
 	NSParameterAssert(logLine != nil);
 
@@ -1376,6 +1391,25 @@ NSString * const TVCLogControllerViewFinishedLoadingNotification = @"TVCLogContr
 	NSString *lineNumber = logLine.uniqueIdentifier;
 
 	NSDate *receivedAt = logLine.receivedAt;
+
+	// ************************************************************************** /
+
+	BOOL groupedDisplayEnabled = ([TPCPreferences messageGroupingStyle] == TVCLogLineGroupingStyleGrouped);
+
+	BOOL groupedWithPrevious = NO;
+
+	if (groupedDisplayEnabled &&
+		highlighted == NO &&
+		logLine.isFirstForDay == NO &&
+		previousLine != nil &&
+		(lineType == TVCLogLineTypePrivateMessage || lineType == TVCLogLineTypeAction) &&
+		(previousLine.lineType == TVCLogLineTypePrivateMessage || previousLine.lineType == TVCLogLineTypeAction) &&
+		[logLine.nickname isEqualToString:previousLine.nickname] &&
+		[lineNumber isEqualToString:self.newestLineNumberFromPreviousSession] == NO &&
+		[receivedAt timeIntervalSinceDate:previousLine.receivedAt] < TVCLogControllerMessageGroupingWindow)
+	{
+		groupedWithPrevious = YES;
+	}
 
 	// ************************************************************************** /
 
@@ -1441,6 +1475,11 @@ NSString * const TVCLogControllerViewFinishedLoadingNotification = @"TVCLogContr
 	} else {
 		templateAttributes[@"highlightAttribute"] = @"false";
 	}
+
+	// ---- //
+
+	templateAttributes[@"groupedDisplayEnabled"] = @(groupedDisplayEnabled);
+	templateAttributes[@"isGroupedWithPrevious"] = @(groupedWithPrevious);
 
 	// ---- //
 
