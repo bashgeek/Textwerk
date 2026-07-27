@@ -1248,8 +1248,22 @@ static NSArray<NSString *> *_matchKeywords = nil;
 
 }
 
++ (void)_applyNewInstallationDefaults
+{
+	/* applicationRunCount is incremented before this is called, so a
+	 value of 1 means this is the first launch of a fresh installation
+	 rather than an upgrade of an existing one. Only new installations
+	 get the grouped message display turned on so existing users are
+	 never silently switched over. */
+	if ([TPCApplicationInfo applicationRunCount] != 1) {
+		return;
+	}
+
+	[self setMessageGroupingStyle:TVCLogLineGroupingStyleGrouped];
+}
+
 #pragma mark -
-#pragma mark Dynamic Defaults 
+#pragma mark Dynamic Defaults
 
 + (void)registerWebKit2DynamicDefaults
 {
@@ -1353,6 +1367,8 @@ static NSArray<NSString *> *_matchKeywords = nil;
 	[self _migrateAppearanceToVersion7011];
 
 	[self _migrateNicknameColorOverridesToVersion722];
+
+	[self _applyNewInstallationDefaults];
 
 	[TPCPathInfo startUsingTranscriptFolderURL];
 
