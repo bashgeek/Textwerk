@@ -5,7 +5,7 @@
  *                   | |  __/>  <| |_| |_| | (_| | |
  *                   |_|\___/_/\_\\__|\__,_|\__,_|_|
  *
- * Copyright (c) 2017, 2018 Codeux Software, LLC & respective contributors.
+ * Copyright (c) 2026 Codeux Software, LLC & respective contributors.
  *       Please see Acknowledgements.pdf for additional information.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,58 +35,50 @@
  *
  *********************************************************************** */
 
-#import "ICPCoreMediaPrivate.h"
-
-#import "ICMCommonInlineImages.h"
-#import "ICMCommonInlineVideos.h"
-#import "ICMDailymotion.h"
-#import "ICMGitHub.h"
-#import "ICMGyazo.h"
-#import "ICMImgurGifv.h"
-#import "ICMPornhub.h"
-#import "ICMReddit.h"
-#import "ICMStreamable.h"
-#import "ICMTweet.h"
-#import "ICMTwitchClips.h"
-#import "ICMTwitchLive.h"
-#import "ICMVimeo.h"
-#import "ICMXkcd.h"
-#import "ICMYouTube.h"
+#import "ICMInlineHTML.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation ICPCoreMedia
+/**
+ Common base class for modules that render a lightweight
+ icon/title/subtitle card for a link, sourced from a
+ provider's own JSON API (oEmbed or similar) rather than
+ by scraping the destination page itself.
+ */
+@interface ICMLinkPreviewCard : ICMInlineHTML
 
-+ (NSArray<Class> *)modules
-{
-	return
-	@[
-		[ICMDailymotion class],
-		[ICMGitHub class],
-		[ICMGyazo class],
-		[ICMImgurGifv class],
-		[ICMPornhub class],
-		[ICMReddit class],
-		[ICMStreamable class],
-		[ICMTweet class],
+/**
+ Renders and inlines a card using the given metadata.
 
-		/* Twitch now requires a parent= argument when embedding content.
-		 This argument acts as the domain that the content will be embedded in the
-		 context of to allow security headers to be set. Textual is not a
-		 web server. It loads files using file:// scheme. Even using "localhost"
-		 will not allow embeds to work. Is embedding Twitch really worth the
-		 cost of hosting a local server to spoof a localhost? Probably not.  */
-//		[ICMTwitchClips class],
-//		[ICMTwitchLive class],
+ @param title
+  Required. The headline shown in the card.
 
-		[ICMVimeo class],
-		[ICMXkcd class],
-		[ICMYouTube class],
+ @param meta
+  Optional short fact shown after the site name on the card's
+  subtitle line (e.g. "9 min read", "★ 1,412", "u/someUser").
 
-		[ICMCommonInlineVideos class],
-		[ICMCommonInlineImages class]
-	];
-}
+ @param imageURL
+  Optional icon/thumbnail. Ignored if its scheme is not http/https.
+
+ @param siteName
+  Optional label identifying the provider (e.g. "github.com").
+  Shown on the card's subtitle line, ahead of -meta.
+
+ @param targetURL
+  The URL the card links to when clicked. Must be http/https.
+ */
+- (void)performActionForCardWithTitle:(NSString *)title
+								  meta:(nullable NSString *)meta
+							  imageURL:(nullable NSURL *)imageURL
+							  siteName:(nullable NSString *)siteName
+							 targetURL:(NSURL *)targetURL;
+
+/**
+ Called by a subclass to indicate that a card cannot be built,
+ such as when a provider's API request fails or returns
+ nothing usable. Cancels inlining for the payload.
+ */
+- (void)notifyUnableToPresentCard;
 
 @end
 
