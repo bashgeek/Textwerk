@@ -79,6 +79,11 @@
 */
 
 #import <objc/message.h>
+#import <CommonCrypto/CommonCryptoError.h>
+#import <CommonCrypto/CommonDigest.h>
+#import <CommonCrypto/CommonHMAC.h>
+#import <CommonCrypto/CommonKeyDerivation.h>
+#import <Security/Security.h>
 
 #import "NSObjectHelperPrivate.h"
 #import "NSStringHelper.h"
@@ -188,6 +193,23 @@ NSString * const IRCClientDidDisconnectNotification = @"IRCClientDidDisconnectNo
 
 NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNicknameChangedNotification";
 
+typedef NS_ENUM(NSUInteger, IRCSASLSCRAMSHA256Step) {
+	IRCSASLSCRAMSHA256StepClientFirst = 0, // Sent client-first-message; awaiting server-first-message
+	IRCSASLSCRAMSHA256StepClientFinal		// Sent client-final-message; awaiting server-final-message
+};
+
+@interface IRCSASLSCRAMSHA256Context : NSObject
+@property (nonatomic, assign) IRCSASLSCRAMSHA256Step step;
+@property (nonatomic, copy, nullable) NSString *clientNonce;
+@property (nonatomic, copy, nullable) NSString *clientFirstMessageBare;
+@property (nonatomic, copy, nullable) NSString *serverFirstMessage;
+@property (nonatomic, copy, nullable) NSString *combinedNonce;
+@property (nonatomic, copy, nullable) NSData *saltedPassword;
+@end
+
+@implementation IRCSASLSCRAMSHA256Context
+@end
+
 @interface IRCClient ()
 // Properties that are public in IRCClient.h
 @property (nonatomic, copy, readwrite) IRCClientConfig *config;
@@ -242,6 +264,8 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 @property (nonatomic, assign) BOOL zncBouncerIsSendingCertificateInfo;
 @property (nonatomic, assign) BOOL zncBouncerIsPlayingBackHistory;
 @property (nonatomic, strong) NSMutableArray<NSNumber *> *capabilitiesPending;
+@property (nonatomic, strong, nullable) NSMutableString *saslAuthenticateResponseBuffer;
+@property (nonatomic, strong, nullable) IRCSASLSCRAMSHA256Context *saslSCRAMContext;
 @property (nonatomic, assign) NSUInteger connectDelay;
 @property (nonatomic, assign) NSUInteger lastServerSelected;
 @property (nonatomic, assign) NSUInteger lastWhoRequestChannelListIndex;
@@ -1346,13 +1370,22 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 {
 	NSParameterAssert(string != nil);
 
-	NSData *data = [string dataUsingEncoding:self.config.primaryEncoding allowLossyConversion:NO];
+	NSData *data = nil;
 
-	if (data == nil) {
-		data = [string dataUsingEncoding:self.config.fallbackEncoding allowLossyConversion:NO];
+	if ([self isCapabilityEnabled:ClientIRCv3SupportedCapabilityUTF8Only]) {
+		/* UTF8ONLY is a server-enforced, connection-wide guarantee, so once it
+		 is negotiated we must not fall back to the user's configured primary/
+		 fallback encodings — the server has already committed to UTF-8 only. */
+		data = [string dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:NO];
+	} else {
+		data = [string dataUsingEncoding:self.config.primaryEncoding allowLossyConversion:NO];
 
 		if (data == nil) {
-			data = [string dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+			data = [string dataUsingEncoding:self.config.fallbackEncoding allowLossyConversion:NO];
+
+			if (data == nil) {
+				data = [string dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+			}
 		}
 	}
 
@@ -1368,13 +1401,19 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 {
 	NSParameterAssert(data != nil);
 
-	NSString *string = [NSString stringWithBytes:data.bytes length:data.length encoding:self.config.primaryEncoding];
+	NSString *string = nil;
 
-	if (string == nil) {
-		string = [NSString stringWithBytes:data.bytes length:data.length encoding:self.config.fallbackEncoding];
+	if ([self isCapabilityEnabled:ClientIRCv3SupportedCapabilityUTF8Only]) {
+		string = [NSString stringWithBytes:data.bytes length:data.length encoding:NSUTF8StringEncoding];
+	} else {
+		string = [NSString stringWithBytes:data.bytes length:data.length encoding:self.config.primaryEncoding];
 
 		if (string == nil) {
-			string = [NSString stringWithBytes:data.bytes length:data.length encoding:NSASCIIStringEncoding];
+			string = [NSString stringWithBytes:data.bytes length:data.length encoding:self.config.fallbackEncoding];
+
+			if (string == nil) {
+				string = [NSString stringWithBytes:data.bytes length:data.length encoding:NSASCIIStringEncoding];
+			}
 		}
 	}
 
@@ -6015,6 +6054,8 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 
 	[self processIncomingMessageAttributes:message];
 
+	[self processAccountTagForMessage:message];
+
 	if (message.commandNumeric > 0) {
 		[self receiveNumericReply:message];
 	} else {
@@ -8238,6 +8279,34 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 }
 
 #pragma mark -
+#pragma mark account-tag CAP
+
+- (void)processAccountTagForMessage:(IRCMessage *)m
+{
+	NSParameterAssert(m != nil);
+
+	if ([self isCapabilityEnabled:ClientIRCv3SupportedCapabilityAccountTag] == NO) {
+		return;
+	}
+
+	NSString *accountName = m.messageTags[@"account"];
+
+	if (accountName.length == 0) {
+		return;
+	}
+
+	NSString *nickname = m.senderNickname;
+
+	if (nickname.length == 0) {
+		return;
+	}
+
+	[self modifyUserUserWithNickname:nickname withBlock:^(IRCUserMutable *userMutable) {
+		userMutable.account = accountName;
+	}];
+}
+
+#pragma mark -
 #pragma mark SETNAME Command (setname CAP)
 
 - (void)receiveSetName:(IRCMessage *)m
@@ -8506,12 +8575,6 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 
 			break;
 		}
-		case ClientIRCv3SupportedCapabilityLabeledResponse:
-		{
-			stringValue = @"labeled-response";
-
-			break;
-		}
 		case ClientIRCv3SupportedCapabilityChatHistory:
 		{
 			stringValue = @"draft/chathistory";
@@ -8600,6 +8663,12 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 
 			break;
 		}
+		case ClientIRCv3SupportedCapabilityUTF8Only:
+		{
+			stringValue = @"UTF8ONLY";
+
+			break;
+		}
 		case ClientIRCv3SupportedCapabilityMonitorCommand:
 		{
 			stringValue = @"monitor-command";
@@ -8679,8 +8748,6 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 		return ClientIRCv3SupportedCapabilityReadMarker;
 	} else if ([capabilityString isEqualToStringIgnoringCase:@"draft/typing"]) {
 		return ClientIRCv3SupportedCapabilityTyping;
-	} else if ([capabilityString isEqualToStringIgnoringCase:@"labeled-response"]) {
-		return ClientIRCv3SupportedCapabilityLabeledResponse;
 	} else if ([capabilityString isEqualToStringIgnoringCase:@"message-tags"]) {
 		return ClientIRCv3SupportedCapabilityMessageTags;
 	} else if ([capabilityString isEqualToStringIgnoringCase:@"standard-replies"]) {
@@ -8701,6 +8768,8 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 		return ClientIRCv3SupportedCapabilityServerTime;
 	} else if ([capabilityString isEqualToStringIgnoringCase:@"userhost-in-names"]) {
 		return ClientIRCv3SupportedCapabilityUserhostInNames;
+	} else if ([capabilityString isEqualToStringIgnoringCase:@"UTF8ONLY"]) {
+		return ClientIRCv3SupportedCapabilityUTF8Only;
 	} else if ([capabilityString isEqualToStringIgnoringCase:@"plan.io/playback"]) {
 		return ClientIRCv3SupportedCapabilityPlanioPlayback;
 	} else if ([capabilityString isEqualToStringIgnoringCase:@"znc.in/playback"]) {
@@ -8746,7 +8815,6 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 	appendValue(ClientIRCv3SupportedCapabilityIdentifyMsg);
 	appendValue(ClientIRCv3SupportedCapabilityInviteNotify);
 	appendValue(ClientIRCv3SupportedCapabilityIsIdentifiedWithSASL);
-	appendValue(ClientIRCv3SupportedCapabilityLabeledResponse);
 	appendValue(ClientIRCv3SupportedCapabilityMessageTags);
 	appendValue(ClientIRCv3SupportedCapabilityMultiPrefix);
 	appendValue(ClientIRCv3SupportedCapabilityPlayback);
@@ -8756,6 +8824,7 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 	appendValue(ClientIRCv3SupportedCapabilityStandardReplies);
 	appendValue(ClientIRCv3SupportedCapabilityTyping);
 	appendValue(ClientIRCv3SupportedCapabilityUserhostInNames);
+	appendValue(ClientIRCv3SupportedCapabilityUTF8Only);
 	appendValue(ClientIRCv3SupportedCapabilityZNCCertInfoModule);
 	appendValue(ClientIRCv3SupportedCapabilityZNCPlaybackModule);
 	appendValue(ClientIRCv3SupportedCapabilityZNCSelfMessage);
@@ -8794,7 +8863,6 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 			 capability == ClientIRCv3SupportedCapabilityIdentifyCTCP			||
 			 capability == ClientIRCv3SupportedCapabilityIdentifyMsg			||
 			 capability == ClientIRCv3SupportedCapabilityInviteNotify			||
-			 capability == ClientIRCv3SupportedCapabilityLabeledResponse		||
 			 capability == ClientIRCv3SupportedCapabilityMessageTags			||
 			 capability == ClientIRCv3SupportedCapabilityMultiPrefix			||
 			 capability == ClientIRCv3SupportedCapabilityReadMarker				||
@@ -8804,6 +8872,7 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 			 capability == ClientIRCv3SupportedCapabilityStandardReplies		||
 			 capability == ClientIRCv3SupportedCapabilityServerTime				||
 			 capability == ClientIRCv3SupportedCapabilityUserhostInNames		||
+			 capability == ClientIRCv3SupportedCapabilityUTF8Only				||
 			 capability == ClientIRCv3SupportedCapabilityPlanioPlayback			||
 			 capability == ClientIRCv3SupportedCapabilityZNCCertInfoModule		||
 			 capability == ClientIRCv3SupportedCapabilityZNCPlaybackModule		||
@@ -8865,7 +8934,6 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 	 [capabilityString isEqualToStringIgnoringCase:@"draft/typing"]				||
 	 [capabilityString isEqualToStringIgnoringCase:@"extended-join"]			||
 	 [capabilityString isEqualToStringIgnoringCase:@"invite-notify"]			||
-	 [capabilityString isEqualToStringIgnoringCase:@"labeled-response"]			||
 	 [capabilityString isEqualToStringIgnoringCase:@"message-tags"]				||
 	 [capabilityString isEqualToStringIgnoringCase:@"standard-replies"]			||
 	 [capabilityString isEqualToStringIgnoringCase:@"setname"]					||
@@ -8876,6 +8944,7 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 	 [capabilityString isEqualToStringIgnoringCase:@"sts"]						||
 	 [capabilityString isEqualToStringIgnoringCase:@"server-time"]				||
 	 [capabilityString isEqualToStringIgnoringCase:@"userhost-in-names"]		||
+	 [capabilityString isEqualToStringIgnoringCase:@"UTF8ONLY"]					||
 	 [capabilityString isEqualToStringIgnoringCase:@"plan.io/playback"]			||
 	 [capabilityString isEqualToStringIgnoringCase:@"znc.in/playback"]			||
 	 [capabilityString isEqualToStringIgnoringCase:@"znc.in/self-message"]		||
@@ -9027,12 +9096,79 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 	}
 	else if ([command isEqualToStringIgnoringCase:@"AUTHENTICATE"])
 	{
-		if ([modifier isEqualToString:@"+"]) {
-			[self sendSASLIdentificationInformation];
-		}
+		[self processIncomingSASLAuthenticateChunk:modifier];
 	}
 
 	[self postReceivedMessage:m];
+}
+
+#pragma mark -
+#pragma mark SASL SCRAM-SHA-256
+
+/* A malicious or misconfigured server could otherwise advertise an enormous
+ iteration count in the server-first-message and force PBKDF2 to run for an
+ arbitrarily long time on the main thread, which is where all CAP/SASL
+ negotiation happens today. Clamp to a value in line with common client-side
+ PBKDF2 caps and treat anything above it as a hard SASL failure. */
+#define _saslSCRAMMaximumIterationCount		600000
+
+static NSData * _Nullable _IRCSASLSCRAMSHA256PBKDF2(NSData *password, NSData *salt, uint32_t iterations)
+{
+	uint8_t derivedKey[CC_SHA256_DIGEST_LENGTH];
+
+	int result = CCKeyDerivationPBKDF(kCCPBKDF2,
+									   password.bytes, password.length,
+									   salt.bytes, salt.length,
+									   kCCPRFHmacAlgSHA256,
+									   iterations,
+									   derivedKey, sizeof(derivedKey));
+
+	if (result != kCCSuccess) {
+		return nil;
+	}
+
+	return [NSData dataWithBytes:derivedKey length:sizeof(derivedKey)];
+}
+
+static NSData *_IRCSASLSCRAMSHA256HMAC(NSData *key, NSData *data)
+{
+	uint8_t mac[CC_SHA256_DIGEST_LENGTH];
+
+	CCHmac(kCCHmacAlgSHA256, key.bytes, key.length, data.bytes, data.length, mac);
+
+	return [NSData dataWithBytes:mac length:sizeof(mac)];
+}
+
+static NSData *_IRCSASLSCRAMSHA256Digest(NSData *data)
+{
+	uint8_t digest[CC_SHA256_DIGEST_LENGTH];
+
+	CC_SHA256(data.bytes, (CC_LONG)data.length, digest);
+
+	return [NSData dataWithBytes:digest length:sizeof(digest)];
+}
+
+/* Both inputs are always CC_SHA256_DIGEST_LENGTH-byte HMAC-SHA256/SHA-256
+ outputs by construction, but the length check is kept as a guard in case a
+ future edit changes the digest algorithm without updating this function. */
+static NSData * _Nullable _IRCSASLSCRAMSHA256XOR(NSData *dataA, NSData *dataB)
+{
+	if (dataA.length != dataB.length) {
+		return nil;
+	}
+
+	NSMutableData *result = [NSMutableData dataWithLength:dataA.length];
+
+	const uint8_t *bytesA = dataA.bytes;
+	const uint8_t *bytesB = dataB.bytes;
+
+	uint8_t *resultBytes = result.mutableBytes;
+
+	for (NSUInteger i = 0; i < dataA.length; i++) {
+		resultBytes[i] = (bytesA[i] ^ bytesB[i]);
+	}
+
+	return result;
 }
 
 #pragma mark -
@@ -9057,8 +9193,15 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 	if (identificationMechanism == 0 &&
 		self.config.nicknamePassword.length > 0)
 	{
-		if (capabilityOptions.count == 0 ||
-			[capabilityOptions containsObjectIgnoringCase:@"PLAIN"])
+		if (capabilityOptions.count > 0 &&
+			[capabilityOptions containsObjectIgnoringCase:@"SCRAM-SHA-256"])
+		{
+			identificationMechanism = ClientIRCv3SupportedCapabilitySASLScramSHA256;
+
+			[self enablePendingCapability:ClientIRCv3SupportedCapabilitySASLScramSHA256];
+		}
+		else if (capabilityOptions.count == 0 ||
+				 [capabilityOptions containsObjectIgnoringCase:@"PLAIN"])
 		{
 			identificationMechanism = ClientIRCv3SupportedCapabilitySASLPlainText;
 
@@ -9068,6 +9211,21 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 
 	if (identificationMechanism != 0) {
 		[self enablePendingCapability:ClientIRCv3SupportedCapabilitySASLGeneric];
+	}
+}
+
+- (void)sendSASLAuthenticateChunkedPayload:(NSString *)payload
+{
+	NSParameterAssert(payload != nil);
+
+	NSArray<NSString *> *chunks = [payload base64EncodingWithLineLength:400];
+
+	for (NSString *chunk in chunks) {
+		[self sendCapabilityAuthenticate:chunk];
+	}
+
+	if (chunks.count == 0 || ((NSString *)chunks.lastObject).length == 400) {
+		[self sendCapabilityAuthenticate:@"+"];
 	}
 }
 
@@ -9084,19 +9242,16 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 								 self.config.username, 0x00,
 								 self.config.nicknamePassword];
 
-		NSArray *authStrings = [authString base64EncodingWithLineLength:400];
-
-		for (NSString *string in authStrings) {
-			[self sendCapabilityAuthenticate:string];
-		}
-
-		if (authStrings.count == 0 || ((NSString *)authStrings.lastObject).length == 400) {
-			[self sendCapabilityAuthenticate:@"+"];
-		}
+		[self sendSASLAuthenticateChunkedPayload:authString];
 	}
 	else if ([self isPendingCapabilityEnabled:ClientIRCv3SupportedCapabilitySASLExternal])
 	{
 		[self sendCapabilityAuthenticate:@"+"];
+	}
+	else if ([self isPendingCapabilityEnabled:ClientIRCv3SupportedCapabilitySASLScramSHA256] &&
+			  self.saslSCRAMContext.step == IRCSASLSCRAMSHA256StepClientFirst)
+	{
+		[self sendSASLSCRAMClientFirstMessage];
 	}
 }
 
@@ -9120,6 +9275,12 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 		[self sendCapabilityAuthenticate:@"EXTERNAL"];
 
 		return YES;
+	} else if ([self isPendingCapabilityEnabled:ClientIRCv3SupportedCapabilitySASLScramSHA256]) {
+		self.saslSCRAMContext = [IRCSASLSCRAMSHA256Context new];
+
+		[self sendCapabilityAuthenticate:@"SCRAM-SHA-256"];
+
+		return YES;
 	}
 
 	return NO;
@@ -9130,9 +9291,306 @@ NSString * const IRCClientUserNicknameChangedNotification = @"IRCClientUserNickn
 	[self disablePendingCapability:ClientIRCv3SupportedCapabilitySASLGeneric];
 	[self disablePendingCapability:ClientIRCv3SupportedCapabilitySASLPlainText];
 	[self disablePendingCapability:ClientIRCv3SupportedCapabilitySASLExternal];
+	[self disablePendingCapability:ClientIRCv3SupportedCapabilitySASLScramSHA256];
 	[self disablePendingCapability:ClientIRCv3SupportedCapabilityIsInSASLNegotiation];
 
 	[self disableCapability:ClientIRCv3SupportedCapabilityIsIdentifiedWithSASL];
+
+	self.saslSCRAMContext = nil;
+	self.saslAuthenticateResponseBuffer = nil;
+}
+
+#pragma mark -
+#pragma mark Incoming AUTHENTICATE Payload Reassembly
+
+- (void)processIncomingSASLAuthenticateChunk:(NSString *)chunk
+{
+	NSParameterAssert(chunk != nil);
+
+	if ([chunk isEqualToString:@"+"]) {
+		[self flushSASLAuthenticationBufferAndProcess];
+
+		return;
+	}
+
+	if (self.saslAuthenticateResponseBuffer == nil) {
+		self.saslAuthenticateResponseBuffer = [NSMutableString string];
+	}
+
+	[self.saslAuthenticateResponseBuffer appendString:chunk];
+
+	if (chunk.length < 400) {
+		[self flushSASLAuthenticationBufferAndProcess];
+	}
+
+	// A chunk of exactly 400 characters means more data is coming
+	// per the SASL 3.2 chunking rule, so we wait for the next line.
+}
+
+- (void)flushSASLAuthenticationBufferAndProcess
+{
+	NSString *base64Payload = [self.saslAuthenticateResponseBuffer copy];
+
+	self.saslAuthenticateResponseBuffer = nil;
+
+	if (base64Payload.length == 0) {
+		/* Historic PLAIN/EXTERNAL behavior: a bare "+" with nothing
+		 buffered means "go ahead and send your credentials." */
+		[self sendSASLIdentificationInformation];
+
+		return;
+	}
+
+	NSData *payload = [XRBase64Encoding decodeData:base64Payload];
+
+	if (payload == nil) {
+		LogToConsoleError("Failed to base64-decode AUTHENTICATE payload");
+
+		[self sendCapabilityAuthenticate:@"*"];
+
+		return;
+	}
+
+	if (self.saslSCRAMContext != nil) {
+		[self processSASLAuthenticationPayload:payload];
+	}
+}
+
+#pragma mark -
+#pragma mark SASL SCRAM-SHA-256 Exchange
+
+- (void)abortSASLSCRAMNegotiation
+{
+	self.saslSCRAMContext = nil;
+
+	[self sendCapabilityAuthenticate:@"*"];
+}
+
+- (NSString *)scramEscapedUsername:(NSString *)username
+{
+	NSString *escaped = [username stringByReplacingOccurrencesOfString:@"=" withString:@"=3D"];
+
+	escaped = [escaped stringByReplacingOccurrencesOfString:@"," withString:@"=2C"];
+
+	return escaped;
+}
+
+- (NSString *)newSASLSCRAMClientNonce
+{
+	uint8_t bytes[24];
+
+	int result = SecRandomCopyBytes(kSecRandomDefault, sizeof(bytes), bytes);
+
+	if (result != errSecSuccess) {
+		LogToConsoleError("SecRandomCopyBytes failed with result: %d", result);
+	}
+
+	NSData *nonceData = [NSData dataWithBytes:bytes length:sizeof(bytes)];
+
+	return [XRBase64Encoding encodeData:nonceData];
+}
+
+- (NSDictionary<NSString *, NSString *> *)scramMessageAttributesForString:(NSString *)string
+{
+	NSMutableDictionary<NSString *, NSString *> *attributes = [NSMutableDictionary dictionary];
+
+	for (NSString *component in [string componentsSeparatedByString:@","]) {
+		NSRange equalsRange = [component rangeOfString:@"="];
+
+		if (equalsRange.location == NSNotFound) {
+			continue;
+		}
+
+		NSString *key = [component substringToIndex:equalsRange.location];
+		NSString *value = [component substringFromIndex:(equalsRange.location + 1)];
+
+		attributes[key] = value;
+	}
+
+	return attributes;
+}
+
+- (void)sendSASLSCRAMClientFirstMessage
+{
+	IRCSASLSCRAMSHA256Context *context = self.saslSCRAMContext;
+
+	NSString *nonce = [self newSASLSCRAMClientNonce];
+
+	context.clientNonce = nonce;
+
+	NSString *escapedUsername = [self scramEscapedUsername:self.config.username];
+
+	context.clientFirstMessageBare = [NSString stringWithFormat:@"n=%@,r=%@", escapedUsername, nonce];
+
+	// "n,," is the GS2 header: no channel binding, no authzid.
+	NSString *clientFirstMessage = [@"n,," stringByAppendingString:context.clientFirstMessageBare];
+
+	[self sendSASLAuthenticateChunkedPayload:clientFirstMessage];
+}
+
+- (void)processSASLAuthenticationPayload:(NSData *)payload
+{
+	IRCSASLSCRAMSHA256Context *context = self.saslSCRAMContext;
+
+	if (context == nil) {
+		return;
+	}
+
+	if (context.step == IRCSASLSCRAMSHA256StepClientFirst) {
+		[self processSASLSCRAMServerFirstMessage:payload];
+	} else if (context.step == IRCSASLSCRAMSHA256StepClientFinal) {
+		[self processSASLSCRAMServerFinalMessage:payload];
+	}
+}
+
+- (void)processSASLSCRAMServerFirstMessage:(NSData *)payload
+{
+	IRCSASLSCRAMSHA256Context *context = self.saslSCRAMContext;
+
+	NSString *serverFirstMessage = [[NSString alloc] initWithData:payload encoding:NSUTF8StringEncoding];
+
+	if (serverFirstMessage == nil) {
+		[self abortSASLSCRAMNegotiation];
+
+		return;
+	}
+
+	NSDictionary<NSString *, NSString *> *attributes = [self scramMessageAttributesForString:serverFirstMessage];
+
+	NSString *combinedNonce = attributes[@"r"];
+	NSString *encodedSalt = attributes[@"s"];
+	NSString *iterationCountString = attributes[@"i"];
+
+	if (combinedNonce.length == 0 || encodedSalt.length == 0 || iterationCountString.length == 0) {
+		[self abortSASLSCRAMNegotiation];
+
+		return;
+	}
+
+	if ([combinedNonce hasPrefix:context.clientNonce] == NO) {
+		/* The server did not echo back our nonce as a prefix of its own —
+		 something is wrong (bug or attack); do not continue. */
+		[self abortSASLSCRAMNegotiation];
+
+		return;
+	}
+
+	NSData *salt = [XRBase64Encoding decodeData:encodedSalt];
+
+	NSInteger iterationCount = iterationCountString.integerValue;
+
+	if (salt == nil || iterationCount <= 0 || iterationCount > _saslSCRAMMaximumIterationCount) {
+		[self abortSASLSCRAMNegotiation];
+
+		return;
+	}
+
+	NSData *password = [self.config.nicknamePassword dataUsingEncoding:NSUTF8StringEncoding];
+
+	NSData *saltedPassword = _IRCSASLSCRAMSHA256PBKDF2(password, salt, (uint32_t)iterationCount);
+
+	if (saltedPassword == nil) {
+		[self abortSASLSCRAMNegotiation];
+
+		return;
+	}
+
+	context.serverFirstMessage = serverFirstMessage;
+	context.combinedNonce = combinedNonce;
+	context.saltedPassword = saltedPassword;
+
+	NSData *clientKeyLabel = [@"Client Key" dataUsingEncoding:NSUTF8StringEncoding];
+
+	NSData *clientKey = _IRCSASLSCRAMSHA256HMAC(saltedPassword, clientKeyLabel);
+	NSData *storedKey = _IRCSASLSCRAMSHA256Digest(clientKey);
+
+	NSString *clientFinalMessageWithoutProof = [NSString stringWithFormat:@"c=biws,r=%@", combinedNonce];
+
+	NSString *authMessage = [NSString stringWithFormat:@"%@,%@,%@",
+							  context.clientFirstMessageBare,
+							  serverFirstMessage,
+							  clientFinalMessageWithoutProof];
+
+	NSData *authMessageData = [authMessage dataUsingEncoding:NSUTF8StringEncoding];
+
+	NSData *clientSignature = _IRCSASLSCRAMSHA256HMAC(storedKey, authMessageData);
+
+	NSData *clientProof = _IRCSASLSCRAMSHA256XOR(clientKey, clientSignature);
+
+	if (clientProof == nil) {
+		[self abortSASLSCRAMNegotiation];
+
+		return;
+	}
+
+	NSString *clientFinalMessage = [NSString stringWithFormat:@"%@,p=%@",
+									 clientFinalMessageWithoutProof,
+									 [XRBase64Encoding encodeData:clientProof]];
+
+	context.step = IRCSASLSCRAMSHA256StepClientFinal;
+
+	[self sendSASLAuthenticateChunkedPayload:clientFinalMessage];
+}
+
+- (void)processSASLSCRAMServerFinalMessage:(NSData *)payload
+{
+	IRCSASLSCRAMSHA256Context *context = self.saslSCRAMContext;
+
+	NSString *serverFinalMessage = [[NSString alloc] initWithData:payload encoding:NSUTF8StringEncoding];
+
+	if (serverFinalMessage == nil) {
+		[self abortSASLSCRAMNegotiation];
+
+		return;
+	}
+
+	if ([serverFinalMessage hasPrefix:@"e="]) {
+		/* Authentication failure. The server's own ERR_SASLFAIL numeric
+		 will drive negotiation cleanup; nothing further to send here. */
+		self.saslSCRAMContext = nil;
+
+		return;
+	}
+
+	NSDictionary<NSString *, NSString *> *attributes = [self scramMessageAttributesForString:serverFinalMessage];
+
+	NSString *encodedServerSignature = attributes[@"v"];
+
+	NSData *serverSignature = (encodedServerSignature.length > 0) ? [XRBase64Encoding decodeData:encodedServerSignature] : nil;
+
+	if (serverSignature == nil) {
+		[self abortSASLSCRAMNegotiation];
+
+		return;
+	}
+
+	NSString *clientFinalMessageWithoutProof = [NSString stringWithFormat:@"c=biws,r=%@", context.combinedNonce];
+
+	NSString *authMessage = [NSString stringWithFormat:@"%@,%@,%@",
+							  context.clientFirstMessageBare,
+							  context.serverFirstMessage,
+							  clientFinalMessageWithoutProof];
+
+	NSData *authMessageData = [authMessage dataUsingEncoding:NSUTF8StringEncoding];
+
+	NSData *serverKeyLabel = [@"Server Key" dataUsingEncoding:NSUTF8StringEncoding];
+
+	NSData *serverKey = _IRCSASLSCRAMSHA256HMAC(context.saltedPassword, serverKeyLabel);
+	NSData *expectedServerSignature = _IRCSASLSCRAMSHA256HMAC(serverKey, authMessageData);
+
+	if ([serverSignature isEqualToData:expectedServerSignature] == NO) {
+		/* The server's signature does not match what we calculated
+		 locally. This indicates either a server bug or a MITM attack
+		 in progress — abort rather than let the exchange complete. */
+		[self abortSASLSCRAMNegotiation];
+
+		return;
+	}
+
+	self.saslSCRAMContext = nil;
+
+	// Success is completed generically by the server's own
+	// RPL_LOGGEDIN/RPL_SASLSUCCESS numeric handling.
 }
 
 #pragma mark -

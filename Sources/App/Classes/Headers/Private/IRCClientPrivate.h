@@ -50,7 +50,8 @@ enum {
 	ClientIRCv3SupportedCapabilityZNCServerTime			= 1 << 25, // YES if the ZNC vendor specific CAP supported
 	ClientIRCv3SupportedCapabilityZNCServerTimeISO		= 1 << 26, // YES if the ZNC vendor specific CAP supported
 	ClientIRCv3SupportedCapabilityZNCPlaybackModule		= 1 << 27, // YES if the ZNC vendor specific CAP supported
-	ClientIRCv3SupportedCapabilityPlanioPlayback		= 1 << 28  // YES if the plan.io vendor specific CAP supported.
+	ClientIRCv3SupportedCapabilityPlanioPlayback		= 1 << 28, // YES if the plan.io vendor specific CAP supported.
+	ClientIRCv3SupportedCapabilitySASLScramSHA256		= 1ULL << 33  // YES if SASL=SCRAM-SHA-256 CAP is supported
 };
 
 @interface IRCClient ()

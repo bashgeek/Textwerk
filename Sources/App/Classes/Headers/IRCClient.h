@@ -86,11 +86,14 @@ typedef NS_OPTIONS(NSUInteger, ClientIRCv3SupportedCapability) {
 	ClientIRCv3SupportedCapabilityMessageTags			= 1 << 21, // YES if message-tags CAP supported
 	// NOTE: 1 << 22 through 1 << 28 are used by the private capability
 	// continuation enum in IRCClientPrivate.h (SASL/ZNC-specific flags).
-	ClientIRCv3SupportedCapabilityLabeledResponse		= 1 << 29, // YES if labeled-response CAP supported
+	// 1 << 29 previously belonged to the (now removed) labeled-response CAP.
 	ClientIRCv3SupportedCapabilityStandardReplies		= 1 << 30, // YES if standard-replies CAP supported
 	ClientIRCv3SupportedCapabilityChatHistory			= 1ULL << 31, // YES if draft/chathistory CAP supported
 	ClientIRCv3SupportedCapabilityReadMarker			= 1ULL << 32, // YES if draft/read-marker CAP supported
-	ClientIRCv3SupportedCapabilityTyping				= 1ULL << 33  // YES if draft/typing CAP supported
+	// NOTE: 1ULL << 33 is used by the private capability continuation enum
+	// in IRCClientPrivate.h (SASL SCRAM-SHA-256).
+	ClientIRCv3SupportedCapabilityUTF8Only				= 1ULL << 34, // YES if UTF8ONLY CAP supported
+	ClientIRCv3SupportedCapabilityTyping				= 1ULL << 35  // YES if draft/typing CAP supported
 };
 
 TEXTUAL_EXTERN NSNotificationName const IRCClientConfigurationWasUpdatedNotification;

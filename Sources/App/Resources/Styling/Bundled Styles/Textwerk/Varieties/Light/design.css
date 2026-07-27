@@ -282,21 +282,32 @@ div.line[data-line-type="action"]:hover {
 	background-color: rgba(0, 0, 0, 0.035);
 }
 
-/* Consecutive-message grouping (see scripts.js) */
+/* Message header ("Slack-style" message display,
+see -[TVCLogController renderLogLine:previousLine:resultInfo:]) */
 
-div.line.grouped {
+div.line .header {
+	display: flex;
+	align-items: baseline;
+	gap: 0.5em;
+	margin-bottom: 1px;
+}
+
+div.line .header .time {
+	font-size: 0.85em;
+	font-weight: 400;
+}
+
+div.line .messageBody {
+	white-space: pre-wrap;
+	cursor: default;
+}
+
+/* Consecutive messages from the same sender collapse their repeated
+header; the message itself keeps its timestamp available as a tooltip. */
+
+div.line[data-grouped="true"] {
 	padding-top: 0;
-	margin-top: -1px;
-}
-
-div.line.grouped .senderContainer,
-div.line.grouped .time {
-	opacity: 0;
-}
-
-div.line.grouped:hover .senderContainer,
-div.line.grouped:hover .time {
-	opacity: 1;
+	margin-top: -2px;
 }
 
 /* NOTICE/CTCP/WALLOPS */
