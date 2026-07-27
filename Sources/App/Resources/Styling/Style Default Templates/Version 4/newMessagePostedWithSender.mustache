@@ -20,7 +20,63 @@
 	data-member-type="{{nicknameType}}"
 {{/isRemoteMessage}}
 
+{{#groupedDisplayEnabled}}
+	{{#isGroupedWithPrevious}}
+	data-grouped="true"
+	{{/isGroupedWithPrevious}}
+{{/groupedDisplayEnabled}}
+
 	data-timestamp="{{timestamp}}">
+
+{{#groupedDisplayEnabled}}
+
+	{{^isGroupedWithPrevious}}
+	<p class="header">
+		<span class="sender"
+			onclick="Textual.nicknameMaybeWasDoubleClicked(this)"
+			oncontextmenu="Textual.openStandardNicknameContextualMenu()"
+			data-member-type="{{nicknameType}}"
+			data-nickname="{{nickname}}"
+
+			{{#nicknameColorHashingEnabled}}
+				{{#nicknameColorStyleOverride}}
+				data-override-color="true"
+				{{/nicknameColorStyleOverride}}
+
+				{{^ isEmpty(nicknameColorStyle) }}
+				style="color: {{nicknameColorStyle}};"
+				{{/ isEmpty(nicknameColorStyle) }}
+			{{/nicknameColorHashingEnabled}}>{{formattedNickname}}</span><span class="time"
+
+		{{^ isEmpty(localizedTimestamp) }}
+			title="{{localizedTimestamp}}"
+		{{/ isEmpty(localizedTimestamp) }}>{{formattedTimestamp}}</span>
+	</p>
+	{{/isGroupedWithPrevious}}
+
+	<p class="messageBody message"
+
+	{{#isGroupedWithPrevious}}
+		{{^ isEmpty(localizedTimestamp) }}
+		title="{{localizedTimestamp}}"
+		{{/ isEmpty(localizedTimestamp) }}
+	{{/isGroupedWithPrevious}}>
+
+{{#isEncrypted}}
+	{{> encryptedMessageLock}}
+{{/isEncrypted}}
+
+		<span class="innerMessage">
+			{{{formattedMessage}}}
+
+			{{#inlineMediaEnabled}}
+				<span class="inlineMediaContainer"></span>
+			{{/inlineMediaEnabled}}
+		</span>
+	</p>
+
+{{/groupedDisplayEnabled}}
+{{^groupedDisplayEnabled}}
 
 	<p>
 		<span class="time"
@@ -61,6 +117,8 @@
 			</span>
 		</span>
 	</p>
+
+{{/groupedDisplayEnabled}}
 </div>
 
 {{#showSessionIndicator}}

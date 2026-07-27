@@ -2223,7 +2223,7 @@
                                         <rect key="frame" x="40" y="151" width="544" height="5"/>
                                     </box>
                                     <stackView distribution="equalSpacing" orientation="vertical" alignment="leading" spacing="14" verticalStackHuggingPriority="750" verticalHuggingPriority="750" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yk4-L0-S54">
-                                        <rect key="frame" x="187" y="59" width="251" height="76"/>
+                                        <rect key="frame" x="187" y="29" width="251" height="106"/>
                                         <subviews>
                                             <button translatesAutoresizingMaskIntoConstraints="NO" id="jNN-n9-eyu">
                                                 <rect key="frame" x="-2" y="59" width="253" height="18"/>
@@ -2256,13 +2256,25 @@
                                                     <binding destination="G2Q-fc-ddg" name="value" keyPath="values.DisplayEventInLogView -&gt; Join, Part, Quit" id="Jwb-Rk-nuD"/>
                                                 </connections>
                                             </button>
+                                            <button translatesAutoresizingMaskIntoConstraints="NO" id="aB3-xK9-mQ2">
+                                                <rect key="frame" x="-2" y="-31" width="210" height="18"/>
+                                                <buttonCell key="cell" type="check" title="Group consecutive messages" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="off" inset="2" id="aB3-xK9-cQ3">
+                                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                    <font key="font" metaFont="system"/>
+                                                </buttonCell>
+                                                <connections>
+                                                    <binding destination="G2Q-fc-ddg" name="value" keyPath="values.DisplayEventInLogView -&gt; Message Grouping Style" id="aB3-xK9-bnd"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <visibilityPriorities>
                                             <integer value="1000"/>
                                             <integer value="1000"/>
                                             <integer value="1000"/>
+                                            <integer value="1000"/>
                                         </visibilityPriorities>
                                         <customSpacing>
+                                            <real value="3.4028234663852886e+38"/>
                                             <real value="3.4028234663852886e+38"/>
                                             <real value="3.4028234663852886e+38"/>
                                             <real value="3.4028234663852886e+38"/>

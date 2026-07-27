@@ -356,6 +356,16 @@ NSUInteger const TPCPreferencesDictionaryVersion = 602;
 	return [RZUserDefaults() boolForKey:@"DisplayEventInLogView -> Date Changes"];
 }
 
++ (void)setMessageGroupingStyle:(TVCLogLineGroupingStyle)messageGroupingStyle
+{
+	[RZUserDefaults() setUnsignedInteger:messageGroupingStyle forKey:@"DisplayEventInLogView -> Message Grouping Style"];
+}
+
++ (TVCLogLineGroupingStyle)messageGroupingStyle
+{
+	return (TVCLogLineGroupingStyle)[RZUserDefaults() unsignedIntegerForKey:@"DisplayEventInLogView -> Message Grouping Style"];
+}
+
 + (void)setShowInlineMedia:(BOOL)showInlineMedia
 {
 	[RZUserDefaults() setBool:showInlineMedia forKey:@"DisplayEventInLogView -> Inline Media"];

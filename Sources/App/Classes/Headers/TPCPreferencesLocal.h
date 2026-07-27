@@ -120,6 +120,11 @@ typedef NS_ENUM(NSUInteger, TXPreferredAppearance) {
 	TXPreferredAppearanceDark		= 2
 };
 
+typedef NS_ENUM(NSUInteger, TVCLogLineGroupingStyle) {
+	TVCLogLineGroupingStyleClassic		= 0,
+	TVCLogLineGroupingStyleGrouped		= 1
+};
+
 @interface TPCPreferences (TPCPreferencesLocal)
 + (BOOL)appNapEnabled;
 
@@ -187,6 +192,7 @@ typedef NS_ENUM(NSUInteger, TXPreferredAppearance) {
 
 + (BOOL)autoAddScrollbackMark;
 + (BOOL)showDateChanges;
++ (TVCLogLineGroupingStyle)messageGroupingStyle;
 + (BOOL)showInlineMedia;
 + (BOOL)showJoinLeave;
 + (BOOL)displayServerMOTD;

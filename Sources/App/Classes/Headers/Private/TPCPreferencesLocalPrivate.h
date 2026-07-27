@@ -60,6 +60,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (void)setAppearance:(TXPreferredAppearance)appearance;
 
++ (void)setMessageGroupingStyle:(TVCLogLineGroupingStyle)messageGroupingStyle;
+
 + (void)setThemeName:(NSString *)value;
 + (void)setThemeNameWithExistenceCheck:(NSString *)value;
 
