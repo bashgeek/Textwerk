@@ -5,7 +5,7 @@
 	<key>Common</key>
 	<dict>
 		<key>defaultWidth</key>
-		<integer>120</integer>
+		<integer>190</integer>
 		<key>minimumWidth</key>
 		<integer>120</integer>
 		<key>maximumWidth</key>

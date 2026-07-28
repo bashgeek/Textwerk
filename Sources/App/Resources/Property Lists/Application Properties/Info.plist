@@ -19,7 +19,7 @@
 	<key>CFBundleVersion</key>
 	<string>0.1</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.1</string>
+	<string>dev</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Community fork by bashgeek (Daniel Schmitz). Based on Textual by Codeux Software, LLC. Not affiliated with or endorsed by Codeux Software.</string>
 	<key>CFBundleExecutable</key>

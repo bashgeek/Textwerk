@@ -224,6 +224,13 @@ NS_ASSUME_NONNULL_BEGIN
 	_updateController = [[SPUStandardUpdaterController alloc] initWithStartingUpdater:YES
 																	   updaterDelegate:nil
 																	userDriverDelegate:nil];
+
+	/* A "dev" version string means this is a local, unreleased build with
+	 no real version to compare against -- don't let it check for updates
+	 on its own, regardless of the user's own preference. */
+	if ([TPCApplicationInfo.applicationVersionShort isEqualToString:@"dev"]) {
+		_updateController.updater.automaticallyChecksForUpdates = NO;
+	}
 #endif
 }
 
