@@ -35,11 +35,11 @@
  *
  *********************************************************************** */
 
-#import "ICMInlineVideo.h"
+#import "ICMLinkPreviewCard.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ICMTwitchClips : ICMInlineVideoFoundation
+@interface ICMTwitchClips : ICMLinkPreviewCard
 @end
 
 NS_ASSUME_NONNULL_END

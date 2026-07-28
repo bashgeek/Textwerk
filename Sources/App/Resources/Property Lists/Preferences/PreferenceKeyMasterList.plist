@@ -118,12 +118,6 @@
 	<integer>0</integer>
 	<key>InlineMediaCheckEverything</key>
 	<integer>0</integer>
-	<key>InlineMediaLimitToBasics</key>
-	<integer>0</integer>
-	<key>InlineMediaLimitBasicsToFiles</key>
-	<integer>0</integer>
-	<key>InlineMediaLimitInsecureContent</key>
-	<integer>0</integer>
 	<key>InlineMediaLimitNaughtyContent</key>
 	<integer>0</integer>
 	<key>InlineMediaLimitUnsafeContent</key>
@@ -131,6 +125,8 @@
 	<key>InlineMediaMaximumFilesize</key>
 	<integer>0</integer>
 	<key>InlineMediaMaximumHeight</key>
+	<integer>0</integer>
+	<key>InlineMediaProviderEnabled</key>
 	<integer>0</integer>
 	<key>InlineMediaScalingWidth</key>
 	<integer>0</integer>

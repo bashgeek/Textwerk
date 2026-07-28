@@ -39,10 +39,6 @@
 
 import Foundation
 
-@objc protocol ICLPluginProtocol: NSObjectProtocol {
-	static var modules: [AnyClass] { get }
-}
-
 @objc(ICLPluginManager)
 final class ICLPluginManager: NSObject, @unchecked Sendable {
 

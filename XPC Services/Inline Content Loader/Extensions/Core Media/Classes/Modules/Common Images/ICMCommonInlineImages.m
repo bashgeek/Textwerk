@@ -276,9 +276,12 @@ NS_ASSUME_NONNULL_BEGIN
 	else if ([urlHost isDomainOrSubdomain:@"youtube.com"] ||
 			 [urlHost isDomain:@"youtu.be"])
 	{
-		/* If we aren't allowed to embed YouTube,
-		 at least show show the thumbnail for the video. */
-		if ([TPCPreferences inlineMediaLimitBasicsToFiles] == NO) {
+		/* ICMYouTube only claims URLs it recognizes as a /watch link (see
+		 -_videoIdentifierForURL:); other shapes (shorts, playlists, etc.)
+		 fall through to here, where we still show a plain thumbnail. Gate
+		 it on the same per-provider identifier as the YouTube module itself
+		 so disabling YouTube suppresses this too. */
+		if ([TPCPreferences inlineMediaProviderEnabled:@"ICMYouTube"] == NO) {
 			return nil;
 		}
 
@@ -361,11 +364,6 @@ NS_ASSUME_NONNULL_BEGIN
 	});
 
 	return cachedValue;
-}
-
-+ (BOOL)contentIsFile
-{
-	return YES;
 }
 
 @end

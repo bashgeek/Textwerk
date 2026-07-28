@@ -39,17 +39,15 @@ import Foundation
 
 @objc(ICMInlineImageFoundation)
 open class ICMInlineImageFoundation: ICLInlineContentModule {
-	override open class var contentImageOrVideo: Bool { true }
-
-	override open var templateURL: URL? {
+	override dynamic open var templateURL: URL? {
 		Bundle.main.url(forResource: "ICMInlineImage", withExtension: "mustache", subdirectory: "Components")
 	}
 
-	override open var styleResources: [URL]? {
+	override dynamic open var styleResources: [URL]? {
 		Bundle.main.url(forResource: "ICMInlineImage", withExtension: "css", subdirectory: "Components").map { [$0] }
 	}
 
-	override open var scriptResources: [URL]? {
+	override dynamic open var scriptResources: [URL]? {
 		let urls = [
 			Bundle.main.url(forResource: "InlineImageLiveResize", withExtension: "js"),
 			Bundle.main.url(forResource: "ICMInlineImage", withExtension: "js", subdirectory: "Components")
@@ -57,7 +55,7 @@ open class ICMInlineImageFoundation: ICLInlineContentModule {
 		return urls.isEmpty ? nil : urls
 	}
 
-	override open var entrypoint: String? { "_ICMInlineImage" }
+	override dynamic open var entrypoint: String? { "_ICMInlineImage" }
 }
 
 @objc(ICMInlineImage)
@@ -65,12 +63,12 @@ open class ICMInlineImage: ICMInlineImageFoundation {
 	private var imageCheck: ICLMediaAssessor? = nil
 
 	@objc(performAction)
-	open func performAction() {
+	dynamic open func performAction() {
 		performAction(withImageCheck: true)
 	}
 
 	@objc(performActionWithImageCheck:)
-	open func performAction(withImageCheck checkImage: Bool) {
+	dynamic open func performAction(withImageCheck checkImage: Bool) {
 		if checkImage {
 			_performImageCheck()
 		} else {
@@ -79,24 +77,24 @@ open class ICMInlineImage: ICMInlineImageFoundation {
 	}
 
 	@objc(performActionForURL:)
-	open func performAction(forURL url: URL) {
+	dynamic open func performAction(forURL url: URL) {
 		performAction(forURL: url, bypassImageCheck: false)
 	}
 
 	@objc(performActionForURL:bypassImageCheck:)
-	open func performAction(forURL url: URL, bypassImageCheck: Bool) {
+	dynamic open func performAction(forURL url: URL, bypassImageCheck: Bool) {
 		precondition(imageCheck == nil, "Module already initialized")
 		payload.urlToInline = url
 		performAction(withImageCheck: !bypassImageCheck)
 	}
 
 	@objc(performActionForAddress:)
-	open func performAction(forAddress address: String) {
+	dynamic open func performAction(forAddress address: String) {
 		performAction(forAddress: address, bypassImageCheck: false)
 	}
 
 	@objc(performActionForAddress:bypassImageCheck:)
-	open func performAction(forAddress address: String, bypassImageCheck: Bool) {
+	dynamic open func performAction(forAddress address: String, bypassImageCheck: Bool) {
 		guard let url = ICLHelpers.url(withString: address) else { return }
 		performAction(forURL: url, bypassImageCheck: bypassImageCheck)
 	}
@@ -141,27 +139,27 @@ open class ICMInlineImage: ICMInlineImageFoundation {
 	}
 
 	@objc(notifyUnsafeToLoadImage)
-	open func notifyUnsafeToLoadImage() {
+	dynamic open func notifyUnsafeToLoadImage() {
 		cancel()
 	}
 
 	@objc(actionBlockURL:)
-	open class func actionBlock(url: URL) -> ICLInlineContentModuleActionBlock {
+	dynamic open class func actionBlock(url: URL) -> ICLInlineContentModuleActionBlock {
 		return actionBlock(url: url, bypassImageCheck: false)
 	}
 
 	@objc(actionBlockURL:bypassImageCheck:)
-	open class func actionBlock(url: URL, bypassImageCheck: Bool) -> ICLInlineContentModuleActionBlock {
+	dynamic open class func actionBlock(url: URL, bypassImageCheck: Bool) -> ICLInlineContentModuleActionBlock {
 		return actionBlock(forAddress: url.absoluteString, bypassImageCheck: bypassImageCheck)
 	}
 
 	@objc(actionBlockForAddress:)
-	open class func actionBlock(forAddress address: String) -> ICLInlineContentModuleActionBlock {
+	dynamic open class func actionBlock(forAddress address: String) -> ICLInlineContentModuleActionBlock {
 		return actionBlock(forAddress: address, bypassImageCheck: false)
 	}
 
 	@objc(actionBlockForAddress:bypassImageCheck:)
-	open class func actionBlock(forAddress address: String, bypassImageCheck: Bool) -> ICLInlineContentModuleActionBlock {
+	dynamic open class func actionBlock(forAddress address: String, bypassImageCheck: Bool) -> ICLInlineContentModuleActionBlock {
 		return { module in
 			(module as? ICMInlineImage)?.performAction(forAddress: address, bypassImageCheck: bypassImageCheck)
 		}

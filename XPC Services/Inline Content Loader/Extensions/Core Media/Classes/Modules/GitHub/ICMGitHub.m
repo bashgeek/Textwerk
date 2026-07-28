@@ -121,6 +121,200 @@ NS_ASSUME_NONNULL_BEGIN
 	}];
 }
 
+- (void)_loadPullRequestForOwner:(NSString *)owner name:(NSString *)name number:(NSString *)number
+{
+	[self _loadIssueOrPullRequestForOwner:owner
+									  name:name
+									number:number
+								  resource:@"pulls"
+									 label:@"pull request"];
+}
+
+- (void)_loadIssueForOwner:(NSString *)owner name:(NSString *)name number:(NSString *)number
+{
+	[self _loadIssueOrPullRequestForOwner:owner
+									  name:name
+									number:number
+								  resource:@"issues"
+									 label:@"issue"];
+}
+
+- (void)_loadIssueOrPullRequestForOwner:(NSString *)owner
+									name:(NSString *)name
+								  number:(NSString *)number
+								resource:(NSString *)resource
+								   label:(NSString *)label
+{
+	NSURL *targetURL = self.payload.url;
+
+	NSString *apiAddress = [NSString stringWithFormat:@"https://api.github.com/repos/%@/%@/%@/%@", owner, name, resource, number];
+
+	NSURL *apiURL = [NSURL URLWithString:apiAddress];
+
+	if (apiURL == nil) {
+		[self notifyUnableToPresentCard];
+
+		return;
+	}
+
+	[ICLHelpers requestJSONDataFromURL:apiURL completionBlock:^(BOOL success, NSDictionary<NSString *, id> *_Nullable data) {
+		if (success == NO || data == nil) {
+			[self notifyUnableToPresentCard];
+
+			return;
+		}
+
+		NSString *itemTitle = data[@"title"];
+
+		if ([itemTitle isKindOfClass:[NSString class]] == NO || itemTitle.length == 0) {
+			[self notifyUnableToPresentCard];
+
+			return;
+		}
+
+		NSString *state = data[@"state"];
+
+		NSString *statusLabel = @"Open";
+
+		if ([data[@"merged"] isKindOfClass:[NSNumber class]] && [data[@"merged"] boolValue]) {
+			statusLabel = @"Merged";
+		} else if ([state isEqualToString:@"closed"]) {
+			statusLabel = @"Closed";
+		}
+
+		NSDictionary *user = data[@"user"];
+
+		NSString *authorLogin = nil;
+
+		if ([user isKindOfClass:[NSDictionary class]]) {
+			authorLogin = user[@"login"];
+		}
+
+		NSMutableArray<NSString *> *metaComponents = [NSMutableArray arrayWithObject:statusLabel];
+
+		if ([authorLogin isKindOfClass:[NSString class]] && authorLogin.length > 0) {
+			[metaComponents addObject:[NSString stringWithFormat:@"by %@", authorLogin]];
+		}
+
+		NSString *meta = [metaComponents componentsJoinedByString:@" · "];
+
+		NSString *avatarURLString = nil;
+
+		if ([user isKindOfClass:[NSDictionary class]]) {
+			avatarURLString = user[@"avatar_url"];
+		}
+
+		NSURL *avatarURL = nil;
+
+		if ([avatarURLString isKindOfClass:[NSString class]]) {
+			avatarURL = [NSURL URLWithString:avatarURLString];
+		}
+
+		NSString *siteName = [NSString stringWithFormat:@"%@/%@#%@", owner, name, number];
+
+		[self performActionForCardWithTitle:itemTitle
+										meta:meta
+									imageURL:avatarURL
+									siteName:siteName
+								   targetURL:targetURL];
+	}];
+}
+
+- (void)_loadCommitForOwner:(NSString *)owner name:(NSString *)name sha:(NSString *)sha
+{
+	NSURL *targetURL = self.payload.url;
+
+	NSString *apiAddress = [NSString stringWithFormat:@"https://api.github.com/repos/%@/%@/commits/%@", owner, name, sha];
+
+	NSURL *apiURL = [NSURL URLWithString:apiAddress];
+
+	if (apiURL == nil) {
+		[self notifyUnableToPresentCard];
+
+		return;
+	}
+
+	[ICLHelpers requestJSONDataFromURL:apiURL completionBlock:^(BOOL success, NSDictionary<NSString *, id> *_Nullable data) {
+		if (success == NO || data == nil) {
+			[self notifyUnableToPresentCard];
+
+			return;
+		}
+
+		NSDictionary *commit = data[@"commit"];
+
+		NSString *message = nil;
+
+		if ([commit isKindOfClass:[NSDictionary class]]) {
+			message = commit[@"message"];
+		}
+
+		if ([message isKindOfClass:[NSString class]] == NO || message.length == 0) {
+			[self notifyUnableToPresentCard];
+
+			return;
+		}
+
+		/* Commit messages are typically a short summary line, a blank line,
+		 then an optional longer body. Only the summary belongs in a card. */
+		NSString *title = [message componentsSeparatedByString:@"\n"].firstObject;
+
+		if (title.length == 0) {
+			[self notifyUnableToPresentCard];
+
+			return;
+		}
+
+		NSDictionary *user = data[@"author"];
+
+		NSString *authorName = nil;
+
+		if ([user isKindOfClass:[NSDictionary class]]) {
+			authorName = user[@"login"];
+		}
+
+		if (authorName.length == 0 && [commit isKindOfClass:[NSDictionary class]]) {
+			NSDictionary *commitAuthor = commit[@"author"];
+
+			if ([commitAuthor isKindOfClass:[NSDictionary class]]) {
+				authorName = commitAuthor[@"name"];
+			}
+		}
+
+		NSString *meta = nil;
+
+		if ([authorName isKindOfClass:[NSString class]] && authorName.length > 0) {
+			meta = authorName;
+		}
+
+		NSString *avatarURLString = nil;
+
+		if ([user isKindOfClass:[NSDictionary class]]) {
+			avatarURLString = user[@"avatar_url"];
+		}
+
+		NSURL *avatarURL = nil;
+
+		if ([avatarURLString isKindOfClass:[NSString class]]) {
+			avatarURL = [NSURL URLWithString:avatarURLString];
+		}
+
+		NSString *shortSHA = sha;
+
+		if (shortSHA.length > 7) {
+			shortSHA = [shortSHA substringToIndex:7];
+		}
+
+		NSString *siteName = [NSString stringWithFormat:@"%@/%@@%@", owner, name, shortSHA];
+
+		[self performActionForCardWithTitle:title
+										meta:meta
+									imageURL:avatarURL
+									siteName:siteName
+								   targetURL:targetURL];
+	}];
+}
+
 #pragma mark -
 #pragma mark Action Block
 
@@ -128,23 +322,65 @@ NS_ASSUME_NONNULL_BEGIN
 {
 	NSParameterAssert(url != nil);
 
-	NSArray<NSString *> *components = [self _repositoryComponentsForURL:url];
+	NSArray<NSString *> *pathComponents = [self _pathComponentsForURL:url];
 
-	if (components == nil) {
+	if (pathComponents == nil) {
 		return nil;
 	}
 
-	NSString *owner = components[0];
-	NSString *name = components[1];
+	NSString *owner = pathComponents[0];
+	NSString *name = pathComponents[1];
 
-	return [^(ICLInlineContentModule *module) {
-		__weak ICMGitHub *moduleTyped = (id)module;
+	if (pathComponents.count == 2) {
+		return [^(ICLInlineContentModule *module) {
+			__weak ICMGitHub *moduleTyped = (id)module;
 
-		[moduleTyped _loadRepositoryContentsForOwner:owner name:name];
-	} copy];
+			[moduleTyped _loadRepositoryContentsForOwner:owner name:name];
+		} copy];
+	}
+
+	if (pathComponents.count == 4) {
+		NSString *resourceType = pathComponents[2];
+		NSString *resourceValue = pathComponents[3];
+
+		if (resourceValue.length == 0) {
+			return nil;
+		}
+
+		if ([resourceType isEqualToString:@"pull"]) {
+			return [^(ICLInlineContentModule *module) {
+				__weak ICMGitHub *moduleTyped = (id)module;
+
+				[moduleTyped _loadPullRequestForOwner:owner name:name number:resourceValue];
+			} copy];
+		}
+
+		if ([resourceType isEqualToString:@"issues"]) {
+			return [^(ICLInlineContentModule *module) {
+				__weak ICMGitHub *moduleTyped = (id)module;
+
+				[moduleTyped _loadIssueForOwner:owner name:name number:resourceValue];
+			} copy];
+		}
+
+		if ([resourceType isEqualToString:@"commit"]) {
+			return [^(ICLInlineContentModule *module) {
+				__weak ICMGitHub *moduleTyped = (id)module;
+
+				[moduleTyped _loadCommitForOwner:owner name:name sha:resourceValue];
+			} copy];
+		}
+	}
+
+	return nil;
 }
 
-+ (nullable NSArray<NSString *> *)_repositoryComponentsForURL:(NSURL *)url
+/* Returns the URL's path split into components (e.g. ["owner", "repo"] or
+ ["owner", "repo", "pull", "2"]), after validating that at least an
+ owner/repo pair is present and the owner isn't one of GitHub's reserved,
+ non-user top-level paths (like "settings" or "marketplace"). Callers
+ decide what to do with additional components beyond the first two. */
++ (nullable NSArray<NSString *> *)_pathComponentsForURL:(NSURL *)url
 {
 	NSString *urlPath = url.path.percentEncodedURLPath;
 
@@ -160,7 +396,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 	NSArray<NSString *> *components = [urlPath componentsSeparatedByString:@"/"];
 
-	if (components.count != 2) {
+	if (components.count < 2) {
 		return nil;
 	}
 
@@ -175,7 +411,7 @@ NS_ASSUME_NONNULL_BEGIN
 		return nil;
 	}
 
-	return @[owner, name];
+	return components;
 }
 
 + (BOOL)_ownerIsReserved:(NSString *)owner

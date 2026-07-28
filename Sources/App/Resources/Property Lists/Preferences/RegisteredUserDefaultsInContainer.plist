@@ -104,12 +104,6 @@
 	<string>1d Shunned.</string>
 	<key>InlineMediaCheckEverything</key>
 	<false/>
-	<key>InlineMediaLimitToBasics</key>
-	<false/>
-	<key>InlineMediaLimitBasicsToFiles</key>
-	<false/>
-	<key>InlineMediaLimitInsecureContent</key>
-	<false/>
 	<key>InlineMediaLimitNaughtyContent</key>
 	<true/>
 	<key>InlineMediaLimitUnsafeContent</key>

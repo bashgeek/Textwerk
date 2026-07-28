@@ -13,7 +13,6 @@
 		4C469EDA20EC600900094EA4 /* ICMGyazo.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469EB620EC600900094EA4 /* ICMGyazo.m */; };
 		4C469EDB20EC600900094EA4 /* ICMStreamable.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469EB920EC600900094EA4 /* ICMStreamable.m */; };
 		4C469EDC20EC600900094EA4 /* ICMVimeo.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469EBC20EC600900094EA4 /* ICMVimeo.m */; };
-		4C469EDD20EC600900094EA4 /* ICMPornhub.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469EBE20EC600900094EA4 /* ICMPornhub.m */; };
 		4C469EDE20EC600900094EA4 /* ICMImgurGifv.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469EC120EC600900094EA4 /* ICMImgurGifv.m */; };
 		4C469EDF20EC600900094EA4 /* ICMYouTube.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469EC420EC600900094EA4 /* ICMYouTube.m */; };
 		4C469EE020EC600900094EA4 /* ICMDailymotion.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C469EC820EC600900094EA4 /* ICMDailymotion.m */; };
@@ -32,13 +31,6 @@
 		F45D2952B112222313A3AADF /* ICMGiphy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1850990256D6648C5D2C2FD6 /* ICMGiphy.m */; };
 		D838EF160164A22E9ECF7D69 /* ICMCodePen.m in Sources */ = {isa = PBXBuildFile; fileRef = B32C4CFA0208003C6BE35419 /* ICMCodePen.m */; };
 		152DEFD5DA9B33566D84172B /* ICMBandcamp.m in Sources */ = {isa = PBXBuildFile; fileRef = E2645B54F0F8BE0DC3C764AE /* ICMBandcamp.m */; };
-		4C469F3720EC608E00094EA4 /* ICMTweet.js in Resources */ = {isa = PBXBuildFile; fileRef = 4C469F2620EC608E00094EA4 /* ICMTweet.js */; };
-		4C469F3920EC608E00094EA4 /* ICMVimeo.mustache in Resources */ = {isa = PBXBuildFile; fileRef = 4C469F2A20EC608E00094EA4 /* ICMVimeo.mustache */; };
-		4C469F3A20EC608E00094EA4 /* ICMPornhub.mustache in Resources */ = {isa = PBXBuildFile; fileRef = 4C469F2C20EC608E00094EA4 /* ICMPornhub.mustache */; };
-		4C469F3B20EC608E00094EA4 /* ICMYouTube.mustache in Resources */ = {isa = PBXBuildFile; fileRef = 4C469F2E20EC608E00094EA4 /* ICMYouTube.mustache */; };
-		4C469F3C20EC608E00094EA4 /* ICMDailymotion.mustache in Resources */ = {isa = PBXBuildFile; fileRef = 4C469F3020EC608E00094EA4 /* ICMDailymotion.mustache */; };
-		4C469F3D20EC608E00094EA4 /* ICMTwitchClips.mustache in Resources */ = {isa = PBXBuildFile; fileRef = 4C469F3220EC608E00094EA4 /* ICMTwitchClips.mustache */; };
-		4C469F3E20EC608E00094EA4 /* ICMTwitchLive.mustache in Resources */ = {isa = PBXBuildFile; fileRef = 4C469F3420EC608E00094EA4 /* ICMTwitchLive.mustache */; };
 		4CE144E820EC0448000E01C9 /* CocoaExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CE144E720EC0448000E01C9 /* CocoaExtensions.framework */; };
 /* End PBXBuildFile section */
 
@@ -56,8 +48,6 @@
 		4C469EB920EC600900094EA4 /* ICMStreamable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICMStreamable.m; sourceTree = "<group>"; };
 		4C469EBB20EC600900094EA4 /* ICMVimeo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICMVimeo.h; sourceTree = "<group>"; };
 		4C469EBC20EC600900094EA4 /* ICMVimeo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICMVimeo.m; sourceTree = "<group>"; };
-		4C469EBE20EC600900094EA4 /* ICMPornhub.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICMPornhub.m; sourceTree = "<group>"; };
-		4C469EBF20EC600900094EA4 /* ICMPornhub.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICMPornhub.h; sourceTree = "<group>"; };
 		4C469EC120EC600900094EA4 /* ICMImgurGifv.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICMImgurGifv.m; sourceTree = "<group>"; };
 		4C469EC220EC600900094EA4 /* ICMImgurGifv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICMImgurGifv.h; sourceTree = "<group>"; };
 		4C469EC420EC600900094EA4 /* ICMYouTube.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICMYouTube.m; sourceTree = "<group>"; };
@@ -93,13 +83,6 @@
 		DF262D5E7505221A183C231C /* ICMBandcamp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICMBandcamp.h; sourceTree = "<group>"; };
 		E2645B54F0F8BE0DC3C764AE /* ICMBandcamp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICMBandcamp.m; sourceTree = "<group>"; };
 		4C469F0120EC601B00094EA4 /* TPCPreferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPCPreferences.h; sourceTree = "<group>"; };
-		4C469F2620EC608E00094EA4 /* ICMTweet.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = ICMTweet.js; sourceTree = "<group>"; };
-		4C469F2A20EC608E00094EA4 /* ICMVimeo.mustache */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ICMVimeo.mustache; sourceTree = "<group>"; };
-		4C469F2C20EC608E00094EA4 /* ICMPornhub.mustache */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ICMPornhub.mustache; sourceTree = "<group>"; };
-		4C469F2E20EC608E00094EA4 /* ICMYouTube.mustache */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ICMYouTube.mustache; sourceTree = "<group>"; };
-		4C469F3020EC608E00094EA4 /* ICMDailymotion.mustache */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ICMDailymotion.mustache; sourceTree = "<group>"; };
-		4C469F3220EC608E00094EA4 /* ICMTwitchClips.mustache */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ICMTwitchClips.mustache; sourceTree = "<group>"; };
-		4C469F3420EC608E00094EA4 /* ICMTwitchLive.mustache */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ICMTwitchLive.mustache; sourceTree = "<group>"; };
 		4C469F3620EC608E00094EA4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4CA1FE581FA606890095901F /* Core Media.mediaPlugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Core Media.mediaPlugin"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4CE144E720EC0448000E01C9 /* CocoaExtensions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaExtensions.framework; path = "../../../../.tmp/SharedBuildProducts-Frameworks/CocoaExtensions.framework"; sourceTree = SOURCE_ROOT; };
@@ -184,7 +167,6 @@
 				4C469EB420EC600900094EA4 /* Gyazo */,
 				4C469EC020EC600900094EA4 /* Imgur .gifv */,
 				1AB79770D6B55746CB0985F5 /* Link Preview Card */,
-				4C469EBD20EC600900094EA4 /* Pornhub */,
 				F02149A98409D9A641D7313A /* Reddit */,
 				3E9ADF74F5C0BA2B459E2027 /* SoundCloud */,
 				48E12202D440D475C2A12BAB /* Spotify */,
@@ -243,15 +225,6 @@
 				4C469EBC20EC600900094EA4 /* ICMVimeo.m */,
 			);
 			path = Vimeo;
-			sourceTree = "<group>";
-		};
-		4C469EBD20EC600900094EA4 /* Pornhub */ = {
-			isa = PBXGroup;
-			children = (
-				4C469EBE20EC600900094EA4 /* ICMPornhub.m */,
-				4C469EBF20EC600900094EA4 /* ICMPornhub.h */,
-			);
-			path = Pornhub;
 			sourceTree = "<group>";
 		};
 		4C469EC020EC600900094EA4 /* Imgur .gifv */ = {
@@ -418,13 +391,6 @@
 		4C469F2420EC608E00094EA4 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				4C469F2520EC608E00094EA4 /* Twitter */,
-				4C469F2920EC608E00094EA4 /* Vimeo */,
-				4C469F2B20EC608E00094EA4 /* Pornhub */,
-				4C469F2D20EC608E00094EA4 /* YouTube */,
-				4C469F2F20EC608E00094EA4 /* Dailymotion */,
-				4C469F3120EC608E00094EA4 /* Twitch Clips */,
-				4C469F3320EC608E00094EA4 /* Twitch Live */,
 				7B2E95B93368CEEC435924D3 /* Link Preview Card */,
 			);
 			path = Modules;
@@ -437,62 +403,6 @@
 				4DA459A1320BE005E5DE8FB5 /* ICMLinkPreviewCard.css */,
 			);
 			path = "Link Preview Card";
-			sourceTree = "<group>";
-		};
-		4C469F2520EC608E00094EA4 /* Twitter */ = {
-			isa = PBXGroup;
-			children = (
-				4C469F2620EC608E00094EA4 /* ICMTweet.js */,
-			);
-			path = Twitter;
-			sourceTree = "<group>";
-		};
-		4C469F2920EC608E00094EA4 /* Vimeo */ = {
-			isa = PBXGroup;
-			children = (
-				4C469F2A20EC608E00094EA4 /* ICMVimeo.mustache */,
-			);
-			path = Vimeo;
-			sourceTree = "<group>";
-		};
-		4C469F2B20EC608E00094EA4 /* Pornhub */ = {
-			isa = PBXGroup;
-			children = (
-				4C469F2C20EC608E00094EA4 /* ICMPornhub.mustache */,
-			);
-			path = Pornhub;
-			sourceTree = "<group>";
-		};
-		4C469F2D20EC608E00094EA4 /* YouTube */ = {
-			isa = PBXGroup;
-			children = (
-				4C469F2E20EC608E00094EA4 /* ICMYouTube.mustache */,
-			);
-			path = YouTube;
-			sourceTree = "<group>";
-		};
-		4C469F2F20EC608E00094EA4 /* Dailymotion */ = {
-			isa = PBXGroup;
-			children = (
-				4C469F3020EC608E00094EA4 /* ICMDailymotion.mustache */,
-			);
-			path = Dailymotion;
-			sourceTree = "<group>";
-		};
-		4C469F3120EC608E00094EA4 /* Twitch Clips */ = {
-			isa = PBXGroup;
-			children = (
-				4C469F3220EC608E00094EA4 /* ICMTwitchClips.mustache */,
-			);
-			path = "Twitch Clips";
-			sourceTree = "<group>";
-		};
-		4C469F3320EC608E00094EA4 /* Twitch Live */ = {
-			isa = PBXGroup;
-			children = (
-				4C469F3420EC608E00094EA4 /* ICMTwitchLive.mustache */,
-			);
-			path = "Twitch Live";
 			sourceTree = "<group>";
 		};
 		4C469F3520EC608E00094EA4 /* Property Lists */ = {
@@ -658,13 +568,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4C469F3920EC608E00094EA4 /* ICMVimeo.mustache in Resources */,
-				4C469F3E20EC608E00094EA4 /* ICMTwitchLive.mustache in Resources */,
-				4C469F3B20EC608E00094EA4 /* ICMYouTube.mustache in Resources */,
-				4C469F3A20EC608E00094EA4 /* ICMPornhub.mustache in Resources */,
-				4C469F3720EC608E00094EA4 /* ICMTweet.js in Resources */,
-				4C469F3D20EC608E00094EA4 /* ICMTwitchClips.mustache in Resources */,
-				4C469F3C20EC608E00094EA4 /* ICMDailymotion.mustache in Resources */,
 				30C1CB3BEFCC636C0079E3C2 /* ICMLinkPreviewCard.mustache in Resources */,
 				092E272411A4884560869FA7 /* ICMLinkPreviewCard.css in Resources */,
 			);
@@ -688,7 +591,6 @@
 				4C469EE120EC600900094EA4 /* ICMTwitchClips.m in Sources */,
 				4C469ED520EC600900094EA4 /* ICPCoreMedia.m in Sources */,
 				4C469EDC20EC600900094EA4 /* ICMVimeo.m in Sources */,
-				4C469EDD20EC600900094EA4 /* ICMPornhub.m in Sources */,
 				4C469EDE20EC600900094EA4 /* ICMImgurGifv.m in Sources */,
 				4C469ED620EC600900094EA4 /* ICMCommonInlineVideos.m in Sources */,
 				424846CACEC9BE830A30E8CF /* ICMLinkPreviewCard.m in Sources */,

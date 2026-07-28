@@ -35,31 +35,72 @@
  *
  *********************************************************************** */
 
+#import "ICLHelpers.h"
 #import "ICMDailymotion.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation ICMDailymotion
 
-- (void)_performActionForVideo:(NSString *)videoIdentifier
+- (void)_loadVideoWithIdentifier:(NSString *)videoIdentifier
 {
 	NSParameterAssert(videoIdentifier != nil);
 
-	ICLPayloadMutable *payload = self.payload;
+	NSURL *targetURL = self.payload.url;
 
-	NSDictionary *templateAttributes =
-	@{
-	  @"uniqueIdentifier" : payload.uniqueIdentifier,
-	  @"videoIdentifier" : videoIdentifier
-	};
+	NSString *videoAddress = [NSString stringWithFormat:@"https://www.dailymotion.com/video/%@", videoIdentifier];
 
-	NSError *templateRenderError = nil;
+	NSURLComponents *requestComponents = [NSURLComponents componentsWithString:@"https://www.dailymotion.com/services/oembed"];
 
-	NSString *html = [self.template renderObject:templateAttributes error:&templateRenderError];
+	requestComponents.queryItems =
+	@[
+	  [NSURLQueryItem queryItemWithName:@"url" value:videoAddress],
+	  [NSURLQueryItem queryItemWithName:@"format" value:@"json"]
+	];
 
-	payload.html = html;
+	NSURL *apiURL = requestComponents.URL;
 
-	[self finalizeWithError:templateRenderError];
+	if (apiURL == nil) {
+		[self notifyUnableToPresentCard];
+
+		return;
+	}
+
+	[ICLHelpers requestJSONDataFromURL:apiURL completionBlock:^(BOOL success, NSDictionary<NSString *, id> *_Nullable data) {
+		if (success == NO || data == nil) {
+			[self notifyUnableToPresentCard];
+
+			return;
+		}
+
+		NSString *title = data[@"title"];
+
+		if ([title isKindOfClass:[NSString class]] == NO || title.length == 0) {
+			[self notifyUnableToPresentCard];
+
+			return;
+		}
+
+		NSString *authorName = data[@"author_name"];
+
+		if ([authorName isKindOfClass:[NSString class]] == NO) {
+			authorName = nil;
+		}
+
+		NSString *thumbnailURLString = data[@"thumbnail_url"];
+
+		NSURL *thumbnailURL = nil;
+
+		if ([thumbnailURLString isKindOfClass:[NSString class]]) {
+			thumbnailURL = [NSURL URLWithString:thumbnailURLString];
+		}
+
+		[self performActionForCardWithTitle:title
+										meta:authorName
+									imageURL:thumbnailURL
+									siteName:@"dailymotion.com"
+								   targetURL:targetURL];
+	}];
 }
 
 #pragma mark -
@@ -78,7 +119,7 @@ NS_ASSUME_NONNULL_BEGIN
 	return [^(ICLInlineContentModule *module) {
 		__weak ICMDailymotion *moduleTyped = (id)module;
 
-		[moduleTyped _performActionForVideo:videoIdentifier];
+		[moduleTyped _loadVideoWithIdentifier:videoIdentifier];
 	} copy];
 }
 
@@ -127,14 +168,6 @@ NS_ASSUME_NONNULL_BEGIN
 	});
 
 	return domains;
-}
-
-#pragma mark -
-#pragma mark Utilities
-
-- (nullable NSURL *)templateURL
-{
-	return [NSBundleForClass() URLForResource:@"ICMDailymotion" withExtension:@"mustache"];
 }
 
 @end

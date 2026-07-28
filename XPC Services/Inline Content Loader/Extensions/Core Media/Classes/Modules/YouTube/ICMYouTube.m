@@ -42,26 +42,65 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation ICMYouTube
 
-- (void)_performActionForVideo:(NSString *)videoIdentifier
+- (void)_loadVideoWithIdentifier:(NSString *)videoIdentifier
 {
 	NSParameterAssert(videoIdentifier != nil);
 
-	ICLPayloadMutable *payload = self.payload;
+	NSURL *targetURL = self.payload.url;
 
-	NSDictionary *templateAttributes =
-	@{
-	  @"uniqueIdentifier" : payload.uniqueIdentifier,
-	  @"videoIdentifier" : videoIdentifier,
-	  @"videoStartTime" : @(self.videoStartTime)
-	};
+	NSString *videoAddress = [NSString stringWithFormat:@"https://www.youtube.com/watch?v=%@", videoIdentifier];
 
-	NSError *templateRenderError = nil;
+	NSURLComponents *requestComponents = [NSURLComponents componentsWithString:@"https://www.youtube.com/oembed"];
 
-	NSString *html = [self.template renderObject:templateAttributes error:&templateRenderError];
+	requestComponents.queryItems =
+	@[
+	  [NSURLQueryItem queryItemWithName:@"url" value:videoAddress],
+	  [NSURLQueryItem queryItemWithName:@"format" value:@"json"]
+	];
 
-	payload.html = html;
+	NSURL *apiURL = requestComponents.URL;
 
-	[self finalizeWithError:templateRenderError];
+	if (apiURL == nil) {
+		[self notifyUnableToPresentCard];
+
+		return;
+	}
+
+	[ICLHelpers requestJSONDataFromURL:apiURL completionBlock:^(BOOL success, NSDictionary<NSString *, id> *_Nullable data) {
+		if (success == NO || data == nil) {
+			[self notifyUnableToPresentCard];
+
+			return;
+		}
+
+		NSString *title = data[@"title"];
+
+		if ([title isKindOfClass:[NSString class]] == NO || title.length == 0) {
+			[self notifyUnableToPresentCard];
+
+			return;
+		}
+
+		NSString *authorName = data[@"author_name"];
+
+		if ([authorName isKindOfClass:[NSString class]] == NO) {
+			authorName = nil;
+		}
+
+		NSString *thumbnailURLString = data[@"thumbnail_url"];
+
+		NSURL *thumbnailURL = nil;
+
+		if ([thumbnailURLString isKindOfClass:[NSString class]]) {
+			thumbnailURL = [NSURL URLWithString:thumbnailURLString];
+		}
+
+		[self performActionForCardWithTitle:title
+										meta:authorName
+									imageURL:thumbnailURL
+									siteName:@"youtube.com"
+								   targetURL:targetURL];
+	}];
 }
 
 #pragma mark -
@@ -70,10 +109,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (nullable ICLInlineContentModuleActionBlock)actionBlockForURL:(NSURL *)url
 {
 	NSParameterAssert(url != nil);
-	
-	NSTimeInterval startPosition = 0;
 
-	NSString *videoIdentifier = [self _videoIdentifierForURL:url startPosition:&startPosition];
+	NSString *videoIdentifier = [self _videoIdentifierForURL:url];
 
 	if (videoIdentifier == nil) {
 		return nil;
@@ -82,19 +119,17 @@ NS_ASSUME_NONNULL_BEGIN
 	return [^(ICLInlineContentModule *module) {
 		__weak ICMYouTube *moduleTyped = (id)module;
 
-		moduleTyped.videoStartTime = startPosition;
-		
-		[moduleTyped _performActionForVideo:videoIdentifier];
+		[moduleTyped _loadVideoWithIdentifier:videoIdentifier];
 	} copy];
 }
 
-+ (nullable NSString *)_videoIdentifierForURL:(NSURL *)url startPosition:(NSTimeInterval *)startPosition
++ (nullable NSString *)_videoIdentifierForURL:(NSURL *)url
 {
 	NSString *videoIdentifier = nil;
 
 	NSString *urlHost = url.host;
 	NSString *urlQuery = url.query.percentEncodedURLQuery;
-	
+
 	NSDictionary *queryItems = urlQuery.URLQueryItems;
 
 	if ([urlHost isEqualToString:@"youtu.be"])
@@ -126,12 +161,6 @@ NS_ASSUME_NONNULL_BEGIN
 		videoIdentifier = [videoIdentifier substringToIndex:11];
 	}
 
-	NSString *timestamp = queryItems[@"t"];
-
-	if (timestamp) {
-		*startPosition = [self parseYouTubeEsqueTimestamp:timestamp];
-	}
-
 	return videoIdentifier;
 }
 
@@ -152,14 +181,6 @@ NS_ASSUME_NONNULL_BEGIN
 	});
 
 	return domains;
-}
-
-#pragma mark -
-#pragma mark Utilities
-
-- (nullable NSURL *)templateURL
-{
-	return [NSBundleForClass() URLForResource:@"ICMYouTube" withExtension:@"mustache"];
 }
 
 @end

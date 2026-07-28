@@ -68,6 +68,40 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/* Bindings-driven row model for the "Providers" tab of the Inline Media
+ pane: one checkbox per module (see -preferenceIdentifier in
+ ICLInlineContentModule), backed directly by TPCPreferences so toggling the
+ checkbox persists immediately without a separate save step. */
+@interface TDCInlineMediaProviderPreference : NSObject
+@property (nonatomic, copy, readonly) NSString *identifier;
+@property (nonatomic, copy, readonly) NSString *displayName;
+@property (nonatomic, assign) BOOL enabled;
+@end
+
+@implementation TDCInlineMediaProviderPreference
+
+- (instancetype)initWithIdentifier:(NSString *)identifier displayName:(NSString *)displayName
+{
+	if ((self = [super init])) {
+		_identifier = [identifier copy];
+		_displayName = [displayName copy];
+	}
+
+	return self;
+}
+
+- (BOOL)enabled
+{
+	return [TPCPreferences inlineMediaProviderEnabled:self.identifier];
+}
+
+- (void)setEnabled:(BOOL)enabled
+{
+	[TPCPreferences setInlineMediaProviderEnabled:enabled forIdentifier:self.identifier];
+}
+
+@end
+
 #define _scrollbackSaveLinesMin		100
 #define _scrollbackSaveLinesMax		50000
 #define _scrollbackVisibleLinesMin	100
@@ -111,6 +145,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) IBOutlet NSArrayController *excludeKeywordsArrayController;
 @property (nonatomic, strong) IBOutlet NSArrayController *highlightKeywordsArrayController;
 @property (nonatomic, strong) IBOutlet NSArrayController *installedScriptsController;
+@property (nonatomic, strong) IBOutlet NSArrayController *inlineMediaProvidersController;
 @property (nonatomic, weak) IBOutlet NSButton *addExcludeKeywordButton;
 @property (nonatomic, weak) IBOutlet NSButton *highlightNicknameButton;
 @property (nonatomic, weak) IBOutlet NSPopUpButton *themeSelectionButton;
@@ -719,32 +754,52 @@ NS_ASSUME_NONNULL_BEGIN
 	[TPCPreferences setLogToDisk:logTranscript];
 }
 
-- (BOOL)inlineMediaLimitToBasics
+- (NSArray<TDCInlineMediaProviderPreference *> *)inlineMediaProviders
 {
-	return [TPCPreferences inlineMediaLimitToBasics];
-}
+	static NSArray<TDCInlineMediaProviderPreference *> *providers = nil;
 
-- (void)setInlineMediaLimitToBasics:(BOOL)inlineMediaLimitToBasics
-{
-	[TPCPreferences setInlineMediaLimitToBasics:inlineMediaLimitToBasics];
+	static dispatch_once_t onceToken;
 
-	[self willChangeValueForKey:@"inlineMediaLimitBasicsToFiles"];
-	[self didChangeValueForKey:@"inlineMediaLimitBasicsToFiles"];
-}
+	dispatch_once(&onceToken, ^{
+		/* {identifier, display name} -- identifier must match the module's
+		 -preferenceIdentifier (see ICLInlineContentModule and its
+		 overrides). Order here is the order shown in the UI. */
+		NSArray<NSArray<NSString *> *> *definitions =
+		@[
+		  @[@"ICMBandcamp", @"Bandcamp"],
+		  @[@"ICMCodePen", @"CodePen"],
+		  @[@"ICMDailymotion", @"Dailymotion"],
+		  @[@"ICMGiphy", @"Giphy"],
+		  @[@"ICMGitHub", @"GitHub"],
+		  @[@"ICMGyazo", @"Gyazo"],
+		  @[@"ICMImgurGifv", @"Imgur GIFs"],
+		  @[@"ICMReddit", @"Reddit"],
+		  @[@"ICMSoundCloud", @"SoundCloud"],
+		  @[@"ICMSpotify", @"Spotify"],
+		  @[@"ICMStreamable", @"Streamable"],
+		  @[@"ICMTweet", @"Twitter/X"],
+		  @[@"Twitch", @"Twitch"],
+		  @[@"ICMVimeo", @"Vimeo"],
+		  @[@"ICMWikipedia", @"Wikipedia"],
+		  @[@"ICMXkcd", @"xkcd"],
+		  @[@"ICMYouTube", @"YouTube"],
+		  @[@"ICMCommonInlineImages", @"Direct image links"],
+		  @[@"ICMCommonInlineVideos", @"Direct video links"]
+		];
 
-- (BOOL)inlineMediaLimitBasicsToFiles
-{
-	/* Show value as enabled when basics is disabled */
-	if ([TPCPreferences inlineMediaLimitToBasics] == NO) {
-		return NO; // UI negates bool so return NO for YES
-	}
+		NSMutableArray<TDCInlineMediaProviderPreference *> *result = [NSMutableArray arrayWithCapacity:definitions.count];
 
-	return [TPCPreferences inlineMediaLimitBasicsToFiles];
-}
+		for (NSArray<NSString *> *definition in definitions) {
+			TDCInlineMediaProviderPreference *provider =
+			[[TDCInlineMediaProviderPreference alloc] initWithIdentifier:definition[0] displayName:definition[1]];
 
-- (void)setInlineMediaLimitBasicsToFiles:(BOOL)inlineMediaLimitBasicsToFiles
-{
-	[TPCPreferences setInlineMediaLimitBasicsToFiles:inlineMediaLimitBasicsToFiles];
+			[result addObject:provider];
+		}
+
+		providers = result;
+	});
+
+	return providers;
 }
 
 - (BOOL)validateValue:(inout id *)value forKey:(NSString *)key error:(out NSError **)outError

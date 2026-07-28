@@ -75,6 +75,14 @@ typedef void (^ICLInlineContentModuleActionBlock)(ICLInlineContentModule *module
  */
 @property (readonly, copy, nullable, class) NSArray<NSString *> *domains;
 
+/**
+ Identifies this module in the per-provider "InlineMediaProviderEnabled"
+ preference. Returning nil (the default) falls back to the class's own
+ name; only override this to share one user-facing toggle with another
+ class (e.g. two modules that both handle the same service).
+ */
+@property (readonly, copy, nullable, class) NSString *preferenceIdentifier;
+
 #pragma mark -
 #pragma mark Action
 
@@ -115,19 +123,6 @@ typedef void (^ICLInlineContentModuleActionBlock)(ICLInlineContentModule *module
 
 #pragma mark -
 #pragma mark Context
-
-/**
- Whether the module's content is an image or video.
- This can include video services, not just video files.
- */
-@property (readonly, class) BOOL contentImageOrVideo;
-
-/**
- Whether the module's content is a regular file,
- such as an image or video. Not an iframe, embedded,
- or dynamic content (such as JavaScript).
- */
-@property (readonly, class) BOOL contentIsFile;
 
 /**
  Whether the module might add content to the DOM which

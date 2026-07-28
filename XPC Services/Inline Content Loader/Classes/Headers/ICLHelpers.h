@@ -47,10 +47,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSURLSessionDataTask *)requestJSONObject:(NSString *)objectKey ofType:(Class)objectType inHierarchy:(nullable NSArray<NSString *> *)hierarchy fromURL:(NSURL *)url completionBlock:(void (^)(id _Nullable object))completionBlock;
 + (NSURLSessionDataTask *)requestJSONObject:(NSString *)objectKey ofType:(Class)objectType inHierarchy:(nullable NSArray<NSString *> *)hierarchy fromAddress:(NSString *)address completionBlock:(void (^)(id _Nullable object))completionBlock;
+
++ (NSURLSessionDataTask *)requestJSONArrayFromURL:(NSURL *)url completionBlock:(void (^)(BOOL success, NSArray<NSDictionary<NSString *, id> *> * _Nullable array))completionBlock;
 @end
 
 @interface ICLHelpers (Errors)
 @property (copy, readonly, class) NSError *genericValidationFailedError;
+@end
+
+@interface ICLHelpers (HTML)
++ (NSURLSessionDataTask *)requestHTMLFromURL:(NSURL *)url completionBlock:(void (^)(NSString * _Nullable html))completionBlock;
++ (nullable NSString *)openGraphContentForProperty:(NSString *)property inHTML:(NSString *)html;
++ (nullable NSString *)firstParagraphPlainTextFromHTML:(NSString *)html;
++ (NSString *)plainTextFromHTML:(NSString *)html;
 @end
 
 @interface NSString (ICLHelpers)

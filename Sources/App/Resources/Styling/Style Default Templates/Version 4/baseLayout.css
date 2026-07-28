@@ -244,6 +244,16 @@ div.line:hover .hoverTimestamp {
 	display: inline;
 }
 
+/* newMessagePostedWithSender.mustache's non-grouped layout has blank
+lines/tabs around <span class="inlineMediaContainer">, which render as
+literal dead space under .messageBody's white-space: pre-wrap (needed
+for legitimate user message formatting). This container only ever holds
+template-generated media markup, never user text, so it doesn't need
+that behavior. */
+.inlineMediaContainer {
+	white-space: normal;
+}
+
 /* Selection */
 body[data-selected="false"] {
 	pointer-events: none;

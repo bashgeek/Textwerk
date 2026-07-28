@@ -7,30 +7,40 @@
 .inlineHTML .content {
 	display: inline-block;
 	float: left;
-	margin-right: 12px;
-	margin-left: 10px;
 	min-width: 40px;
 	max-width: 90%;
 	border-radius: 6px;
 	overflow: hidden;
 }
 
+/* Small circular dismiss badge overlaid on the media's own top-right
+corner (matches how GitHub/Slack/etc. present dismissible previews),
+instead of floating as a separate square before the content. Relies on
+the wrapper (.inlineImage/.inlineVideo/.inlineVideoService/.inlineHTML)
+being width: fit-content + position: relative -- see the module CSS
+for each type. */
 .inlineImage .closeButton,
 .inlineVideo .closeButton,
 .inlineVideoService .closeButton,
 .inlineHTML .closeButton {
 	cursor: pointer;
-	border-radius: 5px;
-	border: 2px solid #9a9aa0;
-	color: #9a9aa0;
-	display: inline-block;
-	line-height: 14px;
-	font-size: 15px;
-	font-family: -apple-system, "Helvetica Neue", sans-serif !important;
-	text-indent: 7px;
+	position: absolute;
+	/* inset, not straddling the edge: the wrapper needs overflow: hidden
+	to contain its floated .content (see the module CSS), which would
+	clip a badge hanging outside the box on negative offsets */
+	top: 4px;
+	right: 4px;
+	z-index: 1;
 	width: 16px;
 	height: 16px;
-	float: left;
-	padding-right: 7px;
-	padding-left: 0px;
+	line-height: 15px;
+	font-size: 12px;
+	font-family: -apple-system, "Helvetica Neue", sans-serif !important;
+	text-indent: 0;
+	padding: 0;
+	text-align: center;
+	border-radius: 50%;
+	border: 1px solid rgba(0, 0, 0, 0.15);
+	background-color: rgba(255, 255, 255, 0.9);
+	color: #6e6e73;
 }

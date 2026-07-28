@@ -44,11 +44,11 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSUInteger)inlineMediaMaxWidth;
 + (NSUInteger)inlineMediaMaxHeight;
 
-+ (BOOL)inlineMediaLimitToBasics; // images & videos
-+ (BOOL)inlineMediaLimitBasicsToFiles; // Only hotlinked files and not services
-+ (BOOL)inlineMediaLimitInsecureContent; // No HTTP
-+ (BOOL)inlineMediaLimitNaughtyContent; // No NSFW
-+ (BOOL)inlineMediaLimitUnsafeContent; // No content that injects HTML
+// Per-provider opt-out, keyed by each module's -preferenceIdentifier
++ (BOOL)inlineMediaProviderEnabled:(NSString *)identifier;
+
++ (BOOL)inlineMediaLimitNaughtyContent; // No NSFW plugin content
++ (BOOL)inlineMediaLimitUnsafeContent; // No plugin content that injects HTML
 
  // Check every single URL to find out if it is an image or video
 + (BOOL)inlineMediaCheckEverything;

@@ -8,17 +8,17 @@ A community fork of [Textual](https://github.com/Codeux-Software/Textual), the m
 
 - Multi-server, multi-channel IRC client with a single sidebar for all your networks
 - ZNC bouncer aware, with auto-join handling, message playback, and self-message support tuned for bouncer setups
-- SASL authentication
-- Chat history backfill after reconnecting, with read-marker sync so unread badges stay consistent across other clients on the same account/bouncer
-- Small nickname indicator for users who aren't logged into services, once the server confirms account status
-- Inline previews for links (YouTube, Twitch, Vimeo, Streamable, Imgur, Gyazo, Dailymotion, images)
+- SASL authentication, including SCRAM-SHA-256
+- Modern IRCv3 support: typing indicators, read-marker sync so unread badges stay consistent across other clients on the same account/bouncer, chat history backfill after reconnecting, and readable FAIL/WARN/NOTE messages from servers that support standard-replies
+- Automatic upgrade to a secure connection on networks that advertise support for it
+- Real-time member list with account-verification badges, populated via WHOX as soon as you join a channel rather than waiting on each user's first message
+- Give/Take Op, Halfop, Voice, and Owner (+q) from the member list, when supported by the server
+- Inline previews for links from YouTube, Vimeo, Dailymotion, Twitch, Twitter/X, GitHub, Reddit, Wikipedia, Giphy, SoundCloud, Spotify, CodePen, Bandcamp, xkcd, and hotlinked images/video — rendered as safe metadata cards instead of embedded players, with each service individually toggleable in Preferences
 - DCC file transfers
 - AppleScript-based plugin/scripting support
-- Multiple bundled themes, switchable live, including a default theme with grouped consecutive messages, so there's no repeated timestamp/nickname when someone sends several messages in a row
+- Multiple bundled themes, switchable live with no fade delay, including a modern default theme with a choice of Slack-style grouped consecutive messages or a classic one-line-per-message display
 - Native macOS notifications
-- Automatic upgrade to a secure connection on networks that advertise support for it
 - Server errors and warnings shown as readable messages instead of raw numeric codes
-- Give/Take Op, Halfop, Voice, and Owner (+q) from the member list, when supported by the server
 - Query windows show a "common channels" info bar when someone messages you first
 - Unified title bar, with the secure-connection lock and channel title inline with the traffic-light buttons
 
@@ -31,8 +31,16 @@ A community fork of [Textual](https://github.com/Codeux-Software/Textual), the m
 - Fixed a crash when changing theme/style settings
 - Real automatic updates: Sparkle now checks GitHub Releases directly instead of a broken placeholder
 - Detects and offers to import your settings from an existing Textual install on first launch (see "Migrating from Textual" below)
+- Added modern IRCv3 support that didn't exist in Textual: typing indicators, read markers, chat history gap-fill on reconnect, account tracking (account-notify/account-tag/extended-join/setname/invite-notify), message-tags, standard-replies (FAIL/WARN/NOTE), and strict-transport-security; added SASL SCRAM-SHA-256 and UTF8ONLY
+- Member list now shows account-verification status in real time via WHOX, instead of only after the first message from each user; added Give/Take Owner (+q) mode support
+- Reworked inline media entirely: dropped the old iframe embeds for YouTube, Vimeo, Dailymotion, Twitch, and Twitter/X, which no longer loaded at all under the app's sandboxed `file://` origin, in favor of safe metadata-only preview cards that never inject HTML or execute remote scripts; added GitHub, Reddit, Wikipedia, Giphy, SoundCloud, Spotify, CodePen, and Bandcamp cards; removed Pornhub; link preview lookups are now cached, so re-scrolling or switching themes no longer re-fetches metadata from the network every time; replaced the old blanket "limit to basics"/NSFW/insecure-content toggles with a per-service list in Preferences
+- Unified title bar is now the default, no longer marked experimental
+- Added a Textwerk theme with Slack-style grouped consecutive messages as the new default display, plus a Chat/Classic style picker for the old one-line-per-message look
+- Added a "common channels" info bar to query windows opened by the other person
 - Flatter, more modern look: reworked topic bar, no gradients or drop shadows, updated default font, taller sidebar rows, instant theme switching with no fade delay
 - Network name stays bold in the server list while that server is active or selected
+- Fixed numerous memory leaks, race conditions, and crashes across connection handling, message batching, and the main window, including a flood-control timer leak on failed connections, a URLSession leak in inline media processing, KVO observer crashes, a race in IRC batch message queuing, and duplicate midnight-rollover timers
+- Removed dead code left over from pre-Tahoe macOS version checks, an orphaned Wiki Link Parser plugin, and other unused helpers
 - Removed OTR and Blowfish message encryption support
 - Removed dead Help menu items pointing to Codeux Software's now-defunct FAQ, support, and license pages
 

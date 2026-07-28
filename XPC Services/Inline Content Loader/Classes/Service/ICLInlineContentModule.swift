@@ -87,36 +87,52 @@ open class ICLInlineContentModule: NSObject, @unchecked Sendable {
 
 	// MARK: - Class Properties (override in subclasses)
 
-	@objc open class var domains: [String]? {
+	/* These members are declared `dynamic` (forcing Objective-C message
+	 dispatch instead of Swift's vtable dispatch) because they are overridden
+	 by Objective-C classes defined in separately-compiled plugin bundles
+	 loaded at runtime via dlopen(). Swift's vtable for `open` members isn't
+	 reliably patched for such cross-image overrides, which previously
+	 crashed (EXC_BAD_ACCESS at a null vtable slot) the first time a plugin
+	 module's overridden member was accessed. */
+
+	@objc dynamic open class var domains: [String]? {
+		return nil
+	}
+
+	/* Identifies this module in the per-provider "InlineMediaProviderEnabled"
+	 preference (see TPCPreferences.inlineMediaProviderEnabled(_:)). Returning
+	 nil (the default) falls back to the class's own name; a module only
+	 needs to override this when it wants to share one user-facing toggle
+	 with another class -- e.g. ICMTwitchClips and ICMTwitchLive both return
+	 "Twitch", since a user thinks of that as a single service, not two. */
+	@objc dynamic open class var preferenceIdentifier: String? {
 		return nil
 	}
 
 	@objc(actionBlockForURL:)
-	open class func actionBlock(for url: URL) -> ICLInlineContentModuleActionBlock? {
+	dynamic open class func actionBlock(for url: URL) -> ICLInlineContentModuleActionBlock? {
 		return nil
 	}
 
 	@objc(actionForURL:)
-	open class func action(for url: URL) -> Selector? {
+	dynamic open class func action(for url: URL) -> Selector? {
 		return nil
 	}
 
-	@objc open class var contentImageOrVideo: Bool { false }
-	@objc open class var contentUntrusted: Bool { false }
-	@objc open class var contentNotSafeForWork: Bool { false }
-	@objc open class var contentIsFile: Bool { false }
+	@objc dynamic open class var contentUntrusted: Bool { false }
+	@objc dynamic open class var contentNotSafeForWork: Bool { false }
 
 	// MARK: - Resources (override in subclasses)
 
-	@objc open var styleResources: [URL]? { return nil }
-	@objc open var scriptResources: [URL]? { return nil }
-	@objc open var entrypoint: String? { return nil }
+	@objc dynamic open var styleResources: [URL]? { return nil }
+	@objc dynamic open var scriptResources: [URL]? { return nil }
+	@objc dynamic open var entrypoint: String? { return nil }
 
 	// MARK: - Template
 
-	@objc open var templateURL: URL? { return nil }
+	@objc dynamic open var templateURL: URL? { return nil }
 
-	@objc open var template: GRMustacheTemplate? {
+	@objc dynamic open var template: GRMustacheTemplate? {
 		guard let url = templateURL, url.isFileURL else { return nil }
 		var tmpl: GRMustacheTemplate? = nil
 		do {
@@ -137,18 +153,28 @@ extension ICLInlineContentModule {
 		_process = nil
 	}
 
-	@objc override public func finalize() {
+	/* Called on a module instance well after the synchronous call that
+	 created it -- typically from an async network completion handler, on a
+	 background queue. By then `self`'s only remaining static type
+	 information is this base class; if `self`'s actual class is a
+	 cross-image plugin subclass, non-`dynamic` calls on it (which Swift may
+	 still route through its own vtable indirection even for non-`open`
+	 members) hit the same crash as the metatype-mediated operations
+	 documented in ICLProcessMain.swift. Marking them `dynamic` forces
+	 ordinary Objective-C message dispatch instead. */
+
+	@objc dynamic override public func finalize() {
 		finalizeWithError(nil)
 	}
 
-	@objc public func finalizeWithError(_ error: Error?) {
+	@objc dynamic public func finalizeWithError(_ error: Error?) {
 		assert(!_moduleFinalized, "Module already finalized")
 		finalizePreflight()
 		_process?._finalizeModule(self, withError: error)
 		finalizeAll()
 	}
 
-	@objc public func cancel() {
+	@objc dynamic public func cancel() {
 		assert(!_moduleFinalized, "Module already cancelled")
 		finalizePreflight()
 		_process?._cancelModule(self)
@@ -160,11 +186,11 @@ extension ICLInlineContentModule {
 		return type == .image || type == .video || type == .videoGif
 	}
 
-	@objc public func deferAsType(_ type: ICLMediaType) {
+	@objc dynamic public func deferAsType(_ type: ICLMediaType) {
 		deferAsType(type, performCheck: true)
 	}
 
-	@objc public func deferAsType(_ type: ICLMediaType, performCheck: Bool) {
+	@objc dynamic public func deferAsType(_ type: ICLMediaType, performCheck: Bool) {
 		assert(!_moduleFinalized, "Module already deferred")
 		finalizePreflight()
 		_process?._deferModule(self, asType: type, performCheck: performCheck)
@@ -175,7 +201,7 @@ extension ICLInlineContentModule {
 // MARK: - Completion (Private)
 
 extension ICLInlineContentModule {
-	@objc open func finalizePreflight() {
+	@objc dynamic open func finalizePreflight() {
 		// Default implementation is empty; subclasses may override.
 	}
 }

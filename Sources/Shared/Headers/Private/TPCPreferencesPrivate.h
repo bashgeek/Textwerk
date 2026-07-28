@@ -43,8 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)setInlineMediaMaxWidth:(NSUInteger)value;
 + (void)setInlineMediaMaxHeight:(NSUInteger)value;
 
-+ (void)setInlineMediaLimitToBasics:(BOOL)inlineMediaLimitToBasics;
-+ (void)setInlineMediaLimitBasicsToFiles:(BOOL)inlineMediaLimitBasicsToFiles;
++ (void)setInlineMediaProviderEnabled:(BOOL)enabled forIdentifier:(NSString *)identifier NS_SWIFT_NAME(setInlineMediaProviderEnabled(_:for:));
 @end
 
 NS_ASSUME_NONNULL_END

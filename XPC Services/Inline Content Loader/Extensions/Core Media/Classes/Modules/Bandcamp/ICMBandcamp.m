@@ -46,56 +46,38 @@ NS_ASSUME_NONNULL_BEGIN
 {
 	NSURL *targetURL = self.payload.url;
 
-	NSURLComponents *requestComponents = [NSURLComponents componentsWithString:@"https://bandcamp.com/oembed"];
-
-	requestComponents.queryItems =
-	@[
-	  [NSURLQueryItem queryItemWithName:@"format" value:@"json"],
-	  [NSURLQueryItem queryItemWithName:@"url" value:targetURL.absoluteString]
-	];
-
-	NSURL *requestURL = requestComponents.URL;
-
-	if (requestURL == nil) {
-		[self notifyUnableToPresentCard];
-
-		return;
-	}
-
-	[ICLHelpers requestJSONDataFromURL:requestURL completionBlock:^(BOOL success, NSDictionary<NSString *, id> *_Nullable data) {
-		if (success == NO || data == nil) {
+	/* Bandcamp's oEmbed endpoint (bandcamp.com/oembed) returns a bare 404
+	 page for every request tried here, JSON or not -- seemingly dead or
+	 gated on something this isn't providing. Its own pages do carry
+	 normal Open Graph tags server-side though (the same tags Slack/
+	 Discord/etc. read for their own link previews), so this reads those
+	 directly instead. */
+	[ICLHelpers requestHTMLFromURL:targetURL completionBlock:^(NSString *_Nullable html) {
+		if (html == nil) {
 			[self notifyUnableToPresentCard];
 
 			return;
 		}
 
-		NSString *title = data[@"title"];
+		NSString *title = [ICLHelpers openGraphContentForProperty:@"og:title" inHTML:html];
 
-		if ([title isKindOfClass:[NSString class]] == NO || title.length == 0) {
+		if (title.length == 0) {
 			[self notifyUnableToPresentCard];
 
 			return;
 		}
 
-		NSString *authorName = data[@"author_name"];
+		NSString *imageURLString = [ICLHelpers openGraphContentForProperty:@"og:image" inHTML:html];
 
-		NSString *meta = nil;
+		NSURL *imageURL = nil;
 
-		if ([authorName isKindOfClass:[NSString class]] && authorName.length > 0) {
-			meta = authorName;
-		}
-
-		NSString *thumbnailURLString = data[@"thumbnail_url"];
-
-		NSURL *thumbnailURL = nil;
-
-		if ([thumbnailURLString isKindOfClass:[NSString class]]) {
-			thumbnailURL = [NSURL URLWithString:thumbnailURLString];
+		if (imageURLString.length > 0) {
+			imageURL = [NSURL URLWithString:imageURLString];
 		}
 
 		[self performActionForCardWithTitle:title
-										meta:meta
-									imageURL:thumbnailURL
+										meta:nil
+									imageURL:imageURL
 									siteName:@"bandcamp.com"
 								   targetURL:targetURL];
 	}];

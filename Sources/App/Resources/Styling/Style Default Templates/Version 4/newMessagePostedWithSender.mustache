@@ -54,8 +54,7 @@
 	</p>
 	{{/isGroupedWithPrevious}}
 
-	<p class="messageBody message">{{#isEncrypted}}{{> encryptedMessageLock}}{{/isEncrypted}}<span class="innerMessage">{{{formattedMessage}}}{{#inlineMediaEnabled}}<span class="inlineMediaContainer"></span>{{/inlineMediaEnabled}}</span>{{#isGroupedWithPrevious}}<span class="hoverTimestamp">{{formattedTimestamp}}</span>{{/isGroupedWithPrevious}}
-	</p>
+	<p class="messageBody message">{{#isEncrypted}}{{> encryptedMessageLock}}{{/isEncrypted}}<span class="innerMessage">{{{formattedMessage}}}{{#inlineMediaEnabled}}<span class="inlineMediaContainer"></span>{{/inlineMediaEnabled}}</span>{{#isGroupedWithPrevious}}<span class="hoverTimestamp">{{formattedTimestamp}}</span>{{/isGroupedWithPrevious}}</p>
 
 {{/groupedDisplayEnabled}}
 {{^groupedDisplayEnabled}}

@@ -44,6 +44,7 @@
                 <outlet property="highlightNicknameButton" destination="IVv-zw-dDv" id="5mn-VV-cM3"/>
                 <outlet property="inlineMediaEnabledButton" destination="Clr-Kc-72d" id="l5P-Kw-58h"/>
                 <outlet property="installedAddonsMenu" destination="mgV-ad-4kQ" id="ysw-NY-ZxI"/>
+                <outlet property="inlineMediaProvidersController" destination="IMP27" id="IMP40"/>
                 <outlet property="installedScriptsController" destination="92m-WJ-gkY" id="Wsq-Rt-t4M"/>
                 <outlet property="installedScriptsTable" destination="rGf-Ih-C97" id="v8k-0K-zxF"/>
                 <outlet property="navigationToolbar" destination="T7o-OY-4Q7" id="4u5-Ls-XuU"/>
@@ -4260,36 +4261,147 @@ A lower value is always better especially when in a large number of channels.</s
                                 </constraints>
                             </view>
                         </tabViewItem>
+                        <tabViewItem label="Providers" identifier="" id="IMP01">
+                            <view key="view" id="IMP02">
+                                <rect key="frame" x="10" y="33" width="624" height="270"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="IMP03">
+                                        <rect key="frame" x="20" y="240" width="584" height="16"/>
+                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Choose which services are allowed to show an inline preview:" id="IMP04">
+                                            <font key="font" metaFont="system"/>
+                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                    <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IMP05">
+                                        <rect key="frame" x="20" y="20" width="584" height="210"/>
+                                        <clipView key="contentView" drawsBackground="NO" id="IMP06">
+                                            <rect key="frame" x="1" y="1" width="582" height="208"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <subviews>
+                                                <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" rowSizeStyle="automatic" viewBased="YES" floatsGroupRows="NO" id="IMP07">
+                                                    <rect key="frame" x="0.0" y="0.0" width="582" height="208"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                    <size key="intercellSpacing" width="3" height="2"/>
+                                                    <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
+                                                    <tableColumns>
+                                                        <tableColumn identifier="enabled" width="34" minWidth="30" maxWidth="40" id="IMP08">
+                                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="center" title="">
+                                                                <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                                <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
+                                                            </tableHeaderCell>
+                                                            <textFieldCell key="dataCell" lineBreakMode="truncatingTail" title="Text Cell" id="IMP10">
+                                                                <font key="font" metaFont="system"/>
+                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                            </textFieldCell>
+                                                            <tableColumnResizingMask key="resizingMask" resizeWithTable="NO"/>
+                                                            <prototypeCellViews>
+                                                                <tableCellView id="IMP11">
+                                                                    <rect key="frame" x="1" y="1" width="34" height="17"/>
+                                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                    <subviews>
+                                                                        <button translatesAutoresizingMaskIntoConstraints="NO" id="IMP12">
+                                                                            <rect key="frame" x="8" y="0.0" width="18" height="18"/>
+                                                                            <buttonCell key="cell" type="check" title="" bezelStyle="regularSquare" imagePosition="only" state="on" inset="2" id="IMP13">
+                                                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                                                <font key="font" metaFont="system"/>
+                                                                            </buttonCell>
+                                                                            <connections>
+                                                                                <binding destination="IMP11" name="value" keyPath="objectValue.enabled" id="IMP14"/>
+                                                                            </connections>
+                                                                        </button>
+                                                                    </subviews>
+                                                                    <constraints>
+                                                                        <constraint firstItem="IMP12" firstAttribute="centerY" secondItem="IMP11" secondAttribute="centerY" id="IMP15"/>
+                                                                        <constraint firstItem="IMP12" firstAttribute="centerX" secondItem="IMP11" secondAttribute="centerX" id="IMP16"/>
+                                                                    </constraints>
+                                                                </tableCellView>
+                                                            </prototypeCellViews>
+                                                        </tableColumn>
+                                                        <tableColumn identifier="displayName" width="540" minWidth="40" maxWidth="1000" id="IMP17">
+                                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Service">
+                                                                <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                                <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
+                                                            </tableHeaderCell>
+                                                            <textFieldCell key="dataCell" lineBreakMode="truncatingTail" allowsUndo="NO" alignment="left" title="Text Cell" id="IMP18">
+                                                                <font key="font" metaFont="system"/>
+                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                            </textFieldCell>
+                                                            <tableColumnResizingMask key="resizingMask" resizeWithTable="YES"/>
+                                                            <prototypeCellViews>
+                                                                <tableCellView id="IMP19">
+                                                                    <rect key="frame" x="1" y="1" width="540" height="17"/>
+                                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                    <subviews>
+                                                                        <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="IMP20">
+                                                                            <rect key="frame" x="0.0" y="1" width="540" height="16"/>
+                                                                            <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="IMP21">
+                                                                                <font key="font" metaFont="system"/>
+                                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                            </textFieldCell>
+                                                                            <connections>
+                                                                                <binding destination="IMP19" name="value" keyPath="objectValue.displayName" id="IMP22"/>
+                                                                            </connections>
+                                                                        </textField>
+                                                                    </subviews>
+                                                                    <constraints>
+                                                                        <constraint firstItem="IMP20" firstAttribute="top" secondItem="IMP19" secondAttribute="top" id="IMP23"/>
+                                                                        <constraint firstItem="IMP20" firstAttribute="leading" secondItem="IMP19" secondAttribute="leading" constant="2" id="IMP24"/>
+                                                                        <constraint firstAttribute="trailing" secondItem="IMP20" secondAttribute="trailing" constant="2" id="IMP25"/>
+                                                                    </constraints>
+                                                                    <connections>
+                                                                        <outlet property="textField" destination="IMP20" id="IMP26"/>
+                                                                    </connections>
+                                                                </tableCellView>
+                                                            </prototypeCellViews>
+                                                        </tableColumn>
+                                                    </tableColumns>
+                                                    <accessibility description="Inline Media Providers"/>
+                                                    <connections>
+                                                        <binding destination="IMP27" name="content" keyPath="arrangedObjects" id="IMP28"/>
+                                                    </connections>
+                                                </tableView>
+                                            </subviews>
+                                        </clipView>
+                                        <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="IMP31">
+                                            <rect key="frame" x="1" y="193" width="582" height="16"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </scroller>
+                                        <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="IMP32">
+                                            <rect key="frame" x="568" y="17" width="15" height="175"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </scroller>
+                                    </scrollView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="IMP03" firstAttribute="top" secondItem="IMP02" secondAttribute="top" constant="20" id="IMP33"/>
+                                    <constraint firstItem="IMP03" firstAttribute="leading" secondItem="IMP02" secondAttribute="leading" constant="20" id="IMP34"/>
+                                    <constraint firstAttribute="trailing" secondItem="IMP03" secondAttribute="trailing" constant="20" id="IMP35"/>
+                                    <constraint firstItem="IMP05" firstAttribute="top" secondItem="IMP03" secondAttribute="bottom" constant="10" id="IMP36"/>
+                                    <constraint firstItem="IMP05" firstAttribute="leading" secondItem="IMP02" secondAttribute="leading" constant="20" id="IMP37"/>
+                                    <constraint firstAttribute="trailing" secondItem="IMP05" secondAttribute="trailing" constant="20" id="IMP38"/>
+                                    <constraint firstAttribute="bottom" secondItem="IMP05" secondAttribute="bottom" constant="20" id="IMP39"/>
+                                </constraints>
+                            </view>
+                        </tabViewItem>
                         <tabViewItem label="Limitations" identifier="" id="fOT-be-gFu">
                             <view key="view" id="PcM-EK-9Mh">
                                 <rect key="frame" x="10" y="33" width="624" height="270"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <button translatesAutoresizingMaskIntoConstraints="NO" id="oNJ-ok-jAs">
-                                        <rect key="frame" x="113" y="223" width="206" height="18"/>
-                                        <buttonCell key="cell" type="check" title="Only inline images and videos" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="2vc-4Q-CJ8">
-                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                            <font key="font" metaFont="system"/>
-                                        </buttonCell>
-                                        <connections>
-                                            <binding destination="-2" name="value" keyPath="self.inlineMediaLimitToBasics" id="UgE-VO-ael"/>
-                                        </connections>
-                                    </button>
-                                    <button translatesAutoresizingMaskIntoConstraints="NO" id="Ceh-Ul-KZi">
-                                        <rect key="frame" x="131" y="201" width="346" height="18"/>
-                                        <buttonCell key="cell" type="check" title="Including video services such as YouTube and others" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="nXf-63-MkU">
-                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                            <font key="font" metaFont="system"/>
-                                        </buttonCell>
-                                        <connections>
-                                            <binding destination="-2" name="value" keyPath="self.inlineMediaLimitBasicsToFiles" id="xsv-3y-iMV">
-                                                <dictionary key="options">
-                                                    <string key="NSValueTransformerName">NSNegateBoolean</string>
-                                                </dictionary>
-                                            </binding>
-                                            <binding destination="G2Q-fc-ddg" name="enabled" keyPath="values.InlineMediaLimitToBasics" id="NR7-a0-huY"/>
-                                        </connections>
-                                    </button>
+                                    <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IMP41">
+                                        <rect key="frame" x="113" y="223" width="400" height="30"/>
+                                        <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" refusesFirstResponder="YES" sendsActionOnEndEditing="YES" title="These preferences only apply to third-party plugins -- Textwerk's own providers (see the Providers tab) never inject HTML or mark content NSFW." id="IMP42">
+                                            <font key="font" metaFont="cellTitle"/>
+                                            <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
                                     <button translatesAutoresizingMaskIntoConstraints="NO" id="I6X-6F-yH4">
                                         <rect key="frame" x="113" y="171" width="301" height="18"/>
                                         <buttonCell key="cell" type="check" title="Only inline media that is safe to view in public" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="NlC-I6-LZo">
@@ -4304,7 +4416,7 @@ A lower value is always better especially when in a large number of channels.</s
                                         <rect key="frame" x="131" y="119" width="328" height="45"/>
                                         <textFieldCell key="cell" controlSize="mini" scrollable="YES" lineBreakMode="clipping" selectable="YES" refusesFirstResponder="YES" sendsActionOnEndEditing="YES" id="Kjb-nu-50w">
                                             <font key="font" metaFont="cellTitle"/>
-                                            <string key="title">This preference works by disabling certain services.
+                                            <string key="title">This preference works by disabling certain plugins.
 It doesn't know whether a specific image or video is safe.
 You should therefore not rely solely on this preference.</string>
                                             <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
@@ -4331,23 +4443,20 @@ You should therefore not rely solely on this preference.</string>
                                     </textField>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="I6X-6F-yH4" firstAttribute="top" secondItem="Ceh-Ul-KZi" secondAttribute="bottom" constant="14" id="5gJ-eO-TwY"/>
                                     <constraint firstItem="36L-dm-E2y" firstAttribute="top" secondItem="ZhW-5j-NXk" secondAttribute="bottom" constant="10" id="61y-bI-KFp"/>
                                     <constraint firstItem="ZhW-5j-NXk" firstAttribute="leading" secondItem="I6X-6F-yH4" secondAttribute="leading" constant="18" id="7bc-8Y-Gkb"/>
                                     <constraint firstItem="Zk5-W6-ihe" firstAttribute="leading" secondItem="36L-dm-E2y" secondAttribute="leading" constant="18" id="9Vp-bD-qVh"/>
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="I6X-6F-yH4" secondAttribute="trailing" constant="20" id="D2U-fE-5zW"/>
-                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Ceh-Ul-KZi" secondAttribute="trailing" constant="20" id="IhX-GA-AdU"/>
-                                    <constraint firstItem="Ceh-Ul-KZi" firstAttribute="leading" secondItem="oNJ-ok-jAs" secondAttribute="leading" constant="18" id="MJG-ag-Cn8"/>
-                                    <constraint firstItem="I6X-6F-yH4" firstAttribute="leading" secondItem="oNJ-ok-jAs" secondAttribute="leading" id="QgZ-Ax-aDj"/>
+                                    <constraint firstItem="I6X-6F-yH4" firstAttribute="leading" secondItem="IMP41" secondAttribute="leading" id="QgZ-Ax-aDj"/>
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="36L-dm-E2y" secondAttribute="trailing" constant="20" id="XPR-le-PYT"/>
                                     <constraint firstItem="36L-dm-E2y" firstAttribute="leading" secondItem="I6X-6F-yH4" secondAttribute="leading" id="ZFe-9j-UWM"/>
-                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="oNJ-ok-jAs" secondAttribute="trailing" constant="20" id="aax-N4-hDw"/>
-                                    <constraint firstItem="oNJ-ok-jAs" firstAttribute="top" secondItem="PcM-EK-9Mh" secondAttribute="top" constant="30" id="bho-gk-o9y"/>
+                                    <constraint firstItem="IMP41" firstAttribute="top" secondItem="PcM-EK-9Mh" secondAttribute="top" constant="30" id="bho-gk-o9y"/>
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ZhW-5j-NXk" secondAttribute="trailing" constant="20" id="fCH-k4-HnV"/>
-                                    <constraint firstItem="Ceh-Ul-KZi" firstAttribute="top" secondItem="oNJ-ok-jAs" secondAttribute="bottom" constant="6" symbolic="YES" id="ge1-qs-WLY"/>
+                                    <constraint firstItem="I6X-6F-yH4" firstAttribute="top" secondItem="IMP41" secondAttribute="bottom" constant="14" id="ge1-qs-WLY"/>
                                     <constraint firstItem="Zk5-W6-ihe" firstAttribute="top" secondItem="36L-dm-E2y" secondAttribute="bottom" constant="8" symbolic="YES" id="jdk-2I-37Y"/>
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Zk5-W6-ihe" secondAttribute="trailing" constant="20" id="onk-Pi-W5R"/>
-                                    <constraint firstItem="oNJ-ok-jAs" firstAttribute="leading" secondItem="PcM-EK-9Mh" secondAttribute="leading" constant="115" id="qSP-Ti-zoH"/>
+                                    <constraint firstItem="IMP41" firstAttribute="leading" secondItem="PcM-EK-9Mh" secondAttribute="leading" constant="115" id="qSP-Ti-zoH"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="IMP41" secondAttribute="trailing" constant="20" id="IMP43"/>
                                     <constraint firstItem="ZhW-5j-NXk" firstAttribute="top" secondItem="I6X-6F-yH4" secondAttribute="bottom" constant="8" symbolic="YES" id="zzf-XD-GBh"/>
                                 </constraints>
                             </view>
@@ -4765,6 +4874,11 @@ You should therefore not rely solely on this preference.</string>
             </declaredKeys>
             <connections>
                 <binding destination="-2" name="contentArray" keyPath="installedScripts" id="B7c-E1-tOE"/>
+            </connections>
+        </arrayController>
+        <arrayController preservesSelection="NO" avoidsEmptySelection="NO" automaticallyRearrangesObjects="YES" id="IMP27" userLabel="Inline Media Providers">
+            <connections>
+                <binding destination="-2" name="contentArray" keyPath="inlineMediaProviders" id="IMP44"/>
             </connections>
         </arrayController>
         <userDefaultsController id="G2Q-fc-ddg" userLabel="Preferences User Defaults Controller" customClass="TPCPreferencesUserDefaultsController"/>

@@ -40,31 +40,29 @@ import Foundation
 /* ICMInlineVideoFoundation does nothing. It exists for internal use. */
 @objc(ICMInlineVideoFoundation)
 open class ICMInlineVideoFoundation: ICLInlineContentModule {
-	@objc open var videoAutoplayEnabled: Bool = false
-	@objc open var videoControlsEnabled: Bool = true  // default = YES
-	@objc open var videoLoopEnabled: Bool = false
-	@objc open var videoMuteEnabled: Bool = false
-	@objc open var videoStartTime: TimeInterval = 0
-	@objc open var videoPlaybackSpeed: Double = 1.0   // default = 1.0
+	@objc dynamic open var videoAutoplayEnabled: Bool = false
+	@objc dynamic open var videoControlsEnabled: Bool = true  // default = YES
+	@objc dynamic open var videoLoopEnabled: Bool = false
+	@objc dynamic open var videoMuteEnabled: Bool = false
+	@objc dynamic open var videoStartTime: TimeInterval = 0
+	@objc dynamic open var videoPlaybackSpeed: Double = 1.0   // default = 1.0
 
-	override open class var contentImageOrVideo: Bool { true }
-
-	override open var templateURL: URL? {
+	override dynamic open var templateURL: URL? {
 		Bundle.main.url(forResource: "ICMInlineVideo", withExtension: "mustache", subdirectory: "Components")
 	}
 
-	override open var styleResources: [URL]? {
+	override dynamic open var styleResources: [URL]? {
 		Bundle.main.url(forResource: "ICMInlineVideo", withExtension: "css", subdirectory: "Components").map { [$0] }
 	}
 
-	override open var scriptResources: [URL]? {
+	override dynamic open var scriptResources: [URL]? {
 		Bundle.main.url(forResource: "ICMInlineVideo", withExtension: "js", subdirectory: "Components").map { [$0] }
 	}
 
-	override open var entrypoint: String? { "_ICMInlineVideo" }
+	override dynamic open var entrypoint: String? { "_ICMInlineVideo" }
 
 	@objc(parseYouTubeEsqueTimestamp:)
-	open class func parseYouTubeEsqueTimestamp(_ timestamp: String) -> TimeInterval {
+	dynamic open class func parseYouTubeEsqueTimestamp(_ timestamp: String) -> TimeInterval {
 		let ns = timestamp as NSString
 		if ns.isPositiveWholeNumber {
 			return ns.doubleValue
@@ -108,12 +106,12 @@ open class ICMInlineVideo: ICMInlineVideoFoundation {
 	private var videoCheck: ICLMediaAssessor? = nil
 
 	@objc(performAction)
-	open func performAction() {
+	dynamic open func performAction() {
 		performAction(withVideoCheck: true)
 	}
 
 	@objc(performActionWithVideoCheck:)
-	open func performAction(withVideoCheck checkVideo: Bool) {
+	dynamic open func performAction(withVideoCheck checkVideo: Bool) {
 		if checkVideo {
 			_performVideoCheck()
 		} else {
@@ -122,24 +120,24 @@ open class ICMInlineVideo: ICMInlineVideoFoundation {
 	}
 
 	@objc(performActionForURL:)
-	open func performAction(forURL url: URL) {
+	dynamic open func performAction(forURL url: URL) {
 		performAction(forURL: url, bypassVideoCheck: false)
 	}
 
 	@objc(performActionForURL:bypassVideoCheck:)
-	open func performAction(forURL url: URL, bypassVideoCheck: Bool) {
+	dynamic open func performAction(forURL url: URL, bypassVideoCheck: Bool) {
 		precondition(videoCheck == nil, "Module already initialized")
 		payload.urlToInline = url
 		performAction(withVideoCheck: !bypassVideoCheck)
 	}
 
 	@objc(performActionForAddress:)
-	open func performAction(forAddress address: String) {
+	dynamic open func performAction(forAddress address: String) {
 		performAction(forAddress: address, bypassVideoCheck: false)
 	}
 
 	@objc(performActionForAddress:bypassVideoCheck:)
-	open func performAction(forAddress address: String, bypassVideoCheck: Bool) {
+	dynamic open func performAction(forAddress address: String, bypassVideoCheck: Bool) {
 		guard let url = ICLHelpers.url(withString: address) else { return }
 		performAction(forURL: url, bypassVideoCheck: bypassVideoCheck)
 	}
@@ -195,27 +193,27 @@ open class ICMInlineVideo: ICMInlineVideoFoundation {
 	}
 
 	@objc(notifyUnsafeToLoadVideo)
-	open func notifyUnsafeToLoadVideo() {
+	dynamic open func notifyUnsafeToLoadVideo() {
 		cancel()
 	}
 
 	@objc(actionBlockForForURL:)
-	open class func actionBlock(forForURL url: URL) -> ICLInlineContentModuleActionBlock {
+	dynamic open class func actionBlock(forForURL url: URL) -> ICLInlineContentModuleActionBlock {
 		return actionBlock(forForURL: url, bypassVideoCheck: false)
 	}
 
 	@objc(actionBlockForForURL:bypassVideoCheck:)
-	open class func actionBlock(forForURL url: URL, bypassVideoCheck: Bool) -> ICLInlineContentModuleActionBlock {
+	dynamic open class func actionBlock(forForURL url: URL, bypassVideoCheck: Bool) -> ICLInlineContentModuleActionBlock {
 		return actionBlock(forAddress: url.absoluteString, bypassVideoCheck: bypassVideoCheck)
 	}
 
 	@objc(actionBlockForAddress:)
-	open class func actionBlock(forAddress address: String) -> ICLInlineContentModuleActionBlock {
+	dynamic open class func actionBlock(forAddress address: String) -> ICLInlineContentModuleActionBlock {
 		return actionBlock(forAddress: address, bypassVideoCheck: false)
 	}
 
 	@objc(actionBlockForAddress:bypassVideoCheck:)
-	open class func actionBlock(forAddress address: String, bypassVideoCheck: Bool) -> ICLInlineContentModuleActionBlock {
+	dynamic open class func actionBlock(forAddress address: String, bypassVideoCheck: Bool) -> ICLInlineContentModuleActionBlock {
 		return { module in
 			(module as? ICMInlineVideo)?.performAction(forAddress: address, bypassVideoCheck: bypassVideoCheck)
 		}

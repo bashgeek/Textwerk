@@ -48,6 +48,16 @@ final class ICLProcessDelegate: NSObject, NSXPCListenerDelegate {
 			ofReply: false
 		)
 
+		/* -updateInlineMediaPreferences: carries a dictionary with at least
+		 one nested dictionary value (InlineMediaProviderEnabled), so the
+		 default one-level class inference isn't enough. */
+		exportedInterface.setClasses(
+			NSSet(array: [NSDictionary.self as AnyObject, NSNumber.self as AnyObject, NSString.self as AnyObject]) as! Set<AnyHashable>,
+			for: NSSelectorFromString("updateInlineMediaPreferences:"),
+			argumentIndex: 0,
+			ofReply: false
+		)
+
 		newConnection.exportedInterface = exportedInterface
 		newConnection.exportedObject = ICLProcessMain(xpcConnection: newConnection)
 

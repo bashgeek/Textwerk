@@ -1,8 +1,24 @@
 
 .inlineHTML {
-	overflow: auto;
+	overflow: hidden; /* was auto: contains floated children (clearfix)
+	but also makes this its own scroll box, showing a persistent
+	scrollbar (non-overlay style, mouse attached) on any sub-pixel
+	overflow. hidden keeps the containment without the scrollbar. */
 	display: block;
-	margin-top: 12px;
-	margin-bottom: 12px;
+	width: fit-content; /* shrink to the actual media's width, not the
+	full message column -- needed so an absolutely positioned
+	.closeButton corner badge lands on the media itself */
+	position: relative; /* anchor for .closeButton */
+	padding-right: 24px; /* reserves room for .closeButton so its corner
+	badge sits in blank space instead of overlapping the media -- absolute
+	offsets resolve against the padding box, not the content box, so the
+	button (right: 4px) lands inside this strip rather than over .content */
+	white-space: normal; /* markup here is template formatting, not
+	user-typed text -- don't preserve it like .messageBody's pre-wrap does */
+	margin-top: 4px;
+	margin-bottom: 4px; /* equal to margin-top: the previous fix (0) made
+	the gap after the card smaller than the gap before it, which looked
+	lopsided even though the after-gap alone wasn't literally bigger
+	than a plain message-to-message gap */
 	text-indent: 0;
 }

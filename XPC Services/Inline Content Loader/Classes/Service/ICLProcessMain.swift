@@ -40,6 +40,59 @@ import os.log
 
 private let ICLInlineContentErrorDomain: String = "ICLInlineContentErrorDomain"
 
+/* Module classes may be Objective-C classes defined in a separately
+ dlopen()'d plugin bundle. Calling their overridden class members through a
+ Swift metatype (`someAnyClass as? ICLInlineContentModule.Type`, then
+ `cls.someMember` / `cls.init(...)`, or dynamic-casting an instance back)
+ crashes: Swift synthesizes "artificial subclass" metadata to represent a
+ cross-image class in its type system, and several Swift runtime entry
+ points (dynamic cast, required-init dispatch, closure-call thunks) don't
+ reliably resolve that synthetic metadata back to the real Class. Every
+ operation below is instead implemented in plain Objective-C
+ (ICLCrossImageDispatch), which only ever sees a `Class`/`id` value and
+ never asks Swift's type system to reason about it. */
+
+private func classDomains(_ cls: AnyClass) -> [String]? {
+	ICLCrossImageDispatch.domains(forModuleClass: cls)
+}
+
+private func classContentUntrusted(_ cls: AnyClass) -> Bool {
+	ICLCrossImageDispatch.moduleClassContentUntrusted(cls)
+}
+
+private func classContentNotSafeForWork(_ cls: AnyClass) -> Bool {
+	ICLCrossImageDispatch.moduleClassContentNotSafeForWork(cls)
+}
+
+private func classPreferenceIdentifier(_ cls: AnyClass) -> String {
+	ICLCrossImageDispatch.preferenceIdentifier(forModuleClass: cls)
+}
+
+private func classActionBlock(_ cls: AnyClass, for url: URL) -> ICLInlineContentModuleActionBlock? {
+	/* ICLCrossImageDispatch declares this `id`-returning (see its header for
+	 why), so it comes back as a plain AnyObject holding a real Objective-C
+	 block. Reinterpreting it as a @convention(block) closure is a safe,
+	 ordinary reinterpret of a value already known to be a valid block --
+	 not a dynamic cast -- and implicitly converts to the native Swift
+	 closure type this function returns. */
+	guard let raw = ICLCrossImageDispatch.actionBlock(forModuleClass: cls, url: url) else { return nil }
+	typealias BlockType = @convention(block) (ICLInlineContentModule) -> Void
+	return unsafeBitCast(raw as AnyObject, to: BlockType.self)
+}
+
+private func classAction(_ cls: AnyClass, for url: URL) -> Selector? {
+	ICLCrossImageDispatch.actionSelector(forModuleClass: cls, url: url)
+}
+
+private func classInstantiate(_ cls: AnyClass, payload: ICLPayloadMutable, process: ICLProcessMain) -> ICLInlineContentModule? {
+	/* Same `id`-return rationale as classActionBlock(_:for:) above. The
+	 class was already established (in processPayload(_:using:)) to
+	 conform to ICLInlineContentModule.Type, so an unchecked downcast here
+	 is safe and avoids the runtime dynamic cast machinery entirely. */
+	guard let raw = ICLCrossImageDispatch.instantiateModuleClass(cls, payload: payload, process: process) else { return nil }
+	return unsafeDowncast(raw as AnyObject, to: ICLInlineContentModule.self)
+}
+
 @objc public final class ICLProcessMain: NSObject, ICLInlineContentServerProtocol, @unchecked Sendable {
 	private let serviceConnection: NSXPCConnection
 
@@ -53,7 +106,15 @@ private let ICLInlineContentErrorDomain: String = "ICLInlineContentErrorDomain"
 
 	// MARK: - Module Registry
 
-	nonisolated(unsafe) private static let moduleReferences: NSCache<NSString, ICLInlineContentModule> = NSCache()
+	/* A module must stay alive for the whole duration of its (often async,
+	 e.g. a network request) work -- NSCache is the wrong tool for that: it's
+	 explicitly permitted to evict entries at any time under memory pressure,
+	 which deallocates the module mid-flight and crashes whatever async
+	 callback (URLSession delegate, completion handler) fires afterward on
+	 the now-freed object. A plain dictionary, only ever removed from
+	 explicitly in removeReference(for:), doesn't have that failure mode. */
+	private static let moduleReferencesLock = NSLock()
+	nonisolated(unsafe) private static var moduleReferences: [String: ICLInlineContentModule] = [:]
 
 	/* Modules dict is built once on first access (thread-safe via static let).
 	 warmServiceByLoadingPluginsAtLocations: must be called before URL processing. */
@@ -63,13 +124,13 @@ private let ICLInlineContentErrorDomain: String = "ICLInlineContentErrorDomain"
 
 		var result: [String: [AnyClass]] = [:]
 		for moduleClass in allModules {
-			guard let cls = moduleClass as? ICLInlineContentModule.Type else { continue }
-			let domains = cls.domains ?? []
+			guard moduleClass is ICLInlineContentModule.Type else { continue }
+			let domains = classDomains(moduleClass) ?? []
 			if domains.isEmpty {
-				result["*", default: []].append(cls)
+				result["*", default: []].append(moduleClass)
 			} else {
 				for domain in domains {
-					result[domain, default: []].append(cls)
+					result[domain, default: []].append(moduleClass)
 				}
 			}
 		}
@@ -98,6 +159,15 @@ private let ICLInlineContentErrorDomain: String = "ICLInlineContentErrorDomain"
 		guard !Self.defaultsRegistered else { return }
 		Self.defaultsRegistered = true
 		UserDefaults.standard.register(defaults: defaults)
+	}
+
+	/* Unlike the warm-up methods above, this is called repeatedly -- once
+	 when the app establishes the connection, then again every time one of
+	 the preferences it covers changes -- since this service has no other
+	 way to see the app's live preference values (see
+	 TPCPreferences.setInlineMediaRemoteDefaults(_:) for why). */
+	public func updateInlineMediaPreferences(_ preferences: [String: Any]) {
+		TPCPreferences.setInlineMediaRemoteDefaults(preferences)
 	}
 
 	// MARK: - XPC Interface
@@ -130,20 +200,19 @@ private let ICLInlineContentErrorDomain: String = "ICLInlineContentErrorDomain"
 	}
 
 	private func processPayload(_ payloadIn: ICLPayloadMutable, using moduleClass: AnyClass) -> Bool {
-		guard let cls = moduleClass as? ICLInlineContentModule.Type else { return false }
+		guard moduleClass is ICLInlineContentModule.Type else { return false }
 
-		if !cls.contentImageOrVideo && TPCPreferences.inlineMediaLimitToBasics() { return false }
-		if !cls.contentIsFile && TPCPreferences.inlineMediaLimitToBasics() && TPCPreferences.inlineMediaLimitBasicsToFiles() { return false }
-		if cls.contentNotSafeForWork && TPCPreferences.inlineMediaLimitNaughtyContent() { return false }
-		if cls.contentUntrusted && TPCPreferences.inlineMediaLimitUnsafeContent() { return false }
+		if !TPCPreferences.inlineMediaProviderEnabled(classPreferenceIdentifier(moduleClass)) { return false }
+		if classContentNotSafeForWork(moduleClass) && TPCPreferences.inlineMediaLimitNaughtyContent() { return false }
+		if classContentUntrusted(moduleClass) && TPCPreferences.inlineMediaLimitUnsafeContent() { return false }
 
 		let url = payloadIn.url
-		let actionBlock = cls.actionBlock(for: url)
-		let action: Selector? = actionBlock == nil ? cls.action(for: url) : nil
+		let actionBlock = classActionBlock(moduleClass, for: url)
+		let action: Selector? = actionBlock == nil ? classAction(moduleClass, for: url) : nil
 
 		guard actionBlock != nil || action != nil else { return false }
 
-		let module = cls.init(payload: payloadIn, inProcess: self)
+		guard let module = classInstantiate(moduleClass, payload: payloadIn, process: self) else { return false }
 		addReference(for: module)
 
 		if let actionBlock = actionBlock {
@@ -205,11 +274,15 @@ private let ICLInlineContentErrorDomain: String = "ICLInlineContentErrorDomain"
 	// MARK: - Memory
 
 	private func addReference(for module: ICLInlineContentModule) {
-		Self.moduleReferences.setObject(module, forKey: module.description as NSString)
+		Self.moduleReferencesLock.lock()
+		defer { Self.moduleReferencesLock.unlock() }
+		Self.moduleReferences[module.description] = module
 	}
 
 	private func removeReference(for module: ICLInlineContentModule) {
-		Self.moduleReferences.removeObject(forKey: module.description as NSString)
+		Self.moduleReferencesLock.lock()
+		defer { Self.moduleReferencesLock.unlock() }
+		Self.moduleReferences.removeValue(forKey: module.description)
 	}
 
 	// MARK: - XPC Connection

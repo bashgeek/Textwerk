@@ -44,6 +44,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation ICMLinkPreviewCard
 
+/* Unlike ICMInlineHTML subclasses in general, a link preview card's markup
+ comes entirely from this class's own fixed, first-party template -- the
+ provider's API only supplies escaped string/URL values (see
+ -performActionForCardWithTitle:...), never raw HTML. It doesn't carry the
+ risk InlineMediaLimitUnsafeContent exists to gate (a preference that still
+ matters for third-party plugin modules, which aren't bound to this class). */
++ (BOOL)contentUntrusted
+{
+	return NO;
+}
+
 - (void)performActionForCardWithTitle:(NSString *)title
 								  meta:(nullable NSString *)meta
 							  imageURL:(nullable NSURL *)imageURL

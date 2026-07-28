@@ -1,7 +1,12 @@
 
 .inlineImage {
-	overflow: auto;
+	overflow: hidden; /* see ICMInlineHTML.css: was auto, which turns this
+	into its own persistent-scrollbar box on any sub-pixel overflow */
 	display: block;
-	margin-top: 12px;
-	margin-bottom: 12px;
+	width: fit-content; /* see ICMInlineHTML.css */
+	position: relative; /* anchor for .closeButton */
+	padding-right: 24px; /* see ICMInlineHTML.css */
+	white-space: normal; /* see ICMInlineHTML.css */
+	margin-top: 4px;
+	margin-bottom: 4px; /* see ICMInlineHTML.css */
 }

@@ -75,7 +75,4 @@ class ICMAssessedMedia: ICLInlineContentModule {
 		guard TPCPreferences.inlineMediaCheckEverything() else { return nil }
 		return #selector(_assessMedia)
 	}
-
-	override class var contentImageOrVideo: Bool { true }
-	override class var contentIsFile: Bool { true }
 }

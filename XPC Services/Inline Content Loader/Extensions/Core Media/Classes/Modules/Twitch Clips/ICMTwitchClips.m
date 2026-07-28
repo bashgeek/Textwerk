@@ -35,31 +35,64 @@
  *
  *********************************************************************** */
 
+#import "ICLHelpers.h"
 #import "ICMTwitchClips.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation ICMTwitchClips
 
-- (void)_performActionForVideo:(NSString *)videoIdentifier
+- (void)_loadClipWithIdentifier:(NSString *)videoIdentifier
 {
 	NSParameterAssert(videoIdentifier != nil);
 
-	ICLPayloadMutable *payload = self.payload;
+	NSURL *targetURL = self.payload.url;
 
-	NSDictionary *templateAttributes =
-	@{
-	  @"uniqueIdentifier" : payload.uniqueIdentifier,
-	  @"videoIdentifier" : videoIdentifier
-	};
- 
-	NSError *templateRenderError = nil;
+	NSString *clipAddress = [NSString stringWithFormat:@"https://clips.twitch.tv/%@", videoIdentifier];
 
-	NSString *html = [self.template renderObject:templateAttributes error:&templateRenderError];
+	NSURL *clipURL = [NSURL URLWithString:clipAddress];
 
-	payload.html = html;
+	if (clipURL == nil) {
+		[self notifyUnableToPresentCard];
 
-	[self finalizeWithError:templateRenderError];
+		return;
+	}
+
+	/* Twitch's real API requires an OAuth app token, so there's no
+	 unauthenticated way to fetch clip metadata that way. Its pages do
+	 render normal Open Graph tags server-side though (the same tags
+	 Slack/Discord/etc. read for their own link previews), so this reads
+	 those directly instead of embedding the (also now-broken, see
+	 ICMYouTube.m) clip player. */
+	[ICLHelpers requestHTMLFromURL:clipURL completionBlock:^(NSString *_Nullable html) {
+		if (html == nil) {
+			[self notifyUnableToPresentCard];
+
+			return;
+		}
+
+		NSString *title = [ICLHelpers openGraphContentForProperty:@"og:title" inHTML:html];
+
+		if (title.length == 0) {
+			[self notifyUnableToPresentCard];
+
+			return;
+		}
+
+		NSString *imageURLString = [ICLHelpers openGraphContentForProperty:@"og:image" inHTML:html];
+
+		NSURL *imageURL = nil;
+
+		if (imageURLString.length > 0) {
+			imageURL = [NSURL URLWithString:imageURLString];
+		}
+
+		[self performActionForCardWithTitle:title
+										meta:nil
+									imageURL:imageURL
+									siteName:@"twitch.tv"
+								   targetURL:targetURL];
+	}];
 }
 
 #pragma mark -
@@ -78,7 +111,7 @@ NS_ASSUME_NONNULL_BEGIN
 	return [^(ICLInlineContentModule *module) {
 		__weak ICMTwitchClips *moduleTyped = (id)module;
 
-		[moduleTyped _performActionForVideo:videoIdentifier];
+		[moduleTyped _loadClipWithIdentifier:videoIdentifier];
 	} copy];
 }
 
@@ -126,12 +159,10 @@ NS_ASSUME_NONNULL_BEGIN
 	return domains;
 }
 
-#pragma mark -
-#pragma mark Utilities
-
-- (nullable NSURL *)templateURL
+/* Shared with ICMTwitchLive: users think of "Twitch" as one service. */
++ (nullable NSString *)preferenceIdentifier
 {
-	return [NSBundleForClass() URLForResource:@"ICMTwitchClips" withExtension:@"mustache"];
+	return @"Twitch";
 }
 
 @end

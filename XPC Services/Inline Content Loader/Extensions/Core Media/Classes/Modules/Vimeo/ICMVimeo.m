@@ -35,31 +35,70 @@
  *
  *********************************************************************** */
 
+#import "ICLHelpers.h"
 #import "ICMVimeo.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation ICMVimeo
 
-- (void)_performActionForVideo:(NSString *)videoIdentifier
+- (void)_loadVideoWithIdentifier:(NSString *)videoIdentifier
 {
 	NSParameterAssert(videoIdentifier != nil);
 
-	ICLPayloadMutable *payload = self.payload;
+	NSURL *targetURL = self.payload.url;
 
-	NSDictionary *templateAttributes =
-	@{
-	  @"uniqueIdentifier" : payload.uniqueIdentifier,
-	  @"videoIdentifier" : videoIdentifier
-	};
+	/* Vimeo's current, documented oEmbed endpoint (vimeo.com/api/oembed.json)
+	 returns a bare 404 for any video, even with a browser user agent --
+	 seemingly dead. Their older, undocumented-but-still-live v2 API does
+	 work and carries everything a card needs, so this uses that instead. */
+	NSString *apiAddress = [NSString stringWithFormat:@"https://vimeo.com/api/v2/video/%@.json", videoIdentifier];
 
-	NSError *templateRenderError = nil;
+	NSURL *apiURL = [NSURL URLWithString:apiAddress];
 
-	NSString *html = [self.template renderObject:templateAttributes error:&templateRenderError];
+	if (apiURL == nil) {
+		[self notifyUnableToPresentCard];
 
-	payload.html = html;
+		return;
+	}
 
-	[self finalizeWithError:templateRenderError];
+	[ICLHelpers requestJSONArrayFromURL:apiURL completionBlock:^(BOOL success, NSArray<NSDictionary<NSString *, id> *> *_Nullable array) {
+		NSDictionary<NSString *, id> *data = (success ? array.firstObject : nil);
+
+		if (data == nil) {
+			[self notifyUnableToPresentCard];
+
+			return;
+		}
+
+		NSString *title = data[@"title"];
+
+		if ([title isKindOfClass:[NSString class]] == NO || title.length == 0) {
+			[self notifyUnableToPresentCard];
+
+			return;
+		}
+
+		NSString *authorName = data[@"user_name"];
+
+		if ([authorName isKindOfClass:[NSString class]] == NO) {
+			authorName = nil;
+		}
+
+		NSString *thumbnailURLString = data[@"thumbnail_large"];
+
+		NSURL *thumbnailURL = nil;
+
+		if ([thumbnailURLString isKindOfClass:[NSString class]]) {
+			thumbnailURL = [NSURL URLWithString:thumbnailURLString];
+		}
+
+		[self performActionForCardWithTitle:title
+										meta:authorName
+									imageURL:thumbnailURL
+									siteName:@"vimeo.com"
+								   targetURL:targetURL];
+	}];
 }
 
 #pragma mark -
@@ -78,7 +117,7 @@ NS_ASSUME_NONNULL_BEGIN
 	return [^(ICLInlineContentModule *module) {
 		__weak ICMVimeo *moduleTyped = (id)module;
 
-		[moduleTyped _performActionForVideo:videoIdentifier];
+		[moduleTyped _loadVideoWithIdentifier:videoIdentifier];
 	} copy];
 }
 
@@ -114,14 +153,6 @@ NS_ASSUME_NONNULL_BEGIN
 	});
 
 	return domains;
-}
-
-#pragma mark -
-#pragma mark Utilities
-
-- (nullable NSURL *)templateURL
-{
-	return [NSBundleForClass() URLForResource:@"ICMVimeo" withExtension:@"mustache"];
 }
 
 @end

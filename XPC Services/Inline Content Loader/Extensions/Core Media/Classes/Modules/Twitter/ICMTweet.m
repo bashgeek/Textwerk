@@ -44,6 +44,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)_loadTweetContents
 {
+	NSURL *targetURL = self.payload.url;
+
 	NSString *tweetAddress = self.payload.address;
 
 	NSURLComponents *requestComponents = [NSURLComponents componentsWithString:@"https://publish.twitter.com/oembed"];
@@ -51,40 +53,72 @@ NS_ASSUME_NONNULL_BEGIN
 	requestComponents.queryItems =
 	@[
 	  [NSURLQueryItem queryItemWithName:@"dnt" value:@"true"], /* DO NOT TRACK */
-	  [NSURLQueryItem queryItemWithName:@"maxwidth" value:@"500"],
 	  [NSURLQueryItem queryItemWithName:@"omit_script" value:@"true"],
 	  [NSURLQueryItem queryItemWithName:@"url" value:tweetAddress]
 	];
 
 	NSURL *requestURL = requestComponents.URL;
 
-	[ICLHelpers requestJSONObject:@"html"
-						   ofType:[NSString class]
-					  inHierarchy:nil
-						  fromURL:requestURL
-				  completionBlock:^(id object) {
-				if (object == nil) {
-					[self notifyUnableToPresentHTML];
+	if (requestURL == nil) {
+		[self notifyUnableToPresentCard];
 
-					return;
-				}
+		return;
+	}
 
-				[self performActionForHTML:object];
-			}];
+	[ICLHelpers requestJSONDataFromURL:requestURL completionBlock:^(BOOL success, NSDictionary<NSString *, id> *_Nullable data) {
+		if (success == NO || data == nil) {
+			[self notifyUnableToPresentCard];
+
+			return;
+		}
+
+		/* The oEmbed response has no plain-text field for the tweet body --
+		 it's embedded as markup (hashtags/links/media) inside "html"'s
+		 first <p> tag, which this pulls out and strips down to text. */
+		NSString *embedHTML = data[@"html"];
+
+		NSString *tweetText = nil;
+
+		if ([embedHTML isKindOfClass:[NSString class]]) {
+			tweetText = [ICLHelpers firstParagraphPlainTextFromHTML:embedHTML];
+		}
+
+		if (tweetText.length == 0) {
+			[self notifyUnableToPresentCard];
+
+			return;
+		}
+
+		NSString *authorName = data[@"author_name"];
+
+		if ([authorName isKindOfClass:[NSString class]] == NO || authorName.length == 0) {
+			authorName = @"x.com";
+		}
+
+		[self performActionForCardWithTitle:tweetText
+										meta:nil
+									imageURL:nil
+									siteName:authorName
+								   targetURL:targetURL];
+	}];
 }
 
 #pragma mark -
 #pragma mark Action Block
 
-+ (nullable SEL)actionForURL:(NSURL *)url
++ (nullable ICLInlineContentModuleActionBlock)actionBlockForURL:(NSURL *)url
 {
 	NSParameterAssert(url != nil);
 
 	if ([self _URLIsTweet:url] == NO) {
-		return NULL;
+		return nil;
 	}
 
-	return @selector(_loadTweetContents);
+	return [^(ICLInlineContentModule *module) {
+		__weak ICMTweet *moduleTyped = (id)module;
+
+		[moduleTyped _loadTweetContents];
+	} copy];
 }
 
 + (BOOL)_URLIsTweet:(NSURL *)url
@@ -125,34 +159,13 @@ NS_ASSUME_NONNULL_BEGIN
 		@[
 		  @"twitter.com",
 		  @"www.twitter.com",
-		  @"mobile.twitter.com"
+		  @"mobile.twitter.com",
+		  @"x.com",
+		  @"www.x.com"
 		];
 	});
 
 	return domains;
-}
-
-#pragma mark -
-#pragma mark Utilities
-
-- (nullable NSArray<NSURL *> *)scriptResources
-{
-	return
-	[[super scriptResources] arrayByAddingObjectsFromArray:
-	@[
-	  [NSURL URLWithString:@"https://platform.twitter.com/widgets.js"],
-	  [NSBundleForClass() URLForResource:@"ICMTweet" withExtension:@"js"]
-	]];
-}
-
-- (nullable NSString *)entrypoint
-{
-	return @"_ICMTweet";
-}
-
-- (void)finalizePreflight
-{
-	self.payload.classAttribute = @"inlineTweet";
 }
 
 @end

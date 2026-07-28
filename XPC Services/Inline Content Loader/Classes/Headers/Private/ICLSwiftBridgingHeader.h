@@ -40,9 +40,18 @@
 
 #import "StaticDefinitions.h"
 
+#import "ICLCrossImageDispatch.h"
 #import "ICLInlineContentProtocol.h"
 #import "ICLMediaType.h"
 #import "ICLPayloadPrivate.h"
+
+/* ICLPluginProtocol.h's tail imports (ICMInlineHTML.h etc.) declare
+ Objective-C @interfaces for classes that are natively implemented in
+ Swift elsewhere in this target; importing them here would conflict
+ with those Swift declarations, so they're suppressed for this
+ bridging header. Only the protocol declaration itself is needed here. */
+#define ICL_PLUGIN_PROTOCOL_SUPPRESS_ROOT_CLASS_IMPORTS 1
+#import "ICLPluginProtocol.h"
 
 #import "TPCPreferences.h"
 #import "TPCPreferencesPrivate.h"

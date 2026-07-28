@@ -54,6 +54,33 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/* Keys read by the Inline Content Loader XPC service (see TPCPreferences.swift
+ and ICLProcessMain.swift) which has no other way to see their live values --
+ it runs in its own sandboxed container with no shared App Group access to
+ the app's preferences. Pushed once when the connection is established and
+ again whenever one of these keys changes. */
+static NSArray<NSString *> *TVCLogControllerInlineMediaServicePreferenceKeys(void)
+{
+	static NSArray<NSString *> *keys = nil;
+
+	static dispatch_once_t onceToken;
+
+	dispatch_once(&onceToken, ^{
+		keys =
+		@[
+		  @"InlineMediaProviderEnabled",
+		  @"InlineMediaLimitNaughtyContent",
+		  @"InlineMediaLimitUnsafeContent",
+		  @"InlineMediaCheckEverything",
+		  @"InlineMediaMaximumFilesize",
+		  @"InlineMediaScalingWidth",
+		  @"InlineMediaMaximumHeight"
+		];
+	});
+
+	return keys;
+}
+
 @interface TVCLogControllerInlineMediaService ()
 @property (nonatomic, strong) NSXPCConnection *serviceConnection;
 @end
@@ -71,6 +98,33 @@ NS_ASSUME_NONNULL_BEGIN
 	});
 
 	return sharedSelf;
+}
+
+- (instancetype)init
+{
+	if ((self = [super init])) {
+		[RZNotificationCenter() addObserver:self
+									selector:@selector(preferencesDidChange:)
+										name:TPCPreferencesUserDefaultsDidChangeNotification
+									  object:nil];
+	}
+
+	return self;
+}
+
+- (void)preferencesDidChange:(NSNotification *)notification
+{
+	if (self.serviceConnection == nil) {
+		return; // Nothing to push to; will be sent fresh on next connect.
+	}
+
+	NSString *changedKey = notification.userInfo[@"changedKey"];
+
+	if ([TVCLogControllerInlineMediaServicePreferenceKeys() containsObject:changedKey] == NO) {
+		return;
+	}
+
+	[self pushInlineMediaPreferences];
 }
 
 #pragma mark -
@@ -111,6 +165,15 @@ NS_ASSUME_NONNULL_BEGIN
 						argumentIndex:0
 							  ofReply:NO];
 
+	/* -updateInlineMediaPreferences: carries a dictionary with at least one
+	 nested dictionary value (InlineMediaProviderEnabled), so the default
+	 one-level class inference isn't enough -- NSNumber/NSDictionary must be
+	 explicitly allowed to appear anywhere in the argument's object graph. */
+	[remoteObjectInterface setClasses:[NSSet setWithObjects:[NSDictionary class], [NSNumber class], [NSString class], nil]
+						  forSelector:@selector(updateInlineMediaPreferences:)
+						argumentIndex:0
+							  ofReply:NO];
+
 	serviceConnection.remoteObjectInterface = remoteObjectInterface;
 
 	NSXPCInterface *exportedInterface = [NSXPCInterface interfaceWithProtocol:@protocol(ICLInlineContentClientProtocol)];
@@ -137,6 +200,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 	[self registerDefaults];
 	[self registerPlugins];
+	[self pushInlineMediaPreferences];
 }
 
 - (void)interruptionHandler
@@ -167,6 +231,21 @@ NS_ASSUME_NONNULL_BEGIN
 	NSDictionary *defaults = [RZUserDefaults() registeredDefaults];
 
 	[[self remoteObjectProxy] warmServiceByRegisteringDefaults:defaults];
+}
+
+- (void)pushInlineMediaPreferences
+{
+	NSMutableDictionary<NSString *, id> *preferences = [NSMutableDictionary dictionary];
+
+	for (NSString *key in TVCLogControllerInlineMediaServicePreferenceKeys()) {
+		id value = [RZUserDefaults() objectForKey:key];
+
+		if (value != nil) {
+			preferences[key] = value;
+		}
+	}
+
+	[[self remoteObjectProxy] updateInlineMediaPreferences:preferences];
 }
 
 - (void)registerPlugins

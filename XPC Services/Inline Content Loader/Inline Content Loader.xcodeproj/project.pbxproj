@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CC00001ECCCCCCCCCCCCCC00 /* ICLCrossImageDispatch.h in Headers */ = {isa = PBXBuildFile; fileRef = CC00001CCCCCCCCCCCCCCC00 /* ICLCrossImageDispatch.h */; };
+		CC00001FCCCCCCCCCCCCCC00 /* ICLCrossImageDispatch.m in Sources */ = {isa = PBXBuildFile; fileRef = CC00001DCCCCCCCCCCCCCC00 /* ICLCrossImageDispatch.m */; };
 		4C469F6C20EC60F000094EA4 /* ICLHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C469F4220EC60F000094EA4 /* ICLHelpers.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4C469F6D20EC60F000094EA4 /* ICLPayloadInternal.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C469F4420EC60F000094EA4 /* ICLPayloadInternal.h */; };
 		4C469F6E20EC60F100094EA4 /* ICLInlineContentModuleInternal.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C469F4520EC60F000094EA4 /* ICLInlineContentModuleInternal.h */; };
@@ -99,6 +101,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		CC00001CCCCCCCCCCCCCCC00 /* ICLCrossImageDispatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICLCrossImageDispatch.h; sourceTree = "<group>"; };
+		CC00001DCCCCCCCCCCCCCC00 /* ICLCrossImageDispatch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICLCrossImageDispatch.m; sourceTree = "<group>"; };
 		4C1406421F11942B00C73D53 /* Inline Content Loader.xpc */ = {isa = PBXFileReference; explicitFileType = "wrapper.xpc-service"; includeInIndex = 0; path = "Inline Content Loader.xpc"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C1EAB161F89F2BF00A4E647 /* BuildConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BuildConfig.h; path = ../../.tmp/BuildConfig.h; sourceTree = SOURCE_ROOT; };
 		4C469F4220EC60F000094EA4 /* ICLHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICLHelpers.h; sourceTree = "<group>"; };
@@ -279,6 +283,7 @@
 		4C469F4B20EC60F000094EA4 /* Private */ = {
 			isa = PBXGroup;
 			children = (
+				CC00001CCCCCCCCCCCCCCC00 /* ICLCrossImageDispatch.h */,
 				4C469F4C20EC60F000094EA4 /* ICLProcessDelegatePrivate.h */,
 				4C469F4D20EC60F000094EA4 /* ICLPayloadPrivate.h */,
 				4C469F4E20EC60F000094EA4 /* ICLProcessMainPrivate.h */,
@@ -295,6 +300,7 @@
 		4C469F5620EC60F000094EA4 /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				CC00001DCCCCCCCCCCCCCC00 /* ICLCrossImageDispatch.m */,
 				CC000013CCCCCCCCCCCCCC00 /* ICLHelpers.swift */,
 				CC00000FCCCCCCCCCCCCCC00 /* ICLInlineContentModule.swift */,
 				CC00000BCCCCCCCCCCCCCC00 /* ICLMediaAssessment.swift */,
@@ -505,6 +511,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC00001ECCCCCCCCCCCCCC00 /* ICLCrossImageDispatch.h in Headers */,
 				4C469F8C20EC60F100094EA4 /* ICMInlineImage.h in Headers */,
 				4C469FCF20EC610000094EA4 /* TPCPreferencesUserDefaults.h in Headers */,
 				4C469F6C20EC60F000094EA4 /* ICLHelpers.h in Headers */,
@@ -624,6 +631,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC00001FCCCCCCCCCCCCCC00 /* ICLCrossImageDispatch.m in Sources */,
 				DD000003DDDDDDDDDDDDDD03 /* TPCPreferences.swift in Sources */,
 				4C469FC320EC610000094EA4 /* TPCPreferencesUserDefaults.m in Sources */,
 				CC000018CCCCCCCCCCCCCC00 /* ICMInlineVideo.swift in Sources */,

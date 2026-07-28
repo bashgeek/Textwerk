@@ -35,49 +35,52 @@
  *
  *********************************************************************** */
 
+#import "ICLHelpers.h"
 #import "ICMTwitchLive.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NS_ENUM(NSUInteger, ICMTwitchLiveContentTypeContent)
-{
-	ICMTwitchLiveContentTypeUnknown = 0,
-	ICMTwitchLiveContentTypeChannel,
-	ICMTwitchLiveContentTypeVideo
-};
-
 @implementation ICMTwitchLive
 
-- (void)_performActionForContent:(NSString *)contentIdentifier type:(ICMTwitchLiveContentTypeContent)contentType
+- (void)_loadContent
 {
-	NSParameterAssert(contentIdentifier != nil);
-	NSParameterAssert(contentType == ICMTwitchLiveContentTypeChannel ||
-					  contentType == ICMTwitchLiveContentTypeVideo);
+	NSURL *targetURL = self.payload.url;
 
-	NSString *contentArgument = nil;
+	/* Twitch's real API requires an OAuth app token, so there's no
+	 unauthenticated way to fetch channel/video metadata that way. Its
+	 pages do render normal Open Graph tags server-side though (the same
+	 tags Slack/Discord/etc. read for their own link previews), so this
+	 reads those directly instead of embedding the (also now-broken, see
+	 ICMYouTube.m) live/VOD player. */
+	[ICLHelpers requestHTMLFromURL:targetURL completionBlock:^(NSString *_Nullable html) {
+		if (html == nil) {
+			[self notifyUnableToPresentCard];
 
-	if (contentType == ICMTwitchLiveContentTypeChannel) {
-		contentArgument = @"channel";
-	} else if (contentType == ICMTwitchLiveContentTypeVideo) {
-		contentArgument = @"video";
-	}
+			return;
+		}
 
-	ICLPayloadMutable *payload = self.payload;
+		NSString *title = [ICLHelpers openGraphContentForProperty:@"og:title" inHTML:html];
 
-	NSDictionary *templateAttributes =
-	@{
-	  @"uniqueIdentifier" : payload.uniqueIdentifier,
-	  @"contentIdentifier" : contentIdentifier,
-	  @"contentArgument" : contentArgument
-	};
+		if (title.length == 0) {
+			[self notifyUnableToPresentCard];
 
-	NSError *templateRenderError = nil;
+			return;
+		}
 
-	NSString *html = [self.template renderObject:templateAttributes error:&templateRenderError];
+		NSString *imageURLString = [ICLHelpers openGraphContentForProperty:@"og:image" inHTML:html];
 
-	payload.html = html;
+		NSURL *imageURL = nil;
 
-	[self finalizeWithError:templateRenderError];
+		if (imageURLString.length > 0) {
+			imageURL = [NSURL URLWithString:imageURLString];
+		}
+
+		[self performActionForCardWithTitle:title
+										meta:nil
+									imageURL:imageURL
+									siteName:@"twitch.tv"
+								   targetURL:targetURL];
+	}];
 }
 
 #pragma mark -
@@ -87,27 +90,23 @@ typedef NS_ENUM(NSUInteger, ICMTwitchLiveContentTypeContent)
 {
 	NSParameterAssert(url != nil);
 
-	ICMTwitchLiveContentTypeContent contentType = ICMTwitchLiveContentTypeUnknown;
-
-	NSString *contentIdentifier = [self _contentIdentifierForURL:url type:&contentType];
-
-	if (contentIdentifier == nil) {
+	if ([self _URLIsChannelOrVideo:url] == NO) {
 		return nil;
 	}
 
 	return [^(ICLInlineContentModule *module) {
 		__weak ICMTwitchLive *moduleTyped = (id)module;
 
-		[moduleTyped _performActionForContent:contentIdentifier type:contentType];
+		[moduleTyped _loadContent];
 	} copy];
 }
 
-+ (nullable NSString *)_contentIdentifierForURL:(NSURL *)url type:(ICMTwitchLiveContentTypeContent *)contentTypeIn
++ (BOOL)_URLIsChannelOrVideo:(NSURL *)url
 {
 	NSString *urlPath = url.path.percentEncodedURLPath;
 
 	if (urlPath.length <= 1) {
-		return nil;
+		return NO;
 	}
 
 	urlPath = [urlPath substringFromIndex:1]; // "/"
@@ -118,42 +117,25 @@ typedef NS_ENUM(NSUInteger, ICMTwitchLiveContentTypeContent)
 		[urlPath isEqualToString:@"store"] ||
 		[urlPath hasPrefix:@"store/"])
 	{
-		return nil;
+		return NO;
 	}
 
 	/* Match videos */
 	if ([urlPath hasPrefix:@"videos/"]) {
-		urlPath = [urlPath substringFromIndex:7];
+		NSString *contentIdentifier = [[urlPath substringFromIndex:7] trimCharacters:@"/"];
 
-		NSString *contentIdentifier = [urlPath trimCharacters:@"/"];
-
-		if (contentIdentifier.isNumericOnly == NO) {
-			return nil;
-		}
-
-		*contentTypeIn = ICMTwitchLiveContentTypeVideo;
-
-		return contentIdentifier;
+		return (contentIdentifier.isNumericOnly);
 	}
 
 	/* Consider any other match a channel */
-	{
-		NSString *contentIdentifier = [urlPath trimCharacters:@"/"];
+	NSString *contentIdentifier = [urlPath trimCharacters:@"/"];
 
-		if (contentIdentifier.length < 4 ||
-			contentIdentifier.length > 25)
-		{
-			return nil;
-		}
-
-		if ([contentIdentifier onlyContainsCharactersFromCharacterSet:[NSCharacterSet characterSetWithCharactersInString:@"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"]] == NO) {
-			return nil;
-		}
-
-		*contentTypeIn = ICMTwitchLiveContentTypeChannel;
-
-		return contentIdentifier;
+	if (contentIdentifier.length < 4 || contentIdentifier.length > 25) {
+		return NO;
 	}
+
+	return [contentIdentifier onlyContainsCharactersFromCharacterSet:
+			[NSCharacterSet characterSetWithCharactersInString:@"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"]];
 }
 
 + (nullable NSArray<NSString *> *)domains
@@ -174,12 +156,10 @@ typedef NS_ENUM(NSUInteger, ICMTwitchLiveContentTypeContent)
 	return domains;
 }
 
-#pragma mark -
-#pragma mark Utilities
-
-- (nullable NSURL *)templateURL
+/* Shared with ICMTwitchClips: users think of "Twitch" as one service. */
++ (nullable NSString *)preferenceIdentifier
 {
-	return [NSBundleForClass() URLForResource:@"ICMTwitchLive" withExtension:@"mustache"];
+	return @"Twitch";
 }
 
 @end

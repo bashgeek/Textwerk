@@ -39,27 +39,27 @@ import Foundation
 
 @objc(ICMInlineHTMLFoundation)
 open class ICMInlineHTMLFoundation: ICLInlineContentModule {
-	override open var styleResources: [URL]? {
+	override dynamic open var styleResources: [URL]? {
 		Bundle.main.url(forResource: "ICMInlineHTML", withExtension: "css", subdirectory: "Components").map { [$0] }
 	}
 
-	override open var scriptResources: [URL]? {
+	override dynamic open var scriptResources: [URL]? {
 		Bundle.main.url(forResource: "ICMInlineHTML", withExtension: "js", subdirectory: "Components").map { [$0] }
 	}
 
-	override open var templateURL: URL? {
+	override dynamic open var templateURL: URL? {
 		Bundle.main.url(forResource: "ICMInlineHTML", withExtension: "mustache", subdirectory: "Components")
 	}
 
-	override open var entrypoint: String? { "_ICMInlineHTML" }
-	override open class var contentUntrusted: Bool { true }
+	override dynamic open var entrypoint: String? { "_ICMInlineHTML" }
+	override dynamic open class var contentUntrusted: Bool { true }
 }
 
 @objc(ICMInlineHTML)
 open class ICMInlineHTML: ICMInlineHTMLFoundation {
 
 	@objc(performActionForHTML:)
-	open func performAction(forHTML unescapedHTML: String) {
+	dynamic open func performAction(forHTML unescapedHTML: String) {
 		let attrs: NSDictionary = [
 			"classAttribute": payload.classAttribute,
 			"unescapedHTML": unescapedHTML,
@@ -78,12 +78,12 @@ open class ICMInlineHTML: ICMInlineHTMLFoundation {
 	}
 
 	@objc(notifyUnableToPresentHTML)
-	open func notifyUnableToPresentHTML() {
+	dynamic open func notifyUnableToPresentHTML() {
 		cancel()
 	}
 
 	@objc(actionBlockForHTML:)
-	open class func actionBlock(forHTML html: String) -> ICLInlineContentModuleActionBlock {
+	dynamic open class func actionBlock(forHTML html: String) -> ICLInlineContentModuleActionBlock {
 		return { module in
 			(module as? ICMInlineHTML)?.performAction(forHTML: html)
 		}

@@ -143,7 +143,27 @@ _MessageBuffer.bufferElementInsert = function(placement, html, lineNumbers) /* P
 
 	buffer.prepareForMutation();
 
-	buffer.insertAdjacentHTML(placement, html);
+	if (placement === "beforeend") {
+		/* The typing indicator must always stay the last element in the
+		buffer. It's just a normal child node, so appending anything else
+		here would otherwise land after it -- it only self-corrects when
+		its own next periodic refresh re-appends it a few seconds later.
+		Detach it first, insert, then reattach so it stays pinned to the
+		bottom continuously instead of flickering out of place. */
+		var typingIndicator = document.getElementById("typing-indicator");
+
+		if (typingIndicator) {
+			typingIndicator.remove();
+		}
+
+		buffer.insertAdjacentHTML(placement, html);
+
+		if (typingIndicator) {
+			buffer.appendChild(typingIndicator);
+		}
+	} else {
+		buffer.insertAdjacentHTML(placement, html);
+	}
 
 	if (lineNumbers) {
 		_MessageBuffer._bufferCurrentSize += lineNumbers.length;

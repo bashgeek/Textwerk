@@ -61,6 +61,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 NS_ASSUME_NONNULL_END
 
+#ifndef ICL_PLUGIN_PROTOCOL_SUPPRESS_ROOT_CLASS_IMPORTS
+
 /* Import root classes a module can subclass (if they want) */
 #import "ICMInlineHTML.h"
 #import "ICMInlineImage.h"
@@ -69,3 +71,5 @@ NS_ASSUME_NONNULL_END
 /* Import helpers that a plugin can access */
 #import "ICLHelpers.h"
 #import "ICLMediaAssessor.h"
+
+#endif /* ICL_PLUGIN_PROTOCOL_SUPPRESS_ROOT_CLASS_IMPORTS */

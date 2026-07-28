@@ -5,7 +5,7 @@
  *                   | |  __/>  <| |_| |_| | (_| | |
  *                   |_|\___/_/\_\\__|\__,_|\__,_|_|
  *
- * Copyright (c) 2017, 2018 Codeux Software, LLC & respective contributors.
+ * Copyright (c) 2026 Codeux Software, LLC & respective contributors.
  *       Please see Acknowledgements.pdf for additional information.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,11 +35,84 @@
  *
  *********************************************************************** */
 
-#import "ICMInlineVideo.h"
+#import "ICLCrossImageDispatch.h"
+#import "ICLInlineContentModulePrivate.h"
+#import "ICLPayloadPrivate.h"
+#import "ICLProcessMainPrivate.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ICMPornhub : ICMInlineVideoFoundation
+@implementation ICLCrossImageDispatch
+
++ (nullable NSArray<NSString *> *)domainsForModuleClass:(Class)moduleClass
+{
+	if ([moduleClass respondsToSelector:@selector(domains)] == NO) {
+		return nil;
+	}
+
+	return [moduleClass domains];
+}
+
++ (BOOL)moduleClassContentUntrusted:(Class)moduleClass
+{
+	if ([moduleClass respondsToSelector:@selector(contentUntrusted)] == NO) {
+		return NO;
+	}
+
+	return [moduleClass contentUntrusted];
+}
+
++ (BOOL)moduleClassContentNotSafeForWork:(Class)moduleClass
+{
+	if ([moduleClass respondsToSelector:@selector(contentNotSafeForWork)] == NO) {
+		return NO;
+	}
+
+	return [moduleClass contentNotSafeForWork];
+}
+
++ (NSString *)preferenceIdentifierForModuleClass:(Class)moduleClass
+{
+	NSString *identifier = nil;
+
+	if ([moduleClass respondsToSelector:@selector(preferenceIdentifier)]) {
+		identifier = [moduleClass preferenceIdentifier];
+	}
+
+	if (identifier.length == 0) {
+		identifier = NSStringFromClass(moduleClass);
+	}
+
+	return identifier;
+}
+
++ (nullable id)actionBlockForModuleClass:(Class)moduleClass url:(NSURL *)url
+{
+	if ([moduleClass respondsToSelector:@selector(actionBlockForURL:)] == NO) {
+		return nil;
+	}
+
+	return [moduleClass actionBlockForURL:url];
+}
+
++ (nullable SEL)actionSelectorForModuleClass:(Class)moduleClass url:(NSURL *)url
+{
+	if ([moduleClass respondsToSelector:@selector(actionForURL:)] == NO) {
+		return NULL;
+	}
+
+	return [moduleClass actionForURL:url];
+}
+
++ (nullable id)instantiateModuleClass:(Class)moduleClass payload:(ICLPayloadMutable *)payload process:(ICLProcessMain *)process
+{
+	if ([moduleClass isSubclassOfClass:[ICLInlineContentModule class]] == NO) {
+		return nil;
+	}
+
+	return [[moduleClass alloc] initWithPayload:payload inProcess:process];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END

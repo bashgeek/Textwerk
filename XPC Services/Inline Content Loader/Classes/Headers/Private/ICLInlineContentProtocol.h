@@ -50,6 +50,15 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)warmServiceByLoadingPluginsAtLocations:(NSArray<NSURL *> *)pluginLocations;
 - (void)warmServiceByRegisteringDefaults:(NSDictionary<NSString *, id> *)defaults;
 
+/**
+ The service runs sandboxed in its own container, isolated from the app's
+ preferences (there is no shared App Group container to read them from
+ directly -- see TPCPreferences.swift's -setInlineMediaRemoteDefaults:).
+ The app calls this once when the connection is established and again
+ every time one of the preferences it covers changes.
+ */
+- (void)updateInlineMediaPreferences:(NSDictionary<NSString *, id> *)preferences;
+
 - (void)processURL:(NSURL *)url withUniqueIdentifier:(NSString *)uniqueIdentifier atLineNumber:(NSString *)lineNumber index:(NSUInteger)index inView:(NSString *)viewIdentifier;
 
 - (void)processPayload:(ICLPayload *)payload;

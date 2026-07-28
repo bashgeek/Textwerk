@@ -38,10 +38,58 @@
 
 @_objcImplementation extension TPCPreferences
 {
+	/* The Inline Content Loader XPC service runs in its own sandboxed
+	 container with no shared App Group access to the app's preferences (see
+	 -setInlineMediaRemoteDefaults: below for the full explanation). When
+	 non-nil, this holds a snapshot the app pushed over the XPC connection;
+	 every accessor below consults it first. The app's own process never
+	 populates this, so its reads always reflect the live, local values. */
+	nonisolated(unsafe) private static var inlineMediaRemoteDefaults: [String: Any]? = nil
+
+	/**
+	 Called by the Inline Content Loader XPC service (only) upon receiving
+	 -[ICLInlineContentServerProtocol updateInlineMediaPreferences:], which
+	 the app sends once when the connection is established and again
+	 whenever one of the preferences read below changes. Keys are the same
+	 raw preference keys used throughout this file. Not exposed to
+	 Objective-C -- only ICLProcessMain.swift (same module) calls this.
+	 */
+	public final class func setInlineMediaRemoteDefaults(_ defaults: [String: Any])
+	{
+		inlineMediaRemoteDefaults = defaults
+	}
+
+	private final class func inlineMediaRemoteOrLocalBool(forKey key: String) -> Bool
+	{
+		if let value = inlineMediaRemoteDefaults?[key] as? Bool {
+			return value
+		}
+
+		return TPCPreferencesUserDefaults.shared().bool(forKey: key)
+	}
+
+	private final class func inlineMediaRemoteOrLocalUnsignedInteger(forKey key: String) -> UInt
+	{
+		if let value = inlineMediaRemoteDefaults?[key] as? UInt {
+			return value
+		}
+
+		return TPCPreferencesUserDefaults.shared().unsignedInteger(forKey: key)
+	}
+
+	private final class func inlineMediaRemoteOrLocalDictionary(forKey key: String) -> [String: Any]?
+	{
+		if let remoteDefaults = inlineMediaRemoteDefaults {
+			return remoteDefaults[key] as? [String: Any]
+		}
+
+		return TPCPreferencesUserDefaults.shared().dictionary(forKey: key)
+	}
+
 	@objc
 	class func inlineImagesMaxFilesize() -> UInt64
 	{
-		let filesizeTag = TPCPreferencesUserDefaults.shared().unsignedInteger(forKey: "InlineMediaMaximumFilesize")
+		let filesizeTag = inlineMediaRemoteOrLocalUnsignedInteger(forKey: "InlineMediaMaximumFilesize")
 
 		switch filesizeTag {
 		case 1:  return 1_048_576    // 1 MB
@@ -61,13 +109,13 @@
 	@objc
 	class func inlineMediaMaxWidth() -> UInt
 	{
-		return TPCPreferencesUserDefaults.shared().unsignedInteger(forKey: "InlineMediaScalingWidth")
+		return inlineMediaRemoteOrLocalUnsignedInteger(forKey: "InlineMediaScalingWidth")
 	}
 
 	@objc
 	class func inlineMediaMaxHeight() -> UInt
 	{
-		return TPCPreferencesUserDefaults.shared().unsignedInteger(forKey: "InlineMediaMaximumHeight")
+		return inlineMediaRemoteOrLocalUnsignedInteger(forKey: "InlineMediaMaximumHeight")
 	}
 
 	@objc
@@ -82,51 +130,47 @@
 		TPCPreferencesUserDefaults.shared().setUnsignedInteger(value, forKey: "InlineMediaMaximumHeight")
 	}
 
+	/* Per-provider toggle, keyed by each module's -preferenceIdentifier (see
+	 ICLInlineContentModule). Absent from the override dictionary means
+	 enabled -- this keeps every provider on by default without having to
+	 pre-populate the dictionary with every known identifier. */
 	@objc
-	class func inlineMediaLimitToBasics() -> Bool
+	class func inlineMediaProviderEnabled(_ identifier: String) -> Bool
 	{
-		return TPCPreferencesUserDefaults.shared().bool(forKey: "InlineMediaLimitToBasics")
+		let overrides = inlineMediaRemoteOrLocalDictionary(forKey: "InlineMediaProviderEnabled")
+
+		if let value = overrides?[identifier] as? Bool {
+			return value
+		}
+
+		return true
 	}
 
-	@objc
-	class func setInlineMediaLimitToBasics(_ value: Bool)
+	@objc(setInlineMediaProviderEnabled:forIdentifier:)
+	class func setInlineMediaProviderEnabled(_ enabled: Bool, for identifier: String)
 	{
-		TPCPreferencesUserDefaults.shared().set(value, forKey: "InlineMediaLimitToBasics")
-	}
+		var overrides = TPCPreferencesUserDefaults.shared().dictionary(forKey: "InlineMediaProviderEnabled") ?? [:]
 
-	@objc
-	class func inlineMediaLimitBasicsToFiles() -> Bool
-	{
-		return TPCPreferencesUserDefaults.shared().bool(forKey: "InlineMediaLimitBasicsToFiles")
-	}
+		overrides[identifier] = enabled
 
-	@objc
-	class func setInlineMediaLimitBasicsToFiles(_ value: Bool)
-	{
-		TPCPreferencesUserDefaults.shared().set(value, forKey: "InlineMediaLimitBasicsToFiles")
-	}
-
-	@objc
-	class func inlineMediaLimitInsecureContent() -> Bool
-	{
-		return TPCPreferencesUserDefaults.shared().bool(forKey: "InlineMediaLimitInsecureContent")
+		TPCPreferencesUserDefaults.shared().set(overrides, forKey: "InlineMediaProviderEnabled")
 	}
 
 	@objc
 	class func inlineMediaLimitNaughtyContent() -> Bool
 	{
-		return TPCPreferencesUserDefaults.shared().bool(forKey: "InlineMediaLimitNaughtyContent")
+		return inlineMediaRemoteOrLocalBool(forKey: "InlineMediaLimitNaughtyContent")
 	}
 
 	@objc
 	class func inlineMediaLimitUnsafeContent() -> Bool
 	{
-		return TPCPreferencesUserDefaults.shared().bool(forKey: "InlineMediaLimitUnsafeContent")
+		return inlineMediaRemoteOrLocalBool(forKey: "InlineMediaLimitUnsafeContent")
 	}
 
 	@objc
 	class func inlineMediaCheckEverything() -> Bool
 	{
-		return TPCPreferencesUserDefaults.shared().bool(forKey: "InlineMediaCheckEverything")
+		return inlineMediaRemoteOrLocalBool(forKey: "InlineMediaCheckEverything")
 	}
 }
