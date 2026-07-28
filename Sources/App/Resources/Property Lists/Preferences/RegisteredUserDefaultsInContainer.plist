@@ -69,7 +69,7 @@
 	<key>DisplayEventInLogView -&gt; Date Changes</key>
 	<true/>
 	<key>DisplayEventInLogView -&gt; Inline Media</key>
-	<false/>
+	<true/>
 	<key>DisplayEventInLogView -&gt; Join, Part, Quit</key>
 	<true/>
 	<key>DisplayEventInLogView -&gt; Message Grouping Style</key>
