@@ -3,8 +3,8 @@
 `mock_ircd.py` in this directory is a minimal single-client fake IRC server used to
 populate Textwerk with a realistic-looking conversation for screenshots, without
 needing a real network or real people. This describes how to use it to produce the
-screenshots referenced by this website (`images/*.png`) and by the README on
-`master` (`docs/screenshots/*.png`) — they should be the same shots, kept in sync
+screenshots referenced by this website (`images/*.webp`) and by the README on
+`master` (`docs/screenshots/*.webp`) — they should be the same shots, kept in sync
 across both branches.
 
 Note: the app source on this branch (`Sources/`, `XPC Services/`, etc.) is a stale
@@ -82,31 +82,58 @@ reopening the app reconnects automatically.
 
 ## 5. Capture
 
-- Resize the main window to **exactly 1280×720** before capturing. Every existing
-  shot in `images/` and `docs/screenshots/` is 1280×720, and they should stay that
-  size for consistency across the README and the website.
-- Capture the **window only**, not the full screen — none of the existing shots show
+- Resize the main window to **exactly 1920×1080** before capturing. Every shot in
+  `images/` and `docs/screenshots/` should be 1920×1080, for consistency across the
+  README and the website and to look sharp on retina displays.
+- Capture the **window only**, not the full screen — none of the shots should show
   desktop background, the menu bar, or other windows. Get the window ID and use
   `screencapture -o -l<windowID> out.png` (or an equivalent window-targeted
-  capture), not a full-screen grab followed by cropping.
+  capture), not a full-screen grab followed by cropping. `screencapture` can't write
+  WebP directly, so capture PNG first, then convert (see below).
 - For light vs dark shots, toggle **macOS system appearance** (System Settings →
   Appearance) before capturing — not an in-app theme override — since the shots are
   meant to show the OS-level light/dark experience, not just the chat theme.
+- For Chat vs Classic IRC shots, toggle **Preferences → Style → Display Style**
+  (radio buttons labeled "Chat" and "Classic IRC") before capturing — this is the
+  setting added by the Slack-style grouped-message work; "Chat" is the grouped/
+  Slack-style default, "Classic IRC" is the traditional one-line-per-message look.
+  Capture every shot in **both** styles (see the table below) so we can show off
+  both display modes rather than just the default.
 - Scroll the channel to a range that reads naturally — the general-conversation
   shots are scrolled near the top of the scrollback, showing the join line, the
   topic, and the first several messages including the media cards, not the very
   bottom.
 
+## 6. Convert to WebP
+
+Screenshots ship as `.webp`, not `.png` — convert right after capturing and delete
+the intermediate PNG:
+
+```sh
+# brew install webp, if cwebp isn't already available
+cwebp -q 90 out.png -o out.webp
+```
+
+`-q 90` is a good default: visually near-lossless at a fraction of the PNG size. Bump
+it up if a particular shot shows compression artifacts (fine text, sharp UI edges).
+
 ## What screenshots we need
 
-| File | Branch/path | Size | Shows |
-|---|---|---|---|
-| `screenshot-light.png` | `images/` (website) | 1280×720 | `#textwerk`, light appearance, general conversation incl. media cards |
-| `screenshot-dark.png` | `images/` (website) | 1280×720 | Same view, dark appearance |
-| `split-view.png` | `images/` (website) | 1280×720 | Two channels open side by side in split view |
-| `direct-message.png` | `images/` (website) | 1280×720 | The query window with `ashby`, showing the "common channels" info bar |
-| `preview-light-general.png` | `docs/screenshots/` (master) | 1280×720 | Same shot as `screenshot-light.png` |
-| `preview-dark-general.png` | `docs/screenshots/` (master) | 1280×720 | Same shot as `screenshot-dark.png` |
+Every shot below is needed in **both** Display Style variants — suffix the filename
+with `-chat` (Chat/grouped style) or `-classic` (Classic IRC style).
 
-Copy the finished PNGs into both locations (they're identical files, just duplicated
-across branches) rather than only updating one side.
+| File (both `-chat` and `-classic` variants) | Branch/path | Size | Shows |
+|---|---|---|---|
+| `screenshot-light-{chat,classic}.webp` | `images/` (website) | 1920×1080 | `#textwerk`, light appearance, general conversation incl. media cards |
+| `screenshot-dark-{chat,classic}.webp` | `images/` (website) | 1920×1080 | Same view, dark appearance |
+| `split-view-{chat,classic}.webp` | `images/` (website) | 1920×1080 | Two channels open side by side in split view |
+| `direct-message-{chat,classic}.webp` | `images/` (website) | 1920×1080 | The query window with `ashby`, showing the "common channels" info bar |
+| `preview-light-general-{chat,classic}.webp` | `docs/screenshots/` (master) | 1920×1080 | Same shot as `screenshot-light-*.webp` |
+| `preview-dark-general-{chat,classic}.webp` | `docs/screenshots/` (master) | 1920×1080 | Same shot as `screenshot-dark-*.webp` |
+
+That's 12 files total. Copy the finished WebPs into both locations (they're
+identical files, just duplicated across branches) rather than only updating one
+side. Once real screenshots exist, `index.html` and the `master` README still only
+reference one variant each (`screenshot-light.png` / `preview-light-general.png`) —
+decide then whether to show both styles (e.g. a toggle or side-by-side) or just pick
+one as the "hero" shot and keep the other variant available for anyone who wants it.
