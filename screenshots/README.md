@@ -85,7 +85,10 @@ It listens on `127.0.0.1:16667`. Once a client connects and registers, it:
   provider (edit the `seq` list in `simulate_activity()` if you want to change what's
   shown; keep it to a small, plausible number of media links, not a checklist of
   every provider)
-- opens a query/DM from a user named `ashby`, for the direct-message screenshot
+- opens a query/DM from a user named `ashby`, for the direct-message screenshot.
+  `ashby` is also a member of both `#textwerk` and `#general`, so the query's
+  "common channels" info bar has real shared channels to show instead of
+  reading "No common channels with ashby"
 - simulates someone typing in `#textwerk` a few seconds after connecting (cycles
   through nobody → one person → two people typing, so the indicator's states are all
   exercised if you want a shot of it)
@@ -131,6 +134,49 @@ window/sheet in the accessibility tree). Sheets like Server Properties are
   Slack-style default, "Classic IRC" is the traditional one-line-per-message look.
   Capture every shot in **both** styles (see the table below) so we can show off
   both display modes rather than just the default.
+- For the split-view shot: select **#textwerk** in the sidebar first, then
+  **Cmd-click** the `ashby` query row to add it to the selection. The main
+  window shows every selected sidebar item stacked in its content area
+  (`TVCMainWindowChannelView`/`-populateSubviews` in
+  `Sources/App/Classes/Views/Main Window/TVCMainWindowChannelView.m` renders
+  one subview per entry in `mainWindow.selectedItems`, not just the single
+  active one) — this is a real, existing multi-select feature, not a
+  workaround.
+
+  Automating this is the one place where System Events' AppleScript-level
+  `select`/`click`/`AXSelectedRows` all fail silently or exclusively-select
+  (tried all three) -- this control doesn't respond to synthetic AX actions
+  or clicks for *additive* selection at all, only to a real Cmd-held mouse
+  event. The reliable way is a raw `CGEvent` with the command-key flag set,
+  via `osascript -l JavaScript` (JXA has direct CoreGraphics access, plain
+  AppleScript does not):
+
+  ```applescript
+  -- 1. select the first row normally (regular System Events `select` is fine here)
+  tell application "System Events" to tell process "Textwerk"
+      select row1  -- the #textwerk row, found the usual way
+  end tell
+  ```
+
+  ```js
+  // 2. Cmd-click the second row's *screen coordinates* (its center point,
+  // from `position of` + `size of` on the row element) to add it to the
+  // selection -- osascript -l JavaScript:
+  ObjC.import('CoreGraphics');
+  function clickWithCommand(x, y) {
+      var down = $.CGEventCreateMouseEvent($(), $.kCGEventLeftMouseDown, $.CGPointMake(x, y), $.kCGMouseButtonLeft);
+      $.CGEventSetFlags(down, $.kCGEventFlagMaskCommand);
+      $.CGEventPost($.kCGHIDEventTap, down);
+      var up = $.CGEventCreateMouseEvent($(), $.kCGEventLeftMouseUp, $.CGPointMake(x, y), $.kCGMouseButtonLeft);
+      $.CGEventSetFlags(up, $.kCGEventFlagMaskCommand);
+      $.CGEventPost($.kCGHIDEventTap, up);
+  }
+  clickWithCommand(x, y);
+  ```
+
+  Verify it worked by reading back `selected of rows of outline 1 of ...` --
+  you want exactly two `true` entries (the row indices include the "MockNet"
+  server header, so e.g. #textwerk and ashby land on rows 2 and 4, not 1 and 3).
 - Scroll the channel to a range that reads naturally — the general-conversation
   shots are scrolled near the top of the scrollback, showing the join line, the
   topic, and the first several messages including the media cards, not the very
@@ -158,8 +204,8 @@ with `-chat` (Chat/grouped style) or `-classic` (Classic IRC style).
 |---|---|---|---|
 | `screenshot-light-{chat,classic}.webp` | `images/` (website) | 1920×1080 | `#textwerk`, light appearance, general conversation incl. media cards |
 | `screenshot-dark-{chat,classic}.webp` | `images/` (website) | 1920×1080 | Same view, dark appearance |
-| `split-view-{chat,classic}.webp` | `images/` (website) | 1920×1080 | Two channels open side by side in split view |
-| `direct-message-{chat,classic}.webp` | `images/` (website) | 1920×1080 | The query window with `ashby`, showing the "common channels" info bar |
+| `split-view-{chat,classic}.webp` | `images/` (website) | 1920×1080 | `#textwerk` + the `ashby` query stacked via multi-select (see step 5) |
+| `direct-message-{chat,classic}.webp` | `images/` (website) | 1920×1080 | The query window with `ashby`, showing the "Common channels with ashby: #textwerk, #general" info bar |
 | `preview-light-general-{chat,classic}.webp` | `docs/screenshots/` (master) | 1920×1080 | Same shot as `screenshot-light-*.webp` |
 | `preview-dark-general-{chat,classic}.webp` | `docs/screenshots/` (master) | 1920×1080 | Same shot as `screenshot-dark-*.webp` |
 

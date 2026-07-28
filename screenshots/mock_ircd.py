@@ -41,6 +41,7 @@ CHANNEL_USERS = {
         "heidi": ("", None, "heidi", "heidi.users.mock"),
         "ivan": ("", None, "ivan", "ivan.users.mock"),
         "judy": ("", None, "judy", "judy.users.mock"),
+        "ashby": ("", "ashby", "ashby", "ashby.mockcloud.net"),
     },
     "#general": {
         "daniel_": ("", "daniel_", "d", "d.mockcloud.net"),
@@ -48,6 +49,7 @@ CHANNEL_USERS = {
         "mallory": ("+", None, "mallory", "mallory.users.mock"),
         "trent": ("", None, "trent", "trent.users.mock"),
         "peggy": ("", "peggy", "peggy", "peggy.staff.mock"),
+        "ashby": ("", "ashby", "ashby", "ashby.mockcloud.net"),
     },
 }
 
