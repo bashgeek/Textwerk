@@ -46,8 +46,8 @@ A community fork of [Textual](https://github.com/Codeux-Software/Textual), the m
 
 ## Screenshots
 
-![Light](docs/screenshots/preview-light-general.png)
-![Dark](docs/screenshots/preview-dark-general.png)
+![Light](docs/screenshots/preview-light-general-chat.webp)
+![Dark](docs/screenshots/preview-dark-general-chat.webp)
 
 ## How to install
 
