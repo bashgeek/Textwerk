@@ -284,6 +284,32 @@ h1, h2, h3 { font-family: var(--font-display); letter-spacing: -0.01em; font-wei
 }
 .look__intro h2 { font-size: 44px; line-height: 1.08; margin-bottom: 8px; }
 .look__intro .section-lead { font-size: 19px; max-width: 480px; margin: 0 auto 56px; }
+.style-toggle {
+  display: inline-flex;
+  gap: 2px;
+  padding: 4px;
+  margin-bottom: 40px;
+  background: color-mix(in oklch, var(--ink) 6%, transparent);
+  border-radius: 999px;
+}
+.style-toggle__btn {
+  padding: 9px 22px;
+  border: none;
+  border-radius: 999px;
+  background: none;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 14.5px;
+  color: var(--gray);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.style-toggle__btn:hover { color: var(--ink); }
+.style-toggle__btn.is-active {
+  background: #fff;
+  color: var(--ink);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
 .look__hero {
   display: block;
   width: calc(100% - 64px);

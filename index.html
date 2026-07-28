@@ -14,14 +14,14 @@
   <meta property="og:title" content="Textwerk: a modern IRC client for macOS">
   <meta property="og:description" content="A friendly fork of Textual, the macOS IRC client you already know, rebuilt for today's Mac. Free and open source.">
   <meta property="og:url" content="https://textwerk.app/">
-  <meta property="og:image" content="https://textwerk.app/images/screenshot-light.png">
-  <meta property="og:image:width" content="1280">
-  <meta property="og:image:height" content="720">
+  <meta property="og:image" content="https://textwerk.app/images/screenshot-light-chat.webp">
+  <meta property="og:image:width" content="1920">
+  <meta property="og:image:height" content="1080">
   <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Textwerk: a modern IRC client for macOS">
   <meta name="twitter:description" content="A friendly fork of Textual, the macOS IRC client you already know, rebuilt for today's Mac. Free and open source.">
-  <meta name="twitter:image" content="https://textwerk.app/images/screenshot-light.png">
+  <meta name="twitter:image" content="https://textwerk.app/images/screenshot-light-chat.webp">
 
   <!-- Icons -->
   <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
@@ -42,7 +42,7 @@
     "description": "Textwerk is a friendly fork of Textual: the macOS IRC client you already know, rebuilt for today's Mac.",
     "applicationCategory": "SocialNetworkingApplication",
     "operatingSystem": "macOS 26 or later",
-    "image": "https://textwerk.app/images/screenshot-light.png",
+    "image": "https://textwerk.app/images/screenshot-light-chat.webp",
     "downloadUrl": "https://github.com/bashgeek/Textwerk/releases",
     "offers": {
       "@type": "Offer",
@@ -89,7 +89,7 @@
 
     <section class="shot" aria-label="Textwerk screenshot">
       <button class="zoomable" type="button">
-        <img src="images/screenshot-light.png" alt="Textwerk running on macOS, showing the #textwerk channel" fetchpriority="high">
+        <img src="images/screenshot-light-chat.webp" alt="Textwerk running on macOS, showing the #textwerk channel" fetchpriority="high">
       </button>
     </section>
 
@@ -124,7 +124,7 @@
               </div>
               <div class="feature">
                 <h4>Inline media</h4>
-                <p>Pictures, video, YouTube, and more pop open right where the conversation is happening.</p>
+                <p>Links to YouTube, GitHub, Reddit, Spotify, and a dozen other services unfurl into safe preview cards right in the conversation, never an embedded player or injected script. Toggle each service on or off in Preferences.</p>
               </div>
               <div class="feature">
                 <h4>Spoken messages</h4>
@@ -156,21 +156,25 @@
     <section class="look" id="look" aria-labelledby="look-title">
       <div class="wrap look__intro">
         <h2 id="look-title">Looks great after dark, too.</h2>
-        <p class="section-lead">A crisp interface with matching light and dark looks that follow whatever your Mac is wearing.</p>
+        <p class="section-lead">A crisp interface with matching light and dark looks that follow whatever your Mac is wearing. Pick a display style, grouped Chat bubbles or the classic one-line-per-message look, and every window follows.</p>
+      </div>
+      <div class="style-toggle" role="group" aria-label="Display style">
+        <button class="style-toggle__btn is-active" type="button" data-style="chat">Chat</button>
+        <button class="style-toggle__btn" type="button" data-style="classic">Classic IRC</button>
       </div>
       <button class="zoomable" type="button">
-        <img class="look__hero" src="images/screenshot-dark.png" alt="Textwerk in dark appearance" loading="lazy">
+        <img class="look__hero" src="images/screenshot-dark-chat.webp" data-src-chat="images/screenshot-dark-chat.webp" data-src-classic="images/screenshot-dark-classic.webp" alt="Textwerk in dark appearance" loading="lazy">
       </button>
       <div class="wrap gallery">
         <figure>
           <button class="zoomable" type="button">
-            <img src="images/split-view.png" alt="Two channels side by side in split view" loading="lazy">
+            <img src="images/split-view-chat.webp" data-src-chat="images/split-view-chat.webp" data-src-classic="images/split-view-classic.webp" alt="Two channels side by side in split view" loading="lazy">
           </button>
           <figcaption><strong>Split view.</strong> Keep two conversations open at once, side by side.</figcaption>
         </figure>
         <figure>
           <button class="zoomable" type="button">
-            <img src="images/direct-message.png" alt="A direct message, with an info bar noting shared channels with the other person" loading="lazy">
+            <img src="images/direct-message-chat.webp" data-src-chat="images/direct-message-chat.webp" data-src-classic="images/direct-message-classic.webp" alt="A direct message, with an info bar noting shared channels with the other person" loading="lazy">
           </button>
           <figcaption><strong>Direct messages.</strong> A private query tells you whether you share any channels.</figcaption>
         </figure>
@@ -291,6 +295,21 @@ cd Textwerk
           toggle.setAttribute('aria-expanded', 'false');
         }
       });
+
+      var styleToggle = document.querySelector('.style-toggle');
+      if (styleToggle) {
+        var styleButtons = styleToggle.querySelectorAll('.style-toggle__btn');
+        var styledImages = document.querySelectorAll('img[data-src-chat]');
+        styleButtons.forEach(function (button) {
+          button.addEventListener('click', function () {
+            var style = button.dataset.style;
+            styleButtons.forEach(function (b) { b.classList.toggle('is-active', b === button); });
+            styledImages.forEach(function (img) {
+              img.src = style === 'chat' ? img.dataset.srcChat : img.dataset.srcClassic;
+            });
+          });
+        });
+      }
 
       document.querySelectorAll('[data-copy]').forEach(function (button) {
         var code = button.previousElementSibling.querySelector('code');
