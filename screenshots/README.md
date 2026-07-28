@@ -47,6 +47,29 @@ Re-run this cleanly (delete `~/Library/Containers/app.textwerk.screenshots*` fir
 if you want a fresh, un-configured instance rather than reusing one from a previous
 session.
 
+Before the first launch, seed the container so you skip the "Welcome to Textwerk"
+wizard entirely:
+
+```sh
+python3 screenshots/seed_config.py app.textwerk.screenshots
+```
+
+This pre-populates a "MockNet" entry with the `#textwerk`/`#general` channels and
+nickname `daniel_` in the sidebar on first launch (confirmed reliable). It
+deliberately does **not** seed the actual server address -- see
+`seed_config.py`'s docstring for why (short version: it either gets silently
+dropped or, once, made the app hang on launch with no window ever appearing).
+Set the address once after first launch via **Server menu → Server Properties…**
+(`127.0.0.1`, port `16667`, no TLS) -- that dialog's fields are ordinary,
+reliably-scriptable text fields, unlike the wizard's.
+
+**Known flakiness:** while working on this, the scratch app intermittently failed
+to create any window at all on launch -- process alive, ~0% CPU, stuck
+indefinitely, reproducible even with a completely fresh app copy and an empty
+(unseeded) container, so it wasn't specific to the seed. Never fully root-caused.
+If a launch hangs like this, force-quit it (`pkill -9 -f <scratch-app-name>`) and
+try again; it isn't consistent, so a retry has generally worked.
+
 ## 3. Start the mock server
 
 ```sh
@@ -69,16 +92,27 @@ It listens on `127.0.0.1:16667`. Once a client connects and registers, it:
   through nobody → one person → two people typing, so the indicator's states are all
   exercised if you want a shot of it)
 
-## 4. Connect and launch
+## 4. Launch and connect
 
 ```sh
 open "$SCRATCH"
 ```
 
-On first run, add a server pointing at `127.0.0.1`, port `16667`, no TLS, and join
-`#textwerk` and `#general` on connect (the mock server ignores authentication, so any
-nickname works). This only needs doing once per scratch container — quitting and
-reopening the app reconnects automatically.
+With the seed from step 2 in place, the sidebar already shows "MockNet" with
+`#textwerk`/`#general` on first launch -- no wizard. Set the server address once
+via **Server → Server Properties…** as described above, then select the MockNet
+row in the sidebar and use **Server → Connect** (the mock server ignores
+authentication, so the seeded nickname `daniel_` just works). This only needs
+doing once per scratch container -- quitting and reopening the app reconnects
+automatically from then on.
+
+If you're driving this via AppleScript/System Events instead of by hand: select
+the sidebar row with the `select` command on its `row` element (not a
+coordinate click -- outline view rows don't reliably pick up System Events
+clicks), and address fields the same way, by grabbing the actual element via
+`entire contents` rather than indexing (e.g. `combo box 1 of window 1` -- several
+of this wizard/dialog's controls aren't direct children of the window in the
+accessibility tree, so direct indexing throws "Invalid index").
 
 ## 5. Capture
 
