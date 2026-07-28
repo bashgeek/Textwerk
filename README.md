@@ -22,6 +22,11 @@ A community fork of [Textual](https://github.com/Codeux-Software/Textual), the m
 - Query windows show a "common channels" info bar when someone messages you first
 - Unified title bar, with the secure-connection lock and channel title inline with the traffic-light buttons
 
+## Screenshots
+
+![Light](docs/screenshots/preview-light-general-chat.webp)
+![Dark](docs/screenshots/preview-dark-general-chat.webp)
+
 ## What changed from the Textual codebase
 
 - Renamed from Textual to Textwerk, since the original project is archived; this is a separate community fork
@@ -43,11 +48,6 @@ A community fork of [Textual](https://github.com/Codeux-Software/Textual), the m
 - Removed dead code left over from pre-Tahoe macOS version checks, an orphaned Wiki Link Parser plugin, and other unused helpers
 - Removed OTR and Blowfish message encryption support
 - Removed dead Help menu items pointing to Codeux Software's now-defunct FAQ, support, and license pages
-
-## Screenshots
-
-![Light](docs/screenshots/preview-light-general-chat.webp)
-![Dark](docs/screenshots/preview-dark-general-chat.webp)
 
 ## How to install
 
