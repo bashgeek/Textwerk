@@ -12,26 +12,28 @@ the first launch. It writes directly into the scratch container's defaults
 plist, under the same "World Controller Client Configurations" key the app
 itself uses to persist the server list.
 
-What this does and doesn't do:
-  - Populates the sidebar with a "MockNet" entry and the #textwerk/#general
-    channels, with nickname "daniel_", confirmed to work reliably.
-  - Deliberately leaves the actual server address/port unset. Seeding those
-    directly (flat serverAddress/serverPort keys, or a nested serverList
-    array) either gets silently dropped or -- in one attempt -- caused the
-    app to hang on launch with zero windows ever appearing, for reasons not
-    fully root-caused. Setting the address via the in-app "Server
-    Properties" dialog after launch (Server menu > Server Properties...) is
-    the confirmed-reliable path -- its fields are ordinary, scriptable
-    AXTextFields/AXComboBox, unlike the wizard's flaky validation.
-  - autoConnect is set to YES, but whether that actually triggers a
-    connection on launch was never confirmed end-to-end (see README.md).
-    Don't rely on it -- select the MockNet row and use Server > Connect
-    manually (or automate it the same way) after setting the address.
+What this does:
+  - Populates the sidebar with a "MockNet" entry pointed at
+    127.0.0.1:16667 (mock_ircd.py's address) and the #textwerk/#general
+    channels, with nickname "daniel_", and autoConnect on.
+  - The serverList entry uses the exact keys IRCServer.m's
+    -populateDictionaryValues: reads (serverAddress, serverPort,
+    prefersSecuredConnection, uniqueIdentifier). IRCClientConfig.m's
+    -initWithDictionary: reads serverList unconditionally, before it even
+    looks at dictionaryVersion, so this is picked up on first launch --
+    no need to fix the address up afterwards via the Server Properties
+    dialog.
+  - Forces "DisplayEventInLogView -> Inline Media" on, so the media
+    preview cards (YouTube/GitHub/image links in mock_ircd.py's
+    conversation) actually render for the screenshots. This is the
+    registered default as of master now, but setting it explicitly here
+    means the seeder still works right against older builds.
 """
 
 import plistlib
 import os
 import sys
+import uuid
 
 MOCK_HOST = "127.0.0.1"
 MOCK_PORT = 16667
@@ -44,6 +46,7 @@ def seed(bundle_id):
     os.makedirs(os.path.dirname(path), exist_ok=True)
 
     config = {
+        "DisplayEventInLogView -> Inline Media": True,
         "World Controller Client Configurations": [
             {
                 "connectionName": "MockNet",
@@ -54,6 +57,14 @@ def seed(bundle_id):
                     {"channelName": "#textwerk"},
                     {"channelName": "#general"},
                 ],
+                "serverList": [
+                    {
+                        "serverAddress": MOCK_HOST,
+                        "serverPort": MOCK_PORT,
+                        "prefersSecuredConnection": False,
+                        "uniqueIdentifier": str(uuid.uuid4()),
+                    }
+                ],
             }
         ]
     }
@@ -62,7 +73,7 @@ def seed(bundle_id):
         plistlib.dump(config, f)
 
     print(f"wrote {path}")
-    print(f"Now set the server address to {MOCK_HOST}:{MOCK_PORT} via Server Properties after first launch.")
+    print(f"MockNet server list points at {MOCK_HOST}:{MOCK_PORT} -- should autoConnect on launch.")
 
 
 if __name__ == "__main__":

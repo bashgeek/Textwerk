@@ -54,14 +54,12 @@ wizard entirely:
 python3 screenshots/seed_config.py app.textwerk.screenshots
 ```
 
-This pre-populates a "MockNet" entry with the `#textwerk`/`#general` channels and
-nickname `daniel_` in the sidebar on first launch (confirmed reliable). It
-deliberately does **not** seed the actual server address -- see
-`seed_config.py`'s docstring for why (short version: it either gets silently
-dropped or, once, made the app hang on launch with no window ever appearing).
-Set the address once after first launch via **Server menu → Server Properties…**
-(`127.0.0.1`, port `16667`, no TLS) -- that dialog's fields are ordinary,
-reliably-scriptable text fields, unlike the wizard's.
+This pre-populates a "MockNet" entry with the `#textwerk`/`#general` channels,
+nickname `daniel_`, and a `serverList` entry pointed at `127.0.0.1:16667`
+(mock_ircd.py's address) with `autoConnect` on, so the app connects to the mock
+server automatically on first launch -- no need to touch Server Properties by
+hand or via AppleScript at all. Make sure the mock server (step 3 below) is
+already running before you launch the app, since autoConnect fires immediately.
 
 **Known flakiness:** while working on this, the scratch app intermittently failed
 to create any window at all on launch -- process alive, ~0% CPU, stuck
@@ -99,20 +97,20 @@ open "$SCRATCH"
 ```
 
 With the seed from step 2 in place, the sidebar already shows "MockNet" with
-`#textwerk`/`#general` on first launch -- no wizard. Set the server address once
-via **Server → Server Properties…** as described above, then select the MockNet
-row in the sidebar and use **Server → Connect** (the mock server ignores
-authentication, so the seeded nickname `daniel_` just works). This only needs
-doing once per scratch container -- quitting and reopening the app reconnects
-automatically from then on.
+`#textwerk`/`#general`, and the app connects to the mock server automatically
+on launch (the mock server ignores authentication, so the seeded nickname
+`daniel_` just works) -- no wizard, no Server Properties, no manual Connect.
+Give it a couple seconds after launch for the connection/join sequence and the
+simulated conversation to play out before capturing.
 
-If you're driving this via AppleScript/System Events instead of by hand: select
-the sidebar row with the `select` command on its `row` element (not a
-coordinate click -- outline view rows don't reliably pick up System Events
-clicks), and address fields the same way, by grabbing the actual element via
-`entire contents` rather than indexing (e.g. `combo box 1 of window 1` -- several
-of this wizard/dialog's controls aren't direct children of the window in the
-accessibility tree, so direct indexing throws "Invalid index").
+If you ever do need to drive the UI via AppleScript/System Events (e.g. for a
+different server, or to reselect a channel row): select outline view rows with
+the `select` command on the row element (not a coordinate click -- rows don't
+reliably pick up System Events clicks), and reach dialog/sheet controls via
+`entire contents` rather than direct indexing (e.g. `combo box 1 of window 1`
+throws "Invalid index" -- several controls aren't direct children of the
+window/sheet in the accessibility tree). Sheets like Server Properties are
+`sheet 1 of window "Main Window"`, not a separate top-level window.
 
 ## 5. Capture
 
