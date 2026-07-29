@@ -40,7 +40,7 @@ for each type. */
 	padding: 0;
 	text-align: center;
 	border-radius: 50%;
-	border: 1px solid rgba(127, 127, 127, 0.25);
-	background-color: rgba(58, 58, 60, 0.9);
-	color: #9a9aa0;
+	border: 1px solid var(--rule);
+	background-color: color-mix(in srgb, var(--bg-elevated) 90%, transparent);
+	color: var(--text-muted);
 }

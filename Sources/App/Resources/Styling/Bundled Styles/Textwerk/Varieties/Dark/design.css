@@ -3,11 +3,90 @@
 
 @import "inlineMedia.css";
 
-/* Basic Body Structure */
+/* ------------------------------------------------------------------ *
+ * Palette                                                             *
+ *                                                                     *
+ * Everything below this block is byte-identical to the Light variety; *
+ * the two files differ only here. Keep it that way -- a diff between  *
+ * the varieties should show nothing but color values.                 *
+ * ------------------------------------------------------------------ */
 
 :root {
 	supported-color-schemes: dark;
+
+	/* Surfaces. The background carries a slight blue cast rather than
+	sitting on the neutral axis; a dead gray reads flat next to the
+	saturated accents used for mentions and notices. */
+	--bg: #1c1c1f;
+	--bg-elevated: #26262a;
+	--rule: #34343a;
+
+	/* Text. Four steps, in descending order of how much attention the
+	content deserves: message bodies, chrome, secondary metadata, and
+	status lines (joins/parts/modes). */
+	--text-strong: #f2f2f5;
+	--text: #e2e2e5;
+	--text-muted: #9a9aa3;
+	--text-faint: #78787f;
+
+	--link: #4c9dff;
+	--link-hover: #7ab8ff;
+
+	/* Accents */
+	--notice: #ff9f0a;
+	--notice-sender: #ffb340;
+	--notice-fill: rgba(255, 159, 10, 0.10);
+
+	/* Warmer than a pure amber: at this low an alpha over a near-neutral
+	dark background, #f2b400 mixes down to olive rather than to gold. */
+	--mention: #ffb224;
+	--mention-fill: rgba(255, 170, 36, 0.085);
+
+	--tracked: #8b88ff;
+	--tracked-fill: rgba(139, 136, 255, 0.11);
+
+	--danger: #ff453a;
+
+	/* Status-line glyphs. Deliberately desaturated: at full chroma the
+	arrows on a burst of joins pull the eye harder than the messages
+	between them. */
+	--join: #5f9c74;
+	--leave: #a3706c;
+
+	--hover-fill: rgba(255, 255, 255, 0.055);
+	--selection: rgba(76, 157, 255, 0.28);
+
+	/* Nickname palette. Read by scripts.js, which replaces the app's
+	built-in HSL generator with these. Generated in OKLCh at L=0.79,
+	C<=0.135, hues 25.7 degrees apart, then ordered so that consecutive
+	palette indices are far apart in hue. Every entry is between 8.2:1
+	and 9.4:1 against --bg. */
+	--nick-01: #fe9a9a;
+	--nick-02: #79d289;
+	--nick-03: #a9b4fe;
+	--nick-04: #ff9f71;
+	--nick-05: #3dd6b4;
+	--nick-06: #cba6fd;
+	--nick-07: #f0ab4e;
+	--nick-08: #20d3db;
+	--nick-09: #ea9ae6;
+	--nick-10: #d3ba47;
+	--nick-11: #3dccfc;
+	--nick-12: #fd94c0;
+	--nick-13: #abc861;
+	--nick-14: #88bffc;
+
+	/* Held out of the palette so your own messages stay recognizable
+	without ever colliding with someone else's color. */
+	--nick-self: #ff7a95;
+	--nick-self-action: #8f8cff;
+
+	--font-mono: ui-monospace, "SF Mono", Menlo, monospace;
 }
+
+/* ------------------------------------------------------------------ *
+ * Basic Body Structure                                                *
+ * ------------------------------------------------------------------ */
 
 * {
 	margin: 0;
@@ -18,15 +97,19 @@
 }
 
 body {
-	color: #e5e5e7;
+	color: var(--text);
 	height: 100%;
 	z-index: 100;
 	font-size: 13px;
-	line-height: 1.5;
+	line-height: 1.55;
 	overflow: hidden;
-	background-color: #1e1e1e;
+	background-color: var(--bg);
 	font-family: -apple-system, "SF Pro Text", "Helvetica Neue", sans-serif;
 	-webkit-font-smoothing: antialiased;
+}
+
+::selection {
+	background-color: var(--selection);
 }
 
 #body {
@@ -44,6 +127,9 @@ body {
 	opacity: 0; /* Set by JavaScript */
 }
 
+/* Only factor in height of topic bar when selected == true
+ because that is only time the topic is displayed according
+ to the logic defined by baseLayout.css */
 body[data-selected="true"][data-view-type="channel"] #body,
 body[data-selected="true"][data-view-type="query"] #body {
 	max-height: calc(100% - 2.2em); /* height minus topic */
@@ -62,11 +148,12 @@ body[dir="rtl"] .sender {
 #loadingScreen {
 	position: absolute;
 	top: 45%;
-	left: calc(50% - (320px / 2)); /* half of width + padding */
+	/* half the border box: 300px content + 2 * 12px padding */
+	left: calc(50% - (324px / 2));
 	width: 300px;
 	font-size: 16px;
-	background: #2c2c2e;
-	border: 1px solid #3a3a3c;
+	background: var(--bg-elevated);
+	border: 1px solid var(--rule);
 	border-radius: 8px;
 	padding: 6px 12px;
 	opacity: 1; /* Set by JavaScript */
@@ -75,14 +162,14 @@ body[dir="rtl"] .sender {
 /* Time */
 
 body[dir="ltr"] .time {
-	color: #6e6e73;
+	color: var(--text-faint);
 	white-space: nowrap;
 	font-variant-numeric: tabular-nums;
 	transition: opacity 0.15s ease;
 }
 
 body[dir="rtl"] .time {
-	color: #6e6e73;
+	color: var(--text-faint);
 	white-space: nowrap;
 	font-variant-numeric: tabular-nums;
 	padding-left: 0.4em;
@@ -104,13 +191,13 @@ body[dir="rtl"] .time {
 /* Links */
 
 a {
-	color: #409cff;
+	color: var(--link);
 	border-color: transparent;
 	text-decoration: none;
 }
 
 a:hover {
-	color: #64b5ff;
+	color: var(--link-hover);
 	border-bottom: 1px solid currentColor;
 }
 
@@ -122,11 +209,11 @@ a:hover {
 	right: 0;
 	z-index: 400;
 	opacity: 0; /* Set by JavaScript */
-	color: #e5e5e7;
+	color: var(--text);
 	position: fixed;
 	padding: 4px 10px 5px;
-	border-bottom: 1px solid #3a3a3c;
-	background-color: rgba(30, 30, 30, 0.82);
+	border-bottom: 1px solid var(--rule);
+	background-color: color-mix(in srgb, var(--bg) 82%, transparent);
 	-webkit-backdrop-filter: blur(20px) saturate(1.6);
 	backdrop-filter: blur(20px) saturate(1.6);
 	-webkit-font-smoothing: antialiased;
@@ -143,8 +230,8 @@ a:hover {
 
 #topicBar a,
 #topicBar span.channel {
-	color: #409cff;
-	border-color: #409cff;
+	color: var(--link);
+	border-color: var(--link);
 }
 
 /* Remember Line */
@@ -154,7 +241,7 @@ a:hover {
 	position: relative;
 	z-index: 295;
 	margin-top: -1px;
-	border-bottom: 1px dashed #ff9f0a;
+	border-bottom: 1px dashed var(--notice);
 }
 
 /* Message buffer loading animation */
@@ -170,7 +257,7 @@ a:hover {
 	font-weight: 600;
 	letter-spacing: 4px;
 	line-height: 43px;
-	color: #48484a;
+	color: var(--rule);
 	-webkit-animation: ellipsis-period 1.5s infinite;
 	animation: ellipsis-period 1.5s infinite;
 }
@@ -201,7 +288,7 @@ a:hover {
 #typing-indicator {
 	padding: 2px 10px;
 	font-style: italic;
-	color: #6e6e73;
+	color: var(--text-faint);
 }
 
 .typingIndicatorDots {
@@ -237,12 +324,12 @@ a:hover {
 	display: flex;
 	display: -webkit-flex;
 	align-items: center;
-	padding: 0.9em 0 0.6em;
+	padding: 1.1em 0 0.7em;
 }
 
 .date_indicator > hr,
 .session_indicator > hr {
-	background: #3a3a3c;
+	background: var(--rule);
 	border: 0;
 	height: 1px;
 	margin-top: 0;
@@ -255,7 +342,7 @@ a:hover {
 	font-size: 0.85em;
 	font-weight: 600;
 	margin: 0 1em;
-	color: #6e6e73;
+	color: var(--text-muted);
 	white-space: nowrap;
 }
 
@@ -286,12 +373,12 @@ the sender name, almost none below the message text. :has(.header)
 scopes this to lines that actually show one (i.e. not grouped with
 the previous message), matching what .header's margin-top used to do. */
 div.line:has(.header) {
-	margin-top: 10px;
+	margin-top: 8px;
 }
 
 div.line[data-line-type="privmsg"]:hover,
 div.line[data-line-type="action"]:hover {
-	background-color: rgba(255, 255, 255, 0.045);
+	background-color: var(--hover-fill);
 }
 
 /* Message header ("Slack-style" message display,
@@ -301,7 +388,7 @@ div.line .header {
 	display: flex;
 	align-items: baseline;
 	gap: 0.5em;
-	margin-bottom: 1px;
+	margin-bottom: 3px;
 }
 
 div.line .header .time {
@@ -327,7 +414,7 @@ div.line[data-grouped="true"] .hoverTimestamp {
 	display: none;
 	margin-left: 0.5em;
 	font-size: 0.75em;
-	color: #6e6e73;
+	color: var(--text-faint);
 	white-space: nowrap;
 }
 
@@ -340,12 +427,12 @@ div.line[data-grouped="true"]:hover .hoverTimestamp {
 div.line[data-line-type="ctcp"],
 div.line[data-line-type="notice"],
 div.line[data-line-type="wallops"] {
-	border-left-color: #ff9f0a;
-	background-color: rgba(255, 159, 10, 0.12);
+	border-left-color: var(--notice);
+	background-color: var(--notice-fill);
 }
 
 div.line[data-line-type="notice"] .sender {
-	color: #ffb340;
+	color: var(--notice-sender);
 	font-weight: 600;
 }
 
@@ -364,21 +451,24 @@ div.line[data-line-type="action"]:not(.selectedUser) {
 div.line.selectedUser[data-highlight="false"] {
 	transition-property: border-left-color, background-color;
 	transition-duration: 0.4s, 0.4s;
-	border-left-color: #7d7aff;
-	background-color: rgba(125, 122, 255, 0.14);
+	border-left-color: var(--tracked);
+	background-color: var(--tracked-fill);
 }
 
 /* PRIVMSG */
 
+/* The fill is kept low and the left border does the work. A heavier wash
+spanning the full window width reads as a slab of color rather than as a
+marker on one message. */
 div.line[data-line-type="privmsg"][data-highlight="true"],
 div.line[data-line-type="action"][data-highlight="true"] {
 	font-weight: normal;
-	border-left-color: #f2b400;
-	background-color: rgba(242, 180, 0, 0.14);
+	border-left-color: var(--mention);
+	background-color: var(--mention-fill);
 }
 
 div.line[data-line-type="privmsg"] .message {
-	color: #e5e5e7;
+	color: var(--text-strong);
 }
 
 div.line[data-line-type="privmsg"] .sender {
@@ -389,7 +479,7 @@ div.line[data-line-type="privmsg"] .sender {
 /* ACTION */
 
 div.line[data-line-type="action"] .message {
-	color: #e5e5e7;
+	color: var(--text-strong);
 	font-style: italic;
 }
 
@@ -400,7 +490,7 @@ div.line[data-line-type="action"] .sender {
 
 div.line[data-line-type="action"][data-member-type="myself"] .sender,
 div.line[data-line-type="action"][data-member-type="myself"] .message {
-	color: #7d7aff;
+	color: var(--nick-self-action);
 }
 
 body[dir="ltr"] div.line[data-line-type="action"] .sender:before {
@@ -419,13 +509,13 @@ div.line[data-line-type="invite"],
 div.line[data-line-type="debug"],
 div.line[data-line-type="dcc-file-transfer"],
 div.line[data-line-type="off-the-record-encryption-status"] {
-	color: #8e8e93;
+	color: var(--text-muted);
 	padding-top: 3px;
 	padding-bottom: 3px;
 }
 
 div.line[data-line-type="off-the-record-encryption-status"] .message {
-	color: #ff453a;
+	color: var(--danger);
 	font-weight: 600;
 }
 
@@ -439,7 +529,7 @@ div.line[data-command="376"],
 div.line[data-command="720"],
 div.line[data-command="721"],
 div.line[data-command="722"] {
-	color: #8e8e93;
+	color: var(--text-muted);
 }
 
 div.line[data-command="372"] .message,
@@ -448,12 +538,22 @@ div.line[data-command="376"] .message,
 div.line[data-command="720"] .message,
 div.line[data-command="721"] .message,
 div.line[data-command="722"] .message {
-	font-family: "Menlo" !important;
-	font-size: 0.95em;
+	font-family: var(--font-mono) !important;
+	/* rem, not em: this resolves against the root element, which
+	baseLayout.mustache sets to the size configured in preferences, so the
+	MOTD renders at that size no matter what it is nested inside. */
+	font-size: 1rem;
 }
 
 /* GENERAL EVENT */
 
+/* Status lines are supporting material: worth having on screen (anyone who
+disagrees can hide them outright in preferences) but not worth competing
+with what people actually said. They recede without ever changing type
+size -- message text renders at whatever size is configured in
+preferences -- using the faintest color in the ramp, desaturated glyphs,
+and tighter leading so a burst of joins reads as one block.
+Hovering brings a line back up to full strength for when you do care. */
 div.line[data-line-type="join"],
 div.line[data-line-type="part"],
 div.line[data-line-type="kick"],
@@ -463,43 +563,72 @@ div.line[data-line-type="nick"],
 div.line[data-line-type="mode"],
 div.line[data-line-type="topic"],
 div.line[data-line-type="website"] {
-	padding-top: 2px;
-	padding-bottom: 2px;
-	color: #6e6e73;
+	padding-top: 1px;
+	padding-bottom: 1px;
+	line-height: 1.45;
+	color: var(--text-faint);
+	transition: color 0.15s ease;
+}
+
+div.line[data-line-type="join"]:hover,
+div.line[data-line-type="part"]:hover,
+div.line[data-line-type="kick"]:hover,
+div.line[data-line-type="quit"]:hover,
+div.line[data-line-type="kill"]:hover,
+div.line[data-line-type="nick"]:hover,
+div.line[data-line-type="mode"]:hover,
+div.line[data-line-type="topic"]:hover,
+div.line[data-line-type="website"]:hover {
+	color: var(--text-muted);
 }
 
 body[dir="ltr"] div.line[data-line-type="join"] .message:before {
 	content: "→";
-	color: #30d158;
+	color: var(--join);
+	margin-right: 0.4em;
 }
 
 body[dir="ltr"] div.line[data-line-type="kick"] .message:before,
 body[dir="ltr"] div.line[data-line-type="part"] .message:before,
 body[dir="ltr"] div.line[data-line-type="quit"] .message:before {
 	content: "←";
-	color: #ff453a;
+	color: var(--leave);
+	margin-right: 0.4em;
 }
 
 body[dir="ltr"] div.line[data-line-type="nick"] .message:before {
 	content: "•";
-	color: #30d158;
+	color: var(--join);
+	margin-right: 0.4em;
 }
 
 body[dir="rtl"] div.line[data-line-type="join"] .message:before {
 	content: "→";
-	color: #30d158;
+	color: var(--join);
+	margin-left: 0.4em;
 }
 
 body[dir="rtl"] div.line[data-line-type="kick"] .message:before,
 body[dir="rtl"] div.line[data-line-type="part"] .message:before,
 body[dir="rtl"] div.line[data-line-type="quit"] .message:before {
 	content: "←";
-	color: #ff453a;
+	color: var(--leave);
+	margin-left: 0.4em;
 }
 
 body[dir="rtl"] div.line[data-line-type="nick"] .message:before {
 	content: "•";
-	color: #30d158;
+	color: var(--join);
+	margin-left: 0.4em;
+}
+
+/* Monospace runs (IRCv3 formatting, and <tt> from baseLayout.css) */
+
+tt {
+	font-family: var(--font-mono) !important;
+	padding: 0 0.25em;
+	border-radius: 3px;
+	background-color: var(--hover-fill);
 }
 
 /* Nickname Colors */
@@ -508,6 +637,8 @@ body[dir="rtl"] div.line[data-line-type="nick"] .message:before {
 	font-weight: 600;
 }
 
+/* Applies only when nickname colorizing is off; when it is on, the color
+arrives as an inline style from scripts.js, which outranks this. */
 div.line[data-line-type="privmsg"] .sender[data-member-type="myself"] {
-	color: #ff6482;
+	color: var(--nick-self);
 }
