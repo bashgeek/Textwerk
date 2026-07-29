@@ -88,6 +88,11 @@ Textual.viewBodyDidLoadInt = function() /* PRIVATE */
 };
 
 _Textual._viewBodyDidLoadAnimationFrame = null; /* PRIVATE */
+_Textual._viewBodyDidLoadTimeout = null; /* PRIVATE */
+_Textual._viewBodyDidLoadCompleted = false; /* PRIVATE */
+
+/* How long to wait for the animation frame below before giving up on it. */
+_Textual._viewBodyDidLoadTimeoutInterval = 1000; /* PRIVATE */
 
 _Textual.viewBodyDidLoad = function() /* PRIVATE */
 {
@@ -105,6 +110,26 @@ _Textual.viewBodyDidLoad = function() /* PRIVATE */
 		window.requestAnimationFrame(function() {
 			_Textual._viewBodyDidLoad();
 		});
+
+		/* WebKit suspends requestAnimationFrame() for a web view that is not in a
+		 visible window, and at launch that can include this very view: it is created
+		 and loaded while the main window is still being brought up, underneath the
+		 overlay that this callback exists to dismiss. When the frame is never
+		 scheduled, -[TVCLogView layingOutView] is never cleared, so the overlay is
+		 never removed and the channel renders blank.
+
+		 Selecting a different channel and coming back does not recover, because
+		 -[TVCMainWindowChannelViewSubview toggleOverlayView] re-reads that same
+		 flag and puts the overlay straight back; only relaunching clears it.
+
+		 -viewFinishedLoading below resolves the frame early, but only for views
+		 that are neither visible nor selected -- which excludes the one case the
+		 user is actually looking at. Timers are throttled rather than suspended
+		 for hidden views, so a timeout still fires and can break the deadlock. */
+		_Textual._viewBodyDidLoadTimeout =
+		window.setTimeout(function() {
+			_Textual._viewBodyDidLoad();
+		}, _Textual._viewBodyDidLoadTimeoutInterval);
 	} else {
 		_Textual._viewBodyDidLoad();
 	}
@@ -112,7 +137,26 @@ _Textual.viewBodyDidLoad = function() /* PRIVATE */
 
 _Textual._viewBodyDidLoad = function() /* PRIVATE */
 {
-	_Textual._viewBodyDidLoadAnimationFrame = null;
+	/* There are now three callers -- the animation frame, the timeout above, and
+	 -viewFinishedLoading -- so whichever arrives first wins and the rest become
+	 no-ops. The body must run exactly once: it tells the app layout is done. */
+	if (_Textual._viewBodyDidLoadCompleted) {
+		return;
+	}
+
+	_Textual._viewBodyDidLoadCompleted = true;
+
+	if (_Textual._viewBodyDidLoadAnimationFrame) {
+		window.cancelAnimationFrame(_Textual._viewBodyDidLoadAnimationFrame);
+
+		_Textual._viewBodyDidLoadAnimationFrame = null;
+	}
+
+	if (_Textual._viewBodyDidLoadTimeout) {
+		window.clearTimeout(_Textual._viewBodyDidLoadTimeout);
+
+		_Textual._viewBodyDidLoadTimeout = null;
+	}
 
 	appPrivate.finishedLayingOutView();
 
